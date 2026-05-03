@@ -1,0 +1,12 @@
+# Bloquer l'accès direct aux fichiers sensibles du backend
+<FilesMatch "\.(env|json|lock|prisma|js)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# Autoriser uniquement node via Passenger (pas d'accès direct HTTP)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^ - [F]
+</IfModule>

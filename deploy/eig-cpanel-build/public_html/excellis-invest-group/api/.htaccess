@@ -1,0 +1,15 @@
+# Utiliser PHP 8.3 pour ce dossier uniquement (sans affecter les autres apps)
+AddHandler application/x-httpd-alt-php83 .php
+
+<IfModule mod_rewrite.c>
+    Options -MultiViews -Indexes
+    RewriteEngine On
+    RewriteBase /excellis-invest-group/api/
+
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>

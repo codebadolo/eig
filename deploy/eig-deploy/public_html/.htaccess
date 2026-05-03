@@ -1,0 +1,48 @@
+# ─── Excellis Invest Group — Apache / cPanel config ───────────────────────────
+
+Options -MultiViews -Indexes
+
+# Activer le moteur de réécriture (nécessaire pour React Router)
+RewriteEngine On
+
+# Forcer HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Rediriger www → sans www (adapter selon votre config DNS)
+# RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+# RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+# Ne pas réécrire les fichiers/dossiers qui existent réellement
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Toutes les autres requêtes → index.html (React Router côté client)
+RewriteRule ^ /index.html [QSA,L]
+
+# ─── Compression Gzip ─────────────────────────────────────────────────────────
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>
+
+# ─── Cache navigateur ──────────────────────────────────────────────────────────
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # Assets hashés (JS/CSS générés par Vite) → 1 an
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/css               "access plus 1 year"
+  ExpiresByType image/png              "access plus 1 month"
+  ExpiresByType image/jpeg             "access plus 1 month"
+  ExpiresByType image/svg+xml          "access plus 1 month"
+  ExpiresByType image/webp             "access plus 1 month"
+  # index.html → pas de cache (pour que les mises à jour soient immédiates)
+  ExpiresByType text/html              "access plus 0 seconds"
+</IfModule>
+
+# ─── En-têtes de sécurité ──────────────────────────────────────────────────────
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-XSS-Protection "1; mode=block"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

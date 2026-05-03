@@ -1,0 +1,78 @@
+                                                                                                                           
+● Tout est prêt. Voici le guide définitif avec ton domaine :                                                               
+                                                                                                                           
+  ---                                                                                                                      
+  Déploiement — excellis-invest-group.jofedigital.com                                                                      
+                                                                                                                           
+  Fichiers à uploader (dans deploy/)                                                                                       
+                                                                                                                           
+  ┌──────────────┬────────┬────────────────────────────────────────┐                                                       
+  │   Fichier    │ Taille │              Destination               │                                                       
+  ├──────────────┼────────┼────────────────────────────────────────┤                                                       
+  │ frontend.zip │ 2.3 Mo │ public_html/                           │                                                       
+  ├──────────────┼────────┼────────────────────────────────────────┤                                                       
+  │ admin.zip    │ 101 Ko │ public_html/admin/                     │
+  ├──────────────┼────────┼────────────────────────────────────────┤                                                       
+  │ api.zip      │ 38 Ko  │ ~/api/ (dossier home, pas public_html) │
+  └──────────────┴────────┴────────────────────────────────────────┘                                                       
+                                                            
+  ---                                                                                                                      
+  Étape 1 — MySQL                                           
+                                                                                                                           
+  Dans cPanel → MySQL Databases :
+  1. Créer base : ex jofe1234_eig                                                                                          
+  2. Créer utilisateur : ex jofe1234_eiguser + mot de passe fort                                                           
+  3. Attribuer tous les privilèges
+                                                                                                                           
+  ---                                                       
+  Étape 2 — Sous-domaine API                                                                                               
+                                                                                                                           
+  Dans cPanel → Subdomains :
+  - Sous-domaine : api                                                                                                     
+  - Domaine : excellis-invest-group.jofedigital.com         
+  - Document root : api (le dossier ~/api/ sera créé automatiquement)
+                                                                                                                           
+  ---                                                                                                                      
+  Étape 3 — Uploader les fichiers                                                                                          
+                                                                                                                           
+  File Manager cPanel :                                     
+                                                                                                                           
+  1. Aller dans public_html/ → Uploader frontend.zip → Extraire ici                                                        
+  2. Créer le dossier admin/ dans public_html/ → Entrer dedans → Uploader admin.zip → Extraire ici
+  3. Aller dans ~/api/ (dossier home, niveau au-dessus de public_html/) → Uploader api.zip → Extraire ici                  
+                                                                                                                           
+  ---                                                                                                                      
+  Étape 4 — Fichier .env backend                                                                                           
+                                                                                                                           
+  Dans ~/api/ créer le fichier .env (copier deploy/env-backend-production) :
+  DATABASE_URL="mysql://jofe1234_eiguser:TON_MOT_DE_PASSE@localhost:3306/jofe1234_eig"                                     
+  JWT_SECRET="génère-une-clé-avec-openssl-rand-hex-64"                                
+  FRONTEND_URL="https://excellis-invest-group.jofedigital.com"                                                             
+  ADMIN_URL="https://excellis-invest-group.jofedigital.com"                                                                
+                                                                                                                           
+  ---                                                                                                                      
+  Étape 5 — App Node.js                                     
+                                                                                                                           
+  Dans cPanel → Setup Node.js App → Create :                
+  - Node.js version : 18.x                                                                                                 
+  - Application mode : Production
+  - Application root : api                                                                                                 
+  - Application URL : api.excellis-invest-group.jofedigital.com                                                            
+  - Startup file : app.js                                      
+                                                                                                                           
+  Puis cliquer Save → Run NPM Install → Start               
+                                                                                                                           
+  ---                                                       
+  Étape 6 — Initialiser la base (Terminal cPanel ou SSH)                                                                   
+                                                                                                                           
+  cd ~/api
+  npx prisma generate                                                                                                      
+  npx prisma db push                                        
+  node src/seed.js                                                                                                         
+   
+  ---                                                                                                                      
+  Étape 7 — Vérification                                    
+                        
+  - https://api.excellis-invest-group.jofedigital.com/api/health → {"status":"ok"}
+  - https://excellis-invest-group.jofedigital.com/ → site frontend                                                         
+  - https://excellis-invest-group.jofedigital.com/admin/ → admin  

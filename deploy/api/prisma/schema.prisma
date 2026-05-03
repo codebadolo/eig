@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  nom       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Filiale {
+  id          String   @id
+  sigle       String
+  nom         String
+  secteur     String
+  secteurSlug String
+  pays        String
+  description String   @db.Text
+  logo        String?
+  ordre       Int      @default(0)
+  actif       Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Metier {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  titre        String
+  icone        String
+  couleur      String
+  description  String   @db.Text
+  enjeux       String   @db.Text
+  contribution String   @db.Text
+  filialesIds  String   @db.Text
+  ordre        Int      @default(0)
+  actif        Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Article {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  titre     String
+  categorie String
+  date      String
+  extrait   String   @db.Text
+  contenu   String   @db.LongText
+  couleur   String
+  featured  Boolean  @default(false)
+  image     String?
+  publie    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Dirigeant {
+  id          String  @id
+  nom         String
+  role        String
+  bio         String  @db.Text
+  expertise   String? @db.Text
+  formation   String? @db.Text
+  experiences String? @db.Text
+  linkedin    String?
+  photo       String?
+  ordre       Int     @default(0)
+  actif       Boolean @default(true)
+}
+
+model CompanyInfo {
+  id        String   @id @default("main")
+  data      Json
+  updatedAt DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  nom       String
+  email     String
+  telephone String?
+  sujet     String
+  message   String   @db.Text
+  lu        Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Carriere {
+  id             String   @id @default(cuid())
+  titre          String
+  departement    String
+  lieu           String
+  type           String
+  description    String   @db.Text
+  missions       String?  @db.Text
+  profil         String?  @db.Text
+  avantages      String?  @db.Text
+  salaire        String?
+  dateExpiration String?
+  actif          Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model SiteImage {
+  id        String   @id @default(cuid())
+  section   String
+  url       String
+  titre     String   @default("")
+  alt       String   @default("")
+  ordre     Int      @default(0)
+  actif     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([section])
+}

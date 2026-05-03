@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excellis Invest Group — Investir autrement | Holding multisectorielle panafricaine</title>
+<meta name="description" content="Excellis Invest Group est une holding d'investissement multisectorielle basée au Burkina Faso. 20 milliards FCFA de capital, 17 filiales, 9 secteurs stratégiques, noté Bloomfield.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  /* ═══════════════════════════════════════════════════
+     DESIGN SYSTEM — EXCELLIS INVEST GROUP
+     Direction artistique : Premium Africain Corporate
+  ═══════════════════════════════════════════════════ */
+  :root {
+    --teal:        #1A6B7A;
+    --teal-dark:   #0F4855;
+    --teal-light:  #2D8A9E;
+    --gold:        #B8922A;
+    --gold-light:  #D4AA4A;
+    --gold-pale:   #F5EDD8;
+    --ivory:       #F8F6F1;
+    --black:       #0F1924;
+    --dark:        #1C2B35;
+    --gray:        #2D3748;
+    --gray-mid:    #6B7280;
+    --gray-light:  #E8EBF0;
+    --white:       #FFFFFF;
+    
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body:    'Jost', sans-serif;
+    --font-num:     'Bebas Neue', sans-serif;
+    
+    --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-sm: 0 2px 8px rgba(15,25,36,0.08);
+    --shadow-md: 0 8px 32px rgba(15,25,36,0.12);
+    --shadow-lg: 0 24px 64px rgba(15,25,36,0.18);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--ivory);
+    color: var(--black);
+    overflow-x: hidden;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── NAVIGATION ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 5%;
+    height: 80px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: transparent;
+    transition: background var(--transition), box-shadow var(--transition);
+  }
+  nav.scrolled {
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-sm);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none;
+  }
+  .nav-logo-mark {
+    width: 44px; height: 44px;
+    background: var(--teal);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .nav-logo-mark::before {
+    content: '';
+    position: absolute;
+    width: 60%; height: 60%;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    opacity: 0.6;
+  }
+  .nav-logo-arrow {
+    color: var(--white);
+    font-size: 18px;
+    font-weight: 700;
+    transform: rotate(-45deg);
+    display: block;
+    line-height: 1;
+  }
+  .nav-logo-text { line-height: 1.2; }
+  .nav-logo-name {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    transition: color var(--transition);
+  }
+  nav.scrolled .nav-logo-name { color: var(--teal-dark); }
+  .nav-logo-tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 11px;
+    color: var(--gold-light);
+    letter-spacing: 0.05em;
+  }
+  nav.scrolled .nav-logo-tagline { color: var(--gold); }
+
+  .nav-links {
+    display: flex; gap: 36px; list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
+    position: relative;
+    transition: color var(--transition);
+  }
+  nav.scrolled .nav-links a { color: var(--gray); }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width var(--transition);
+  }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-links a:hover { color: var(--gold-light); }
+  nav.scrolled .nav-links a:hover { color: var(--teal); }
+
+  .nav-cta {
+    background: var(--gold);
+    color: var(--white) !important;
+    padding: 10px 24px;
+    border-radius: 3px;
+    font-weight: 600 !important;
+    letter-spacing: 0.1em !important;
+    transition: background var(--transition) !important;
+  }
+  .nav-cta:hover { background: var(--gold-light) !important; color: var(--white) !important; }
+  .nav-cta::after { display: none !important; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex; align-items: center;
+    overflow: hidden;
+    background: var(--teal-dark);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: 
+      radial-gradient(ellipse 80% 60% at 70% 40%, rgba(26,107,122,0.6) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(184,146,42,0.15) 0%, transparent 50%),
+      linear-gradient(135deg, #0F4855 0%, #1C2B35 40%, #0F1924 100%);
+  }
+  .hero-pattern {
+    position: absolute; inset: 0;
+    background-image: 
+      radial-gradient(circle, rgba(184,146,42,0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.8;
+  }
+  .hero-globe {
+    position: absolute;
+    right: -5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 55%;
+    max-width: 750px;
+    opacity: 0.07;
+  }
+  .hero-globe-ring {
+    width: 100%;
+    padding-top: 100%;
+    border: 1px solid var(--gold-light);
+    border-radius: 50%;
+    position: relative;
+  }
+  .hero-globe-ring::before {
+    content: '';
+    position: absolute;
+    inset: 8%;
+    border: 1px solid rgba(184,146,42,0.5);
+    border-radius: 50%;
+  }
+  .hero-globe-ring::after {
+    content: '';
+    position: absolute;
+    inset: 20%;
+    border: 1px solid rgba(184,146,42,0.3);
+    border-radius: 50%;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 120px 5% 80px;
+    max-width: 750px;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(184,146,42,0.15);
+    border: 1px solid rgba(184,146,42,0.4);
+    padding: 8px 18px;
+    border-radius: 2px;
+    margin-bottom: 32px;
+    animation: fadeInUp 0.8s ease both;
+  }
+  .hero-badge-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.2); }
+  }
+  .hero-badge span {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(44px, 6vw, 80px);
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 28px;
+    animation: fadeInUp 0.8s 0.15s ease both;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold-light);
+    display: block;
+  }
+  .hero-subtitle {
+    font-size: 17px;
+    color: rgba(255,255,255,0.7);
+    max-width: 540px;
+    margin-bottom: 48px;
+    line-height: 1.7;
+    animation: fadeInUp 0.8s 0.3s ease both;
+  }
+  .hero-stats {
+    display: flex; gap: 0;
+    margin-bottom: 52px;
+    animation: fadeInUp 0.8s 0.45s ease both;
+  }
+  .hero-stat {
+    padding: 0 32px;
+    border-right: 1px solid rgba(255,255,255,0.12);
+    text-align: center;
+  }
+  .hero-stat:first-child { padding-left: 0; }
+  .hero-stat:last-child { border-right: none; }
+  .hero-stat-num {
+    font-family: var(--font-num);
+    font-size: 38px;
+    color: var(--gold-light);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    display: block;
+  }
+  .hero-stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.5);
+    display: block;
+    margin-top: 4px;
+  }
+  .hero-actions {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    animation: fadeInUp 0.8s 0.6s ease both;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--gold);
+    color: var(--white);
+    padding: 16px 36px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all var(--transition);
+    border: 2px solid var(--gold);
+  }
+  .btn-primary:hover {
+    background: var(--gold-light);
+    border-color: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(184,146,42,0.4);
+  }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: transparent;
+    color: rgba(255,255,255,0.9);
+    padding: 16px 36px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all var(--transition);
+    border: 2px solid rgba(255,255,255,0.25);
+  }
+  .btn-secondary:hover {
+    border-color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.06);
+  }
+  .btn-arrow {
+    transition: transform var(--transition);
+  }
+  .btn-primary:hover .btn-arrow,
+  .btn-secondary:hover .btn-arrow { transform: translateX(4px); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 36px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    animation: fadeIn 1s 1s ease both;
+  }
+  .hero-scroll span {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, rgba(184,146,42,0.6), transparent);
+    animation: scrollAnim 2s infinite;
+  }
+  @keyframes scrollAnim {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    50.01% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* ─── BLOOMFIELD BAND ─── */
+  .bloomfield-band {
+    background: var(--gold-pale);
+    padding: 20px 5%;
+    display: flex; align-items: center; justify-content: center; gap: 24px;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(184,146,42,0.2);
+    border-bottom: 1px solid rgba(184,146,42,0.2);
+  }
+  .bloomfield-band p {
+    font-size: 13px;
+    color: var(--gray);
+    letter-spacing: 0.05em;
+  }
+  .bloomfield-badge {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--white);
+    border: 1px solid rgba(184,146,42,0.3);
+    padding: 8px 18px;
+    border-radius: 2px;
+    box-shadow: var(--shadow-sm);
+  }
+  .bloomfield-badge-icon {
+    width: 24px; height: 24px;
+    background: var(--teal);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .bloomfield-badge span {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--teal-dark);
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── SECTIONS COMMUNES ─── */
+  section { padding: 100px 5%; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: block;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--black);
+    margin-bottom: 20px;
+  }
+  .section-title span { color: var(--teal); }
+  .section-lead {
+    font-size: 18px;
+    color: var(--gray-mid);
+    max-width: 580px;
+    line-height: 1.7;
+    margin-bottom: 56px;
+  }
+  .gold-rule {
+    width: 48px; height: 2px;
+    background: var(--gold);
+    margin: 24px 0;
+  }
+
+  /* ─── SECTION GROUPE ─── */
+  .section-groupe {
+    background: var(--white);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .groupe-visual {
+    position: relative;
+    height: 480px;
+  }
+  .groupe-img-main {
+    width: 78%;
+    height: 380px;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+    border-radius: 4px;
+    position: absolute;
+    top: 0; right: 0;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .groupe-img-main::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .groupe-img-main-text {
+    font-family: var(--font-display);
+    font-size: 60px;
+    color: rgba(255,255,255,0.08);
+    font-weight: 700;
+    letter-spacing: -2px;
+    user-select: none;
+  }
+  .groupe-img-accent {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 50%;
+    height: 200px;
+    background: var(--gold-pale);
+    border-radius: 4px;
+    border: 1px solid rgba(184,146,42,0.2);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 6px;
+    box-shadow: var(--shadow-md);
+  }
+  .groupe-img-accent-num {
+    font-family: var(--font-num);
+    font-size: 52px;
+    color: var(--gold);
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+  .groupe-img-accent-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gray-mid);
+    text-align: center;
+  }
+  .groupe-content .section-lead { margin-bottom: 36px; }
+  .groupe-pillars {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 20px; margin-bottom: 40px;
+  }
+  .pillar {
+    padding: 20px;
+    border-left: 3px solid var(--teal-light);
+    background: var(--ivory);
+    border-radius: 0 4px 4px 0;
+  }
+  .pillar-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--teal-dark);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .pillar-text { font-size: 13px; color: var(--gray-mid); line-height: 1.5; }
+
+  /* ─── CHIFFRES CLÉS ─── */
+  .section-kpis {
+    background: var(--teal-dark);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 80px 5%;
+  }
+  .section-kpis::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .kpis-label { color: var(--gold-light); }
+  .kpis-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 60px;
+    max-width: 600px;
+    margin-left: auto; margin-right: auto;
+  }
+  .kpis-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    max-width: 1100px;
+    margin: 0 auto 60px;
+    position: relative;
+    z-index: 2;
+  }
+  .kpi-item {
+    padding: 36px 20px;
+    border-right: 1px solid rgba(255,255,255,0.07);
+    transition: background var(--transition);
+  }
+  .kpi-item:last-child { border-right: none; }
+  .kpi-item:hover { background: rgba(255,255,255,0.04); }
+  .kpi-num {
+    font-family: var(--font-num);
+    font-size: clamp(36px, 4vw, 56px);
+    color: var(--gold-light);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    display: block;
+  }
+  .kpi-unit {
+    font-size: 18px;
+    color: var(--gold);
+  }
+  .kpi-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.45);
+    display: block;
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+
+  /* ─── SECTEURS / MÉTIERS ─── */
+  .section-metiers { background: var(--ivory); }
+  .metiers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 0;
+  }
+  .metier-card {
+    background: var(--white);
+    border-radius: 4px;
+    padding: 36px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition);
+    cursor: pointer;
+    border: 1px solid transparent;
+    text-decoration: none;
+    display: block;
+    color: inherit;
+  }
+  .metier-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 3px; width: 0;
+    background: var(--gold);
+    transition: width var(--transition);
+  }
+  .metier-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(26,107,122,0.1);
+  }
+  .metier-card:hover::before { width: 100%; }
+  .metier-icon {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: white;
+    flex-shrink: 0;
+  }
+  .metier-card:nth-child(2) .metier-icon { background: linear-gradient(135deg, #2A6B4A, #1A4A32); }
+  .metier-card:nth-child(3) .metier-icon { background: linear-gradient(135deg, #6B2A6B, #4A1A4A); }
+  .metier-card:nth-child(4) .metier-icon { background: linear-gradient(135deg, #6B4A1A, #4A3010); }
+  .metier-card:nth-child(5) .metier-icon { background: linear-gradient(135deg, #1A4A6B, #102A4A); }
+  .metier-card:nth-child(6) .metier-icon { background: linear-gradient(135deg, #4A1A2A, #3A1020); }
+  .metier-card:nth-child(7) .metier-icon { background: linear-gradient(135deg, #2A4A1A, #1A3010); }
+  .metier-card:nth-child(8) .metier-icon { background: linear-gradient(135deg, #4A3A1A, #3A2A10); }
+  .metier-card:nth-child(9) .metier-icon { background: linear-gradient(135deg, #1A2A6B, #101A4A); }
+  .metier-title {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .metier-desc {
+    font-size: 13.5px;
+    color: var(--gray-mid);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .metier-count {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal-light);
+  }
+  .metier-arrow {
+    position: absolute;
+    top: 28px; right: 28px;
+    color: var(--gray-light);
+    font-size: 18px;
+    transition: all var(--transition);
+  }
+  .metier-card:hover .metier-arrow {
+    color: var(--gold);
+    transform: translate(3px, -3px);
+  }
+
+  /* ─── FILIALES ─── */
+  .section-filiales {
+    background: var(--white);
+    padding: 100px 5%;
+  }
+  .filiales-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 56px;
+    flex-wrap: wrap; gap: 24px;
+  }
+  .filiales-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .filiale-card {
+    padding: 28px 24px;
+    border: 1px solid var(--gray-light);
+    border-radius: 4px;
+    display: flex; flex-direction: column; gap: 12px;
+    transition: all var(--transition);
+    cursor: pointer;
+  }
+  .filiale-card:hover {
+    border-color: var(--teal-light);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+  }
+  .filiale-logo-wrap {
+    width: 56px; height: 56px;
+    border-radius: 8px;
+    background: var(--ivory);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-num);
+    font-size: 20px;
+    color: var(--teal);
+    font-weight: 700;
+    border: 1px solid var(--gray-light);
+  }
+  .filiale-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--black);
+    line-height: 1.3;
+  }
+  .filiale-sector {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal-light);
+  }
+  .filiale-country {
+    font-size: 12px;
+    color: var(--gray-mid);
+    display: flex; align-items: center; gap: 4px;
+  }
+
+  /* ─── GOUVERNANCE TEASER ─── */
+  .section-gouv {
+    background: linear-gradient(135deg, var(--teal-dark) 0%, var(--black) 100%);
+    position: relative;
+    overflow: hidden;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+    padding: 100px 5%;
+  }
+  .section-gouv::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 0% 50%, rgba(26,107,122,0.4) 0%, transparent 60%);
+  }
+  .gouv-content { position: relative; z-index: 2; }
+  .gouv-content .section-label { color: var(--gold-light); }
+  .gouv-content .section-title { color: var(--white); }
+  .gouv-content .section-lead { color: rgba(255,255,255,0.65); }
+  .gouv-quote {
+    background: rgba(255,255,255,0.05);
+    border-left: 3px solid var(--gold);
+    padding: 24px 28px;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 36px;
+  }
+  .gouv-quote-text {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-style: italic;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .gouv-quote-author {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+  .gouv-visual {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .gouv-pillar {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 18px 22px;
+    display: flex; align-items: center; gap: 14px;
+    transition: all var(--transition);
+  }
+  .gouv-pillar:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(184,146,42,0.3);
+  }
+  .gouv-pillar-num {
+    font-family: var(--font-num);
+    font-size: 28px;
+    color: var(--gold);
+    opacity: 0.7;
+    flex-shrink: 0;
+    width: 36px;
+  }
+  .gouv-pillar-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.05em;
+  }
+  .gouv-pillar-text { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 3px; }
+
+  /* ─── ACTUALITÉS ─── */
+  .section-news { background: var(--ivory); }
+  .news-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr;
+    gap: 20px;
+  }
+  .news-card {
+    background: var(--white);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all var(--transition);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .news-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .news-card-img {
+    height: 200px;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .news-card:first-child .news-card-img { height: 260px; }
+  .news-card-img-text {
+    font-family: var(--font-num);
+    font-size: 80px;
+    color: rgba(255,255,255,0.05);
+    user-select: none;
+  }
+  .news-cat {
+    position: absolute; top: 16px; left: 16px;
+    background: var(--gold);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 2px;
+  }
+  .news-content { padding: 24px; }
+  .news-date {
+    font-size: 11px;
+    color: var(--gray-mid);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .news-title {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--black);
+    line-height: 1.35;
+    margin-bottom: 10px;
+  }
+  .news-card:not(:first-child) .news-title { font-size: 16px; }
+  .news-excerpt { font-size: 13.5px; color: var(--gray-mid); line-height: 1.6; }
+  .news-card:not(:first-child) .news-excerpt { display: none; }
+
+  /* ─── CTA FINALE ─── */
+  .section-cta {
+    background: var(--gold);
+    padding: 80px 5%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .section-cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  .cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 56px);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 2;
+  }
+  .cta-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,0.85);
+    max-width: 580px;
+    margin: 0 auto 44px;
+    position: relative; z-index: 2;
+  }
+  .cta-actions {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    position: relative; z-index: 2;
+  }
+  .btn-cta-white {
+    background: var(--white);
+    color: var(--gold);
+    padding: 16px 40px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all var(--transition);
+    display: inline-block;
+  }
+  .btn-cta-white:hover {
+    background: var(--ivory);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+  }
+  .btn-cta-outline {
+    background: transparent;
+    color: var(--white);
+    padding: 16px 40px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 2px solid rgba(255,255,255,0.5);
+    transition: all var(--transition);
+    display: inline-block;
+  }
+  .btn-cta-outline:hover { border-color: white; background: rgba(255,255,255,0.1); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--black);
+    padding: 80px 5% 32px;
+    color: rgba(255,255,255,0.5);
+  }
+  .footer-main {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 60px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    margin-bottom: 36px;
+  }
+  .footer-brand-name {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .footer-brand-tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--gold-light);
+    font-size: 14px;
+    margin-bottom: 20px;
+    display: block;
+  }
+  .footer-desc {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 28px;
+  }
+  .footer-social {
+    display: flex; gap: 10px;
+  }
+  .social-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all var(--transition);
+  }
+  .social-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(184,146,42,0.1);
+  }
+  .footer-col-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+  .footer-links a:hover { color: var(--gold-light); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+    font-size: 12px; color: rgba(255,255,255,0.2);
+  }
+  .footer-legal { display: flex; gap: 24px; flex-wrap: wrap; }
+  .footer-legal a { color: rgba(255,255,255,0.2); text-decoration: none; transition: color var(--transition); }
+  .footer-legal a:hover { color: var(--gold); }
+
+  /* ─── WHATSAPP FLOAT ─── */
+  .wa-float {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    z-index: 99;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: #25D366;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.5);
+    text-decoration: none;
+    transition: all var(--transition);
+    animation: waFloat 3s ease-in-out infinite;
+  }
+  .wa-float:hover { transform: scale(1.1); box-shadow: 0 8px 32px rgba(37,211,102,0.6); }
+  .wa-float svg { width: 26px; height: 26px; }
+  @keyframes waFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    .section-groupe { grid-template-columns: 1fr; }
+    .groupe-visual { height: 300px; display: none; }
+    .filiales-grid { grid-template-columns: repeat(2, 1fr); }
+    .kpis-grid { grid-template-columns: repeat(3, 1fr); }
+    .news-grid { grid-template-columns: 1fr; }
+    .footer-main { grid-template-columns: 1fr 1fr; }
+    .section-gouv { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    section { padding: 72px 24px; }
+    .hero-content { padding: 120px 24px 72px; }
+    .hero-stats { flex-direction: column; gap: 24px; }
+    .hero-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.12); padding: 0 0 20px; text-align: left; }
+    .hero-stat:last-child { border-bottom: none; }
+    .metiers-grid { grid-template-columns: 1fr; }
+    .filiales-grid { grid-template-columns: 1fr; }
+    .kpis-grid { grid-template-columns: 1fr 1fr; }
+    .footer-main { grid-template-columns: 1fr; gap: 36px; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAVIGATION ═══════════ -->
+<nav id="navbar">
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-mark">
+      <span class="nav-logo-arrow">↗</span>
+    </div>
+    <div class="nav-logo-text">
+      <div class="nav-logo-name">Excellis Invest Group</div>
+      <div class="nav-logo-tagline">Investir autrement</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/le-groupe">Le Groupe</a></li>
+    <li><a href="/nos-metiers">Nos Métiers</a></li>
+    <li><a href="/nos-filiales">Nos Filiales</a></li>
+    <li><a href="/gouvernance">Gouvernance</a></li>
+    <li><a href="/actualites">Actualités</a></li>
+    <li><a href="/carrieres">Carrières</a></li>
+    <li><a href="/contact" class="nav-cta">Nous Contacter</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-globe" aria-hidden="true">
+    <div class="hero-globe-ring"></div>
+  </div>
+  
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      <span>Holding d'investissement multisectorielle · Burkina Faso</span>
+    </div>
+    
+    <h1 class="hero-title">
+      Catalyseur de croissance,
+      <em>architecte de valeur durable</em>
+      en Afrique.
+    </h1>
+    
+    <p class="hero-subtitle">
+      Excellis Invest Group mobilise des expertises, des capitaux et des mécanismes d'intervention à forte valeur ajoutée pour accompagner les institutions et entreprises africaines dans leur transformation durable.
+    </p>
+    
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num">20<span style="font-size:22px">Mds</span></span>
+        <span class="hero-stat-label">FCFA Capital Social</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">17</span>
+        <span class="hero-stat-label">Filiales opérationnelles</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">9</span>
+        <span class="hero-stat-label">Secteurs stratégiques</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">2</span>
+        <span class="hero-stat-label">Pays (BF + CI)</span>
+      </div>
+    </div>
+    
+    <div class="hero-actions">
+      <a href="/le-groupe" class="btn-primary">
+        Découvrir le Groupe
+        <span class="btn-arrow">→</span>
+      </a>
+      <a href="/investisseurs" class="btn-secondary">
+        Espace Investisseurs
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+  </div>
+  
+  <div class="hero-scroll" aria-hidden="true">
+    <span>Découvrir</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════ BLOOMFIELD BAND ═══════════ -->
+<div class="bloomfield-band">
+  <div class="bloomfield-badge">
+    <div class="bloomfield-badge-icon">B</div>
+    <span>Noté par Bloomfield Investment Corporation</span>
+  </div>
+  <p>Un groupe noté, reconnu pour la solidité de sa gouvernance et la qualité de sa structure financière.</p>
+</div>
+
+<!-- ═══════════ PRÉSENTATION GROUPE ═══════════ -->
+<section class="section-groupe reveal">
+  <div class="groupe-visual" aria-hidden="true">
+    <div class="groupe-img-main">
+      <span class="groupe-img-main-text">EIG</span>
+    </div>
+    <div class="groupe-img-accent">
+      <span class="groupe-img-accent-num">20</span>
+      <span class="groupe-img-accent-label">Milliards FCFA<br>Capital Social</span>
+    </div>
+  </div>
+  
+  <div class="groupe-content">
+    <span class="section-label">Le Groupe</span>
+    <h2 class="section-title">Un acteur structurant de la <span>transformation économique</span> africaine</h2>
+    <div class="gold-rule"></div>
+    <p class="section-lead">
+      Excellis Invest Group est une holding d'investissement multisectorielle basée au Burkina Faso, pilotant un portefeuille de filiales dans des secteurs structurants de l'économie régionale.
+    </p>
+    
+    <div class="groupe-pillars">
+      <div class="pillar">
+        <div class="pillar-title">Notre Mission</div>
+        <div class="pillar-text">Mobiliser capitaux et expertises pour accompagner les entreprises africaines dans leur développement durable.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">Notre Vision</div>
+        <div class="pillar-text">Être un investisseur panafricain de référence, catalyseur de croissance et de création de valeur durable.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">Notre Modèle</div>
+        <div class="pillar-text">Une holding pilotant un portefeuille diversifié de filiales opérationnelles dans 9 secteurs clés.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">Notre Ambition</div>
+        <div class="pillar-text">Un rayonnement panafricain ancré dans les réalités économiques locales, avec une perspective régionale.</div>
+      </div>
+    </div>
+    
+    <a href="/le-groupe" class="btn-primary">
+      En savoir plus sur le Groupe
+      <span class="btn-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- ═══════════ CHIFFRES CLÉS ═══════════ -->
+<section class="section-kpis">
+  <span class="section-label kpis-label">Chiffres clés</span>
+  <h2 class="kpis-title">La solidité d'un groupe construit pour durer</h2>
+  
+  <div class="kpis-grid">
+    <div class="kpi-item reveal">
+      <span class="kpi-num">20<span class="kpi-unit">Mds</span></span>
+      <span class="kpi-label">FCFA de capital social</span>
+    </div>
+    <div class="kpi-item reveal" style="transition-delay:0.1s">
+      <span class="kpi-num">17</span>
+      <span class="kpi-label">Filiales opérationnelles</span>
+    </div>
+    <div class="kpi-item reveal" style="transition-delay:0.2s">
+      <span class="kpi-num">9</span>
+      <span class="kpi-label">Secteurs d'activité</span>
+    </div>
+    <div class="kpi-item reveal" style="transition-delay:0.3s">
+      <span class="kpi-num">2</span>
+      <span class="kpi-label">Pays (BF + CI)</span>
+    </div>
+    <div class="kpi-item reveal" style="transition-delay:0.4s">
+      <span class="kpi-num" style="font-size:32px; letter-spacing:-1px;">BBB</span>
+      <span class="kpi-label">Notation Bloomfield</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ NOS MÉTIERS ═══════════ -->
+<section class="section-metiers">
+  <div style="max-width:640px; margin-bottom:60px">
+    <span class="section-label">Nos métiers</span>
+    <h2 class="section-title">9 secteurs stratégiques, <span>une logique d'investissement</span> cohérente</h2>
+    <div class="gold-rule"></div>
+    <p class="section-lead">Du marché financier à l'énergie, de l'assurance à la fintech, EIG intervient dans les secteurs qui structurent les économies africaines de demain.</p>
+  </div>
+  
+  <div class="metiers-grid">
+    <a href="/nos-metiers/services-financiers" class="metier-card reveal">
+      <div class="metier-icon">💼</div>
+      <span class="metier-arrow">↗</span>
+      <div class="metier-title">Services Financiers & Intermédiation</div>
+      <div class="metier-desc">Intermédiation bancaire, structuration financière, recouvrement et gestion de créances.</div>
+      <span class="metier-count">2 filiales</span>
+    </a>
+    <a href="/nos-metiers/assurance" class="metier-card reveal" style="transition-delay:0.08s">
+      <div class="metier-icon">🛡️</div>
+      <span class="metier-arrow">↗</span>
+      <div class="metier-title">Assurance</div>
+      <div class="metier-desc">Assurance vie et non-vie au Burkina Faso et en Côte d'Ivoire, régulées CIMA.</div>
+      <span class="metier-count">4 filiales</span>
+    </a>
+    <a href="/nos-metiers/marches-financiers" class="metier-card reveal" style="transition-delay:0.16s">
+      <div class="metier-icon">📈</div>
+      <span class="metier-arrow">↗</span>
+      <div class="metier-title">Marchés Financiers & Gestion d'Actifs</div>
+      <div class="metier-desc">Bourse, gestion d'OPCVM, comptes-titres et gestion sous mandat sur la BRVM.</div>
+      <span class="metier-count">2 filiales</span>
+    </a>
+    <a href="/nos-metiers/immobilier-capital" class="metier-card reveal">
+      <div class="metier-icon">🏗️</div>
+      <span class="metier-arrow">↗</span>
+      <div class="metier-title">Immobilier & Capital-Risque</div>
+      <div class="metier-desc">Promotion immobilière, maîtrise d'ouvrage déléguée, tierce détention et capital-risque.</div>
+      <span class="metier-count">2 filiales</span>
+    </a>
+    <a href="/nos-metiers/energie" class="metier-card reveal" style="transition-delay:0.08s">
+      <div class="metier-icon">⚡</div>
+      <span class="metier-arrow">↗</span>
+      <div class="metier-title">Énergie</div>
+      <div class="metier-desc">Distribution de produits pétroliers, solutions solaires et ingénierie de production d'énergie.</div>
+      <span class="metier-count">2 filiales</span>
+    </a>
+    <a href="/nos-metiers/technologies-fintech" class="metier-card reveal" style="transition-delay:0.16s">
+      <div class="metier-icon">💡</div>
+      <span class="metier-arrow">↗</span>
+      <div class="metier-title">Technologies & Fintech</div>
+      <div class="metier-desc">Solutions numériques, digitalisation, monétique, paiement digital et services financiers digitaux.</div>
+      <span class="metier-count">1 filiale</span>
+    </a>
+    <a href="/nos-metiers/industrie" class="metier-card reveal">
+      <div class="metier-icon">🖨️</div>
+      <span class="metier-arrow">↗</span>
+      <div class="metier-title">Industrie & Arts Graphiques</div>
+      <div class="metier-desc">Imprimerie, signalétique, conception graphique et sécurisation de documents sensibles.</div>
+      <span class="metier-count">1 filiale</span>
+    </a>
+    <a href="/nos-metiers/logistique-miniere" class="metier-card reveal" style="transition-delay:0.08s">
+      <div class="metier-icon">🚛</div>
+      <span class="metier-arrow">↗</span>
+      <div class="metier-title">Transport & Logistique Minière</div>
+      <div class="metier-desc">Logistique, transport d'agrégats miniers et services opérationnels pour les industries extractives.</div>
+      <span class="metier-count">1 filiale</span>
+    </a>
+    <a href="/nos-metiers/hotellerie" class="metier-card reveal" style="transition-delay:0.16s">
+      <div class="metier-icon">🏨</div>
+      <span class="metier-arrow">↗</span>
+      <div class="metier-title">Hôtellerie & Restauration</div>
+      <div class="metier-desc">Hébergement haut de gamme, restauration et services d'accueil à Ouagadougou.</div>
+      <span class="metier-count">1 filiale</span>
+    </a>
+  </div>
+</section>
+
+<!-- ═══════════ FILIALES ═══════════ -->
+<section class="section-filiales reveal">
+  <div class="filiales-header">
+    <div>
+      <span class="section-label">Nos filiales</span>
+      <h2 class="section-title">Un portefeuille de <span>17 entités</span> opérationnelles</h2>
+    </div>
+    <a href="/nos-filiales" class="btn-primary">
+      Voir toutes les filiales
+      <span class="btn-arrow">→</span>
+    </a>
+  </div>
+  
+  <div class="filiales-grid">
+    <div class="filiale-card">
+      <div class="filiale-logo-wrap">IS</div>
+      <div class="filiale-name">Intermédiaire des Services</div>
+      <div class="filiale-sector">Services Financiers</div>
+      <div class="filiale-country">📍 Burkina Faso</div>
+    </div>
+    <div class="filiale-card">
+      <div class="filiale-logo-wrap">LRC</div>
+      <div class="filiale-name">Loans Recovery Company</div>
+      <div class="filiale-sector">Gestion de Créances</div>
+      <div class="filiale-country">📍 Burkina Faso</div>
+    </div>
+    <div class="filiale-card">
+      <div class="filiale-logo-wrap">BE</div>
+      <div class="filiale-name">Barka Energies</div>
+      <div class="filiale-sector">Énergie</div>
+      <div class="filiale-country">📍 Burkina Faso</div>
+    </div>
+    <div class="filiale-card">
+      <div class="filiale-logo-wrap">SS</div>
+      <div class="filiale-name">Sopatel Silmandé</div>
+      <div class="filiale-sector">Hôtellerie</div>
+      <div class="filiale-country">📍 Burkina Faso</div>
+    </div>
+    <div class="filiale-card">
+      <div class="filiale-logo-wrap">CA</div>
+      <div class="filiale-name">Coris Assurance IARD BF</div>
+      <div class="filiale-sector">Assurance Non-Vie</div>
+      <div class="filiale-country">📍 Burkina Faso</div>
+    </div>
+    <div class="filiale-card">
+      <div class="filiale-logo-wrap">CB</div>
+      <div class="filiale-name">Coris Bourse</div>
+      <div class="filiale-sector">Marchés Financiers</div>
+      <div class="filiale-country">📍 Burkina Faso</div>
+    </div>
+    <div class="filiale-card">
+      <div class="filiale-logo-wrap">EX</div>
+      <div class="filiale-name">Excellis (Fintech)</div>
+      <div class="filiale-sector">Technologies Digitales</div>
+      <div class="filiale-country">📍 Burkina Faso</div>
+    </div>
+    <div class="filiale-card">
+      <div class="filiale-logo-wrap">ET</div>
+      <div class="filiale-name">Energytis</div>
+      <div class="filiale-sector">Production d'Énergie</div>
+      <div class="filiale-country">📍 Burkina Faso</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ GOUVERNANCE TEASER ═══════════ -->
+<section class="section-gouv">
+  <div class="gouv-content reveal">
+    <span class="section-label">Gouvernance</span>
+    <h2 class="section-title">Une gouvernance structurée pour un groupe <em style="font-style:italic; color:var(--gold-light)">de référence</em></h2>
+    <div class="gold-rule" style="background:var(--gold)"></div>
+    
+    <div class="gouv-quote">
+      <p class="gouv-quote-text">
+        "Notre ambition est d'être l'architecte d'une Afrique qui crée sa propre valeur, avec ses propres capitaux et ses propres talents."
+      </p>
+      <span class="gouv-quote-author">Direction Générale — Excellis Invest Group</span>
+    </div>
+    
+    <a href="/gouvernance" class="btn-secondary">
+      Découvrir notre gouvernance
+      <span class="btn-arrow">→</span>
+    </a>
+  </div>
+  
+  <div class="gouv-visual reveal" style="transition-delay:0.2s">
+    <div class="gouv-pillar">
+      <span class="gouv-pillar-num">01</span>
+      <div>
+        <div class="gouv-pillar-title">Rigueur & Transparence</div>
+        <div class="gouv-pillar-text">Gouvernance SA de droit burkinabè, notation externe reconnue</div>
+      </div>
+    </div>
+    <div class="gouv-pillar">
+      <span class="gouv-pillar-num">02</span>
+      <div>
+        <div class="gouv-pillar-title">Adaptabilité & Innovation</div>
+        <div class="gouv-pillar-text">Modèle évolutif, ancré dans les réalités africaines</div>
+      </div>
+    </div>
+    <div class="gouv-pillar">
+      <span class="gouv-pillar-num">03</span>
+      <div>
+        <div class="gouv-pillar-title">Création de Valeur Durable</div>
+        <div class="gouv-pillar-text">Investissements de long terme dans les secteurs structurants</div>
+      </div>
+    </div>
+    <div class="gouv-pillar">
+      <span class="gouv-pillar-num">04</span>
+      <div>
+        <div class="gouv-pillar-title">Esprit de Partenariat</div>
+        <div class="gouv-pillar-text">Croissance en synergie avec les partenaires institutionnels</div>
+      </div>
+    </div>
+    <div class="gouv-pillar">
+      <span class="gouv-pillar-num">05</span>
+      <div>
+        <div class="gouv-pillar-title">Performance & Responsabilité</div>
+        <div class="gouv-pillar-text">Résultats mesurables, impact économique et social concret</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ACTUALITÉS ═══════════ -->
+<section class="section-news">
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:48px; flex-wrap:wrap; gap:20px">
+    <div>
+      <span class="section-label">Actualités & Médias</span>
+      <h2 class="section-title">EIG dans <span>le monde qui se construit</span></h2>
+    </div>
+    <a href="/actualites" class="btn-primary" style="flex-shrink:0">
+      Toutes les actualités
+      <span class="btn-arrow">→</span>
+    </a>
+  </div>
+  
+  <div class="news-grid reveal">
+    <a href="/actualites/article-1" class="news-card">
+      <div class="news-card-img">
+        <span class="news-card-img-text">2026</span>
+        <span class="news-cat">Corporate</span>
+      </div>
+      <div class="news-content">
+        <div class="news-date">Avril 2026</div>
+        <h3 class="news-title">Excellis Invest Group lance son nouveau site internet institutionnel</h3>
+        <p class="news-excerpt">Marquant une nouvelle étape dans sa stratégie de visibilité digitale, EIG se dote d'une plateforme institutionnelle de premier rang, reflet de ses ambitions panafricaines.</p>
+      </div>
+    </a>
+    <a href="/actualites/article-2" class="news-card">
+      <div class="news-card-img" style="background: linear-gradient(135deg, #2A6B4A, #1A4A32)">
+        <span class="news-card-img-text">BF</span>
+        <span class="news-cat">Filiales</span>
+      </div>
+      <div class="news-content">
+        <div class="news-date">Mars 2026</div>
+        <h3 class="news-title">Excellis accélère le déploiement de ses solutions fintech</h3>
+      </div>
+    </a>
+    <a href="/actualites/article-3" class="news-card">
+      <div class="news-card-img" style="background: linear-gradient(135deg, #6B4A1A, #4A3010)">
+        <span class="news-card-img-text">⚡</span>
+        <span class="news-cat">Énergie</span>
+      </div>
+      <div class="news-content">
+        <div class="news-date">Février 2026</div>
+        <h3 class="news-title">Energytis remporte un contrat d'envergure dans la production d'énergie</h3>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ═══════════ CTA FINALE ═══════════ -->
+<section class="section-cta">
+  <h2 class="cta-title">Construisons ensemble.</h2>
+  <p class="cta-sub">
+    Investisseur, partenaire institutionnel ou client d'une filiale — prenons le temps d'un échange pour explorer les opportunités.
+  </p>
+  <div class="cta-actions">
+    <a href="/contact" class="btn-cta-white">Nous contacter</a>
+    <a href="/investisseurs" class="btn-cta-outline">Espace Investisseurs</a>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="footer-main">
+    <div>
+      <div class="footer-brand-name">Excellis Invest Group</div>
+      <span class="footer-brand-tagline">Investir autrement</span>
+      <p class="footer-desc">
+        Holding d'investissement multisectorielle basée au Burkina Faso. 20 milliards FCFA de capital social. 17 filiales. 9 secteurs stratégiques. Noté Bloomfield.
+      </p>
+      <div class="footer-social">
+        <a href="#" class="social-btn" title="LinkedIn">in</a>
+        <a href="#" class="social-btn" title="Facebook">f</a>
+        <a href="#" class="social-btn" title="WhatsApp">W</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Le Groupe</div>
+      <ul class="footer-links">
+        <li><a href="/le-groupe">Qui sommes-nous ?</a></li>
+        <li><a href="/le-groupe/vision-mission">Vision & Mission</a></li>
+        <li><a href="/le-groupe/histoire">Notre histoire</a></li>
+        <li><a href="/gouvernance">Gouvernance</a></li>
+        <li><a href="/investisseurs">Investisseurs</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Nos Activités</div>
+      <ul class="footer-links">
+        <li><a href="/nos-metiers">Nos Métiers</a></li>
+        <li><a href="/nos-filiales">Nos Filiales</a></li>
+        <li><a href="/nos-metiers/services-financiers">Services Financiers</a></li>
+        <li><a href="/nos-metiers/assurance">Assurance</a></li>
+        <li><a href="/nos-metiers/technologies-fintech">Fintech</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">EIG & Vous</div>
+      <ul class="footer-links">
+        <li><a href="/actualites">Actualités</a></li>
+        <li><a href="/carrieres">Carrières</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/contact?type=presse">Relations Presse</a></li>
+        <li><a href="/contact?type=partenariat">Partenariats</a></li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="footer-bottom">
+    <span>© 2026 Excellis Invest Group — Tous droits réservés</span>
+    <div class="footer-legal">
+      <a href="/mentions-legales">Mentions légales</a>
+      <a href="/confidentialite">Politique de confidentialité</a>
+      <a href="/cookies">Cookies</a>
+      <a href="/plan-du-site">Plan du site</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════ WHATSAPP FLOAT ═══════════ -->
+<a href="https://wa.me/22600000000?text=Bonjour%2C+je+souhaite+en+savoir+plus+sur+Excellis+Invest+Group." 
+   class="wa-float" 
+   title="Contacter EIG sur WhatsApp"
+   target="_blank"
+   rel="noopener">
+  <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<!-- ═══════════ JAVASCRIPT ═══════════ -->
+<script>
+  // Navigation scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) navbar.classList.add('scrolled');
+    else navbar.classList.remove('scrolled');
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  // Animated counters
+  function animateCounter(el, target, suffix = '') {
+    let current = 0;
+    const increment = target / 60;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        el.textContent = target + suffix;
+        clearInterval(timer);
+      } else {
+        el.textContent = Math.floor(current) + suffix;
+      }
+    }, 25);
+  }
+
+  const kpiObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const nums = entry.target.querySelectorAll('.kpi-num');
+        nums.forEach(num => {
+          const text = num.textContent.trim();
+          if (text.includes('20')) animateCounter(num, 20, 'Mds');
+          else if (text === '17') animateCounter(num, 17);
+          else if (text === '9') animateCounter(num, 9);
+          else if (text === '2') animateCounter(num, 2);
+        });
+        kpiObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  const kpisSection = document.querySelector('.section-kpis');
+  if (kpisSection) kpiObserver.observe(kpisSection);
+</script>
+
+</body>
+</html>

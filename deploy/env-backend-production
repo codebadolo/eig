@@ -1,0 +1,16 @@
+# ─── Backend .env — Production ───────────────────────────────────────────────
+# Copier ce fichier en ~/api/.env sur le serveur cPanel
+# Remplacer les valeurs MySQL par celles créées dans cPanel → MySQL Databases
+
+DATABASE_URL="mysql://CPANEL_USER_DB:MOT_DE_PASSE_DB@localhost:3306/CPANEL_USER_NOM_DB"
+
+# Générer avec : openssl rand -hex 64
+JWT_SECRET="REMPLACER_PAR_UNE_CLE_ALEATOIRE_TRES_LONGUE"
+JWT_EXPIRES_IN="7d"
+
+# PORT géré automatiquement par cPanel Passenger — ne pas changer
+PORT=3001
+
+# CORS — URLs autorisées
+FRONTEND_URL="https://excellis-invest-group.jofedigital.com"
+ADMIN_URL="https://excellis-invest-group.jofedigital.com"

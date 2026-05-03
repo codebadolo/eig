@@ -1,0 +1,12 @@
+Options -MultiViews
+RewriteEngine On
+
+# Ne pas réécrire les fichiers et dossiers existants (assets, admin/)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Ne pas intercepter les routes /admin (servies par leur propre dossier)
+RewriteCond %{REQUEST_URI} !^/admin/
+
+# Toutes les autres routes → index.html (React Router)
+RewriteRule ^ /index.html [L]
