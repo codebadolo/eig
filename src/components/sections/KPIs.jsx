@@ -1,15 +1,17 @@
 import AnimatedCounter from '../ui/AnimatedCounter'
 import ScrollReveal from '../ui/ScrollReveal'
+import { useLang } from '../../contexts/LangContext'
 
 export default function KPIs({ company }) {
+  const { t } = useLang()
   const kpis = company?.kpis ?? []
 
   if (!kpis.length) return null
 
   return (
     <section className="section-kpis">
-      <span className="section-label kpis-label">Chiffres clés</span>
-      <h2 className="kpis-title">La solidité d'un groupe construit pour durer</h2>
+      <span className="section-label kpis-label">{t('sections.kpis.label')}</span>
+      <h2 className="kpis-title">{t('sections.kpis.title')}</h2>
 
       <div className="kpis-grid">
         {kpis.map((kpi, i) => (

@@ -10,7 +10,7 @@ class UploadController extends Controller {
     }
 
     public function store(Request $request) {
-        $request->validate(['file' => 'required|file|max:204800|mimes:jpeg,jpg,png,gif,webp,svg,mp4,webm,mov']);
+        $request->validate(['file' => 'required|file|max:102400|mimetypes:image/jpeg,image/png,image/gif,image/webp,image/svg+xml,video/mp4,video/webm,video/quicktime,application/octet-stream']);
         $file = $request->file('file');
         $filename = time() . '-' . rand(100000, 999999) . '.' . $file->getClientOriginalExtension();
         $file->move($this->uploadDir(), $filename);

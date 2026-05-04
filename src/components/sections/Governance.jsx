@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import ScrollReveal from '../ui/ScrollReveal'
 import { useApi } from '../../hooks/useApi'
+import { useLang } from '../../contexts/LangContext'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
@@ -13,6 +14,7 @@ const FALLBACK_PILIERS = [
 ]
 
 export default function Governance({ company }) {
+  const { t } = useLang()
   const piliers = company?.gouvernancePiliers ?? FALLBACK_PILIERS
   const { data: govImgs = [] } = useApi('/images?section=home-governance&actif=true')
   const govImg = govImgs[0]
@@ -20,23 +22,22 @@ export default function Governance({ company }) {
   return (
     <section className="section-gouv">
       <ScrollReveal className="gouv-content">
-        <span className="section-label">Gouvernance</span>
+        <span className="section-label">{t('sections.gouv.label')}</span>
         <h2 className="section-title">
-          Une gouvernance structurée pour un groupe{' '}
-          <em>de référence</em>
+          {t('sections.gouv.title1')}{' '}
+          <em>{t('sections.gouv.titleEm')}</em>
         </h2>
         <div className="gold-rule" style={{ background: 'var(--gold)' }} />
 
         <div className="gouv-quote">
-          <p className="gouv-quote-text">
-            "Notre ambition est d'être l'architecte d'une Afrique qui crée sa propre valeur,
-            avec ses propres capitaux et ses propres talents."
-          </p>
-          <span className="gouv-quote-author">Direction Générale — {company?.nom ?? 'Excellis Invest Group'}</span>
+          <p className="gouv-quote-text">{t('sections.gouv.quote')}</p>
+          <span className="gouv-quote-author">
+            {t('sections.gouv.quoteBy')} — {company?.nom ?? 'Excellis Invest Group'}
+          </span>
         </div>
 
         <Link to="/gouvernance" className="btn-secondary">
-          Découvrir notre gouvernance
+          {t('sections.gouv.link')}
           <span className="btn-arrow">→</span>
         </Link>
       </ScrollReveal>

@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom'
 import ScrollReveal from '../ui/ScrollReveal'
 import { useApi } from '../../hooks/useApi'
+import { useLang } from '../../contexts/LangContext'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
 export default function AboutGroup({ company }) {
-  const mission = company?.mission ?? "Mobiliser capitaux et expertises pour accompagner les entreprises africaines dans leur développement durable."
-  const vision = company?.vision ?? "Être un investisseur panafricain de référence, catalyseur de croissance et de création de valeur durable."
-  const description = company?.descriptionCourte ?? "Excellis Invest Group est une holding d'investissement multisectorielle basée au Burkina Faso, pilotant un portefeuille de filiales dans des secteurs structurants de l'économie régionale."
+  const { t, pick } = useLang()
+  const mission = pick(company, 'mission') || company?.mission || t('sections.about.mission')
+  const vision = pick(company, 'vision') || company?.vision || t('sections.about.vision')
+  const description = pick(company, 'descriptionCourte') || company?.descriptionCourte || ''
 
   const { data: sectionImgs = [] } = useApi('/images?section=home-about&actif=true')
   const mainImg = company?.imageGroupe
@@ -22,11 +24,7 @@ export default function AboutGroup({ company }) {
       <div className="groupe-visual" aria-hidden="true">
         <div className="groupe-img-main">
           {mainImg ? (
-            <img
-              src={mainImg}
-              alt="Excellis Invest Group"
-              className="groupe-img-main-photo"
-            />
+            <img src={mainImg} alt="Excellis Invest Group" className="groupe-img-main-photo" />
           ) : (
             <span className="groupe-img-main-text">EIG</span>
           )}
@@ -47,40 +45,34 @@ export default function AboutGroup({ company }) {
       </div>
 
       <ScrollReveal className="groupe-content">
-        <span className="section-label">Le Groupe</span>
+        <span className="section-label">{t('sections.about.label')}</span>
         <h2 className="section-title">
-          Un acteur structurant de la <span>transformation économique</span> africaine
+          {t('sections.about.title1')} <span>{t('sections.about.titleSpan')}</span> {t('sections.about.title2')}
         </h2>
         <div className="gold-rule" />
         <p className="section-lead">{description}</p>
 
         <div className="groupe-pillars">
           <div className="pillar">
-            <div className="pillar-title">Notre Mission</div>
+            <div className="pillar-title">{t('sections.about.mission')}</div>
             <div className="pillar-text">{mission}</div>
           </div>
           <div className="pillar">
-            <div className="pillar-title">Notre Vision</div>
+            <div className="pillar-title">{t('sections.about.vision')}</div>
             <div className="pillar-text">{vision}</div>
           </div>
           <div className="pillar">
-            <div className="pillar-title">Notre Modèle</div>
-            <div className="pillar-text">
-              Une holding pilotant un portefeuille diversifié de filiales opérationnelles dans
-              9 secteurs clés.
-            </div>
+            <div className="pillar-title">{t('sections.about.modele')}</div>
+            <div className="pillar-text">{t('sections.about.modeleText')}</div>
           </div>
           <div className="pillar">
-            <div className="pillar-title">Notre Ambition</div>
-            <div className="pillar-text">
-              Un rayonnement panafricain ancré dans les réalités économiques locales, avec une
-              perspective régionale.
-            </div>
+            <div className="pillar-title">{t('sections.about.ambition')}</div>
+            <div className="pillar-text">{t('sections.about.ambitionText')}</div>
           </div>
         </div>
 
         <Link to="/le-groupe" className="btn-primary">
-          En savoir plus sur le Groupe
+          {t('sections.about.link')}
           <span className="btn-arrow">→</span>
         </Link>
       </ScrollReveal>

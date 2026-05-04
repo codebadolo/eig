@@ -10,6 +10,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CarriereController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\CandidatureController;
+use App\Http\Controllers\NewsletterController;
 
 Route::get('/health', fn() => response()->json(['status' => 'ok', 'version' => '2.0.0']));
 
@@ -34,6 +36,9 @@ Route::get('/carrieres', [CarriereController::class, 'index']);
 Route::get('/carrieres/{id}', [CarriereController::class, 'show']);
 Route::get('/images', [ImageController::class, 'index']);
 Route::post('/contact', [ContactController::class, 'store']);
+Route::post('/candidatures', [CandidatureController::class, 'store']);
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);
+Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe']);
 
 // Protected routes (admin)
 Route::middleware('auth:api')->group(function () {
@@ -69,4 +74,13 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/images', [ImageController::class, 'store']);
     Route::put('/images/{id}', [ImageController::class, 'update']);
     Route::delete('/images/{id}', [ImageController::class, 'destroy']);
+
+    Route::get('/candidatures', [CandidatureController::class, 'index']);
+    Route::get('/candidatures/{id}', [CandidatureController::class, 'show']);
+    Route::put('/candidatures/{id}', [CandidatureController::class, 'update']);
+    Route::delete('/candidatures/{id}', [CandidatureController::class, 'destroy']);
+
+    Route::get('/newsletter', [NewsletterController::class, 'index']);
+    Route::post('/newsletter/send', [NewsletterController::class, 'send']);
+    Route::delete('/newsletter/{id}', [NewsletterController::class, 'destroy']);
 });

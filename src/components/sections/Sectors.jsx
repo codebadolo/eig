@@ -1,22 +1,22 @@
 import { Link } from 'react-router-dom'
 import ScrollReveal from '../ui/ScrollReveal'
 import FaIcon from '../ui/FaIcon'
+import { useLang } from '../../contexts/LangContext'
 
 export default function Sectors({ metiers = [] }) {
+  const { t, pick } = useLang()
+
   if (!metiers.length) return null
 
   return (
     <section className="section-metiers">
       <div style={{ maxWidth: 640, marginBottom: 60 }}>
-        <span className="section-label">Nos métiers</span>
+        <span className="section-label">{t('sections.sectors.label')}</span>
         <h2 className="section-title">
-          {metiers.length} secteurs stratégiques, <span>une logique d'investissement</span> cohérente
+          {metiers.length} {t('sections.sectors.title1')} <span>{t('sections.sectors.titleSpan')}</span> {t('sections.sectors.title2')}
         </h2>
         <div className="gold-rule" />
-        <p className="section-lead">
-          Du marché financier à l'énergie, de l'assurance à la fintech, EIG intervient dans
-          les secteurs qui structurent les économies africaines de demain.
-        </p>
+        <p className="section-lead">{t('sections.sectors.desc')}</p>
       </div>
 
       <div className="metiers-grid">
@@ -29,10 +29,10 @@ export default function Sectors({ metiers = [] }) {
                   <FaIcon name={m.icone} size={24} />
                 </div>
                 <span className="metier-arrow">↗</span>
-                <div className="metier-title">{m.titre}</div>
-                <div className="metier-desc">{m.description}</div>
+                <div className="metier-title">{pick(m, 'titre')}</div>
+                <div className="metier-desc">{pick(m, 'description')}</div>
                 <span className="metier-count">
-                  {count} {count > 1 ? 'filiales' : 'filiale'}
+                  {count} {count > 1 ? t('sections.sectors.filiales') : t('sections.sectors.filiale')}
                 </span>
               </Link>
             </ScrollReveal>

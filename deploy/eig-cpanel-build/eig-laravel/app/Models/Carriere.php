@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 class Carriere extends Model {
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['id','titre','departement','lieu','type','description','missions','profil','avantages','salaire','date_expiration','actif'];
+    protected $fillable = ['id','titre','titre_en','departement','departement_en','lieu','type','description','description_en','missions','missions_en','profil','profil_en','avantages','avantages_en','salaire','date_expiration','actif'];
     protected $casts = ['actif' => 'boolean'];
 
     protected static function boot() {
