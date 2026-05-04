@@ -200,22 +200,17 @@ nav.navbar.scrolled .nav-hamburger span { background: var(--dark); }
   display: flex;
   align-items: center;
   background: transparent;
-  border-radius: 6px;
   padding: 4px 0;
   transition: all var(--transition);
 }
-.nav-logo-img-wrap.scrolled {
-  background: transparent;
-  padding: 4px 0;
-}
 .nav-logo-img {
-  height: 42px;
+  height: 56px;
   width: auto;
   display: block;
+  transition: all var(--transition);
 }
 @media (max-width: 768px) {
-  .nav-logo-img { height: 34px; }
-  .nav-logo-img-wrap { padding: 5px 10px; }
+  .nav-logo-img { height: 42px; }
 }
 
 /* ─── HERO VISUAL ─── */

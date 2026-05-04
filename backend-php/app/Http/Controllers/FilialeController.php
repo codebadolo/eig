@@ -18,14 +18,22 @@ class FilialeController extends Controller {
         return response()->json($f);
     }
 
+    private function normalize(array $data): array {
+        if (isset($data['secteurSlug']) && !isset($data['secteur_slug'])) {
+            $data['secteur_slug'] = $data['secteurSlug'];
+        }
+        unset($data['secteurSlug']);
+        return $data;
+    }
+
     public function store(Request $request) {
-        $f = Filiale::create($request->all());
+        $f = Filiale::create($this->normalize($request->all()));
         return response()->json($f, 201);
     }
 
     public function update(Request $request, $id) {
         $f = Filiale::findOrFail($id);
-        $f->update($request->all());
+        $f->update($this->normalize($request->all()));
         return response()->json($f);
     }
 

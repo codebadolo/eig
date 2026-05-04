@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import eigLogo from '../../assets/logo-eig-dark.png'
+import logoLight from '../../assets/excellis-invest-group.png'
+import logoDark from '../../assets/logo-eig-dark.png'
 
 const links = [
   { to: '/le-groupe', label: 'Le Groupe' },
@@ -25,8 +26,12 @@ export default function Navbar() {
     <>
       <nav className={`navbar${scrolled ? ' scrolled' : ''}`}>
         <Link to="/" className="nav-logo" onClick={() => setMenuOpen(false)}>
-          <div className={`nav-logo-img-wrap${scrolled ? ' scrolled' : ''}`}>
-            <img src={eigLogo} alt="Excellis Invest Group" className="nav-logo-img" />
+          <div className="nav-logo-img-wrap">
+            <img
+              src={scrolled ? logoLight : logoDark}
+              alt="Excellis Invest Group"
+              className="nav-logo-img"
+            />
           </div>
         </Link>
 
@@ -52,7 +57,7 @@ export default function Navbar() {
 
       <div className={`nav-mobile${menuOpen ? ' open' : ''}`}>
         <div style={{ padding: '8px 0 20px' }}>
-          <img src={eigLogo} alt="Excellis Invest Group" style={{ height: 44, width: 'auto' }} />
+          <img src={logoLight} alt="Excellis Invest Group" style={{ height: 52, width: 'auto' }} />
         </div>
         {links.map(({ to, label }) => (
           <NavLink key={to} to={to} onClick={() => setMenuOpen(false)}>{label}</NavLink>
