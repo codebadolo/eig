@@ -21,7 +21,7 @@ class CandidatureController extends Controller {
             'email'       => 'required|email',
             'telephone'   => 'nullable|string|max:30',
             'lettre'      => 'nullable|string|max:5000',
-            'cv'          => 'nullable|file|max:5120|mimes:pdf,doc,docx',
+            'cv'          => 'nullable|file|max:5120|mimetypes:application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/octet-stream',
             'carriere_id' => 'nullable|string',
         ]);
 

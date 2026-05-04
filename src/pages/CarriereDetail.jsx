@@ -46,9 +46,25 @@ function CandidatureForm({ offre }) {
 
   const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }))
 
+  const MAX_CV_MB = 5
+  const MAX_CV_BYTES = MAX_CV_MB * 1024 * 1024
+
+  const handleCvChange = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    if (file.size > MAX_CV_BYTES) {
+      setError(`Le fichier est trop lourd (${(file.size / 1024 / 1024).toFixed(1)} Mo). Maximum : ${MAX_CV_MB} Mo.`)
+      e.target.value = ''
+      return
+    }
+    setError('')
+    setCv(file)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!form.nom || !form.prenom || !form.email) return setError('Veuillez remplir les champs obligatoires.')
+    if (cv && cv.size > MAX_CV_BYTES) return setError(`CV trop lourd. Maximum : ${MAX_CV_MB} Mo.`)
     setSending(true)
     setError('')
     try {
@@ -58,8 +74,12 @@ function CandidatureForm({ offre }) {
       if (cv) fd.append('cv', cv)
       const res = await fetch(`${API_BASE}/candidatures`, { method: 'POST', body: fd })
       if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.message || 'Erreur lors de l\'envoi')
+        const data = await res.json().catch(() => ({}))
+        // Extraire le premier message d'erreur de validation Laravel
+        const firstError = data.errors
+          ? Object.values(data.errors).flat()[0]
+          : null
+        throw new Error(firstError || data.message || 'Une erreur est survenue. Veuillez réessayer.')
       }
       setSent(true)
     } catch (err) {
@@ -130,19 +150,28 @@ function CandidatureForm({ offre }) {
         </div>
 
         <div>
-          <label style={labelStyle}>CV (PDF, Word — max 5 Mo)</label>
+          <label style={labelStyle}>CV — PDF ou Word <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>(max {MAX_CV_MB} Mo)</span></label>
           <label style={{ display: 'block', cursor: 'pointer' }}>
             <div style={{
               border: `2px dashed ${cv ? 'var(--teal)' : 'var(--gray-light)'}`,
               borderRadius: 6, padding: '20px 16px', textAlign: 'center',
               background: cv ? 'rgba(26,107,122,0.04)' : 'white', transition: 'all 0.2s',
             }}>
-              {cv
-                ? <span style={{ fontSize: 13, color: 'var(--teal)', fontWeight: 600 }}>📎 {cv.name}</span>
-                : <span style={{ fontSize: 13, color: 'var(--gray-mid)' }}>Glissez votre CV ici ou <span style={{ color: 'var(--teal)', textDecoration: 'underline' }}>parcourir</span></span>
-              }
+              {cv ? (
+                <span style={{ fontSize: 13, color: 'var(--teal)', fontWeight: 600 }}>
+                  📎 {cv.name}
+                  <span style={{ color: 'var(--gray-mid)', fontWeight: 400, marginLeft: 8 }}>
+                    ({(cv.size / 1024 / 1024).toFixed(1)} Mo) — cliquer pour changer
+                  </span>
+                </span>
+              ) : (
+                <span style={{ fontSize: 13, color: 'var(--gray-mid)' }}>
+                  Glissez votre CV ici ou <span style={{ color: 'var(--teal)', textDecoration: 'underline' }}>parcourir</span>
+                  <span style={{ display: 'block', fontSize: 11, marginTop: 4, color: '#D1D5DB' }}>.pdf · .doc · .docx</span>
+                </span>
+              )}
             </div>
-            <input type="file" accept=".pdf,.doc,.docx" onChange={e => setCv(e.target.files[0])} style={{ display: 'none' }} />
+            <input type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={handleCvChange} style={{ display: 'none' }} />
           </label>
         </div>
 
