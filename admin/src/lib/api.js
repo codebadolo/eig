@@ -38,7 +38,13 @@ export const api = {
       body: fd,
     })
     const data = await res.json()
-    if (!res.ok) throw new Error(data.error || 'Erreur upload')
+    if (!res.ok) {
+      const msg = data.error
+        || (data.errors ? Object.values(data.errors).flat()[0] : null)
+        || data.message
+        || 'Erreur upload'
+      throw new Error(msg)
+    }
     return data
   },
 }

@@ -8,17 +8,26 @@ const API = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localho
 
 // Sections connues avec libellés lisibles
 const KNOWN_SECTIONS = {
-  'hero':          'Hero – Accueil',
-  'about':         'Le Groupe',
-  'nos-filiales':  'Nos Filiales',
-  'nos-metiers':   'Nos Métiers',
-  'actualites':    'Actualités',
-  'governance':    'Gouvernance',
-  'careers':       'Carrières',
-  'contact':       'Contact',
-  'energie':       'Énergie',
-  'fintech':       'Fintech',
-  'general':       'Général',
+  // Bannières de pages (PageHero)
+  'hero':               'Hero – Accueil',
+  'about':              'Bannière – Le Groupe',
+  'nos-filiales':       'Bannière – Nos Filiales',
+  'nos-metiers':        'Bannière – Nos Métiers',
+  'actualites':         'Bannière – Actualités',
+  'governance':         'Bannière – Gouvernance',
+  'careers':            'Bannière – Carrières',
+  'contact':            'Bannière – Contact',
+  // Sections internes (accueil)
+  'home-about':         'Accueil – Section Groupe',
+  'home-cta':           'Accueil – Bandeau CTA',
+  'home-governance':    'Accueil – Section Gouvernance',
+  // Sections internes (pages)
+  'about-gallery':      'Le Groupe – Galerie photos',
+  'careers-ambiance':   'Carrières – Photos d\'ambiance',
+  // Thématiques sectorielles
+  'energie':            'Énergie',
+  'fintech':            'Fintech',
+  'general':            'Général',
 }
 
 // Préfixes de sections de détail
@@ -136,8 +145,10 @@ function SectionInput({ value, onChange }) {
   }
 
   const SUGGESTIONS = [
-    { group: 'Pages principales', keys: ['hero', 'about', 'nos-filiales', 'nos-metiers', 'actualites', 'governance', 'careers', 'contact'] },
-    { group: 'Thématiques', keys: ['energie', 'fintech', 'general'] },
+    { group: 'Bannières de pages', keys: ['hero', 'about', 'nos-filiales', 'nos-metiers', 'actualites', 'governance', 'careers', 'contact'] },
+    { group: 'Sections internes – Accueil', keys: ['home-about', 'home-cta', 'home-governance'] },
+    { group: 'Sections internes – Pages', keys: ['about-gallery', 'careers-ambiance'] },
+    { group: 'Thématiques sectorielles', keys: ['energie', 'fintech', 'general'] },
   ]
 
   return (
@@ -234,8 +245,8 @@ function ImageFormModal({ initial, onSave, onClose }) {
     try {
       const data = await api.upload(file)
       setForm(f => ({ ...f, url: data.url }))
-    } catch {
-      toast.error('Erreur upload')
+    } catch (err) {
+      toast.error(err?.message || 'Erreur upload')
     } finally {
       setUploading(false)
     }
@@ -380,11 +391,7 @@ export default function Images() {
       <PageHeader
         title="Médiathèque"
         subtitle={`${images.length} image${images.length > 1 ? 's' : ''} · ${sortedSections.length} section${sortedSections.length > 1 ? 's' : ''}`}
-        action={
-          <button onClick={() => setModal({ image: null })} className="btn-primary">
-            <Plus size={16} /> Ajouter une image
-          </button>
-        }
+        action={{ label: 'Ajouter une image', onClick: () => setModal({ image: null }) }}
       />
 
       {/* Onglets de section dynamiques */}

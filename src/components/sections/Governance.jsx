@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom'
 import ScrollReveal from '../ui/ScrollReveal'
+import { useApi } from '../../hooks/useApi'
+
+const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
 const FALLBACK_PILIERS = [
   { num: '01', titre: 'Rigueur & Transparence', texte: 'Gouvernance SA de droit burkinabè, notation externe reconnue' },
@@ -11,6 +14,8 @@ const FALLBACK_PILIERS = [
 
 export default function Governance({ company }) {
   const piliers = company?.gouvernancePiliers ?? FALLBACK_PILIERS
+  const { data: govImgs = [] } = useApi('/images?section=home-governance&actif=true')
+  const govImg = govImgs[0]
 
   return (
     <section className="section-gouv">
@@ -37,6 +42,15 @@ export default function Governance({ company }) {
       </ScrollReveal>
 
       <ScrollReveal delay={0.2} className="gouv-visual">
+        {govImg && (
+          <div style={{ borderRadius: 6, overflow: 'hidden', marginBottom: 20, maxHeight: 200 }}>
+            <img
+              src={`${API_URL}${govImg.url}`}
+              alt={govImg.alt || 'Gouvernance Excellis Invest Group'}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            />
+          </div>
+        )}
         {piliers.map(p => (
           <div key={p.num} className="gouv-pillar">
             <span className="gouv-pillar-num">{p.num}</span>

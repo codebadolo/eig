@@ -6,9 +6,12 @@ import FaIcon from '../components/ui/FaIcon'
 import PageHero from '../components/ui/PageHero'
 import { useLang } from '../contexts/LangContext'
 
+const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
+
 export default function Carrieres() {
   const { t, pick } = useLang()
   const { data: offres = [], loading } = useApi('/carrieres?actif=true')
+  const { data: ambianceImgs = [] } = useApi('/images?section=careers-ambiance&actif=true')
 
   const atouts = t('atouts')
 
@@ -20,6 +23,20 @@ export default function Carrieres() {
         title={<>{t('careers.title1')}<br /><span>{t('careers.title2')}</span></>}
         subtitle={t('careers.sub')}
       />
+
+      {ambianceImgs.length > 0 && (
+        <div style={{ display: 'flex', height: 220, overflow: 'hidden', gap: 4 }}>
+          {ambianceImgs.slice(0, 4).map(img => (
+            <div key={img.id} style={{ flex: 1, overflow: 'hidden', minWidth: 0 }}>
+              <img
+                src={`${API_URL}${img.url}`}
+                alt={img.alt || img.titre || 'Carrières EIG'}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
       <section style={{ background: 'var(--white)' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>

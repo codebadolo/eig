@@ -5,8 +5,11 @@ import { useApi } from '../hooks/useApi'
 import FaIcon from '../components/ui/FaIcon'
 import PageHero from '../components/ui/PageHero'
 
+const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
+
 export default function LeGroupe() {
   const { data: company, loading } = useApi('/company')
+  const { data: galleryImgs = [] } = useApi('/images?section=about-gallery&actif=true')
 
   if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>Chargement...</div>
 
@@ -104,6 +107,31 @@ export default function LeGroupe() {
           </ScrollReveal>
         )}
       </section>
+
+      {galleryImgs.length > 0 && (
+        <section style={{ background: 'var(--white)', paddingTop: 0, paddingBottom: 0 }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: galleryImgs.length === 1 ? '1fr' : galleryImgs.length === 2 ? '1fr 1fr' : 'repeat(3, 1fr)',
+            gap: 4,
+            maxHeight: 340,
+            overflow: 'hidden',
+          }}>
+            {galleryImgs.slice(0, 6).map((img, i) => (
+              <div key={img.id} style={{
+                overflow: 'hidden',
+                gridColumn: galleryImgs.length >= 3 && i === 0 ? 'span 2' : 'span 1',
+              }}>
+                <img
+                  src={`${API_URL}${img.url}`}
+                  alt={img.alt || img.titre || 'Excellis Invest Group'}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', minHeight: 160 }}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section style={{ background: 'var(--white)' }}>
         <div style={{ maxWidth: 640, marginBottom: 60 }}>
