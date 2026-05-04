@@ -1,0 +1,237 @@
+============================================================
+  DEPLOIEMENT - EXCELLIS INVEST GROUP
+  Serveur : web41 | Compte : c1663907c
+  Domaine : excellis-invest-group.jofedigital.com
+  Date : 3 Mai 2026
+============================================================
+
+------------------------------------------------------------
+STRUCTURE FINALE SUR LE SERVEUR
+------------------------------------------------------------
+
+/home/c1663907c/
+    eig-laravel/                    <- Backend Laravel 13 (PHP 8.3)
+        .env                        <- Config production
+        vendor/                     <- Dependances PHP
+        storage/logs/laravel.log    <- Logs
+
+    public_html/excellis-invest-group/    <- Document root du domaine
+        index.html                  <- Frontend React (vitrine)
+        assets/                     <- Assets frontend
+        robots.txt
+        .htaccess                   <- React Router (RewriteBase /)
+        admin/
+            index.html              <- Interface admin React
+            assets/
+            .htaccess               <- React Router admin (RewriteBase /admin/)
+        api/
+            index.php               <- Point d entree Laravel
+            .htaccess               <- Rewrite Laravel (RewriteBase /api/)
+        uploads/                    <- Fichiers medias uploades
+
+
+------------------------------------------------------------
+URLS EN PRODUCTION
+------------------------------------------------------------
+
+Site vitrine  : https://excellis-invest-group.jofedigital.com/
+Interface admin : https://excellis-invest-group.jofedigital.com/admin/
+API backend   : https://excellis-invest-group.jofedigital.com/api/
+
+Connexion admin :
+  Email    : admin@excellis-invest-group.com
+  Password : Admin@EIG2026!
+  (Changer ce mot de passe apres la premiere connexion)
+
+
+------------------------------------------------------------
+CONFIGURATION .ENV LARAVEL (eig-laravel/.env)
+------------------------------------------------------------
+
+APP_NAME="EIG Backend"
+APP_ENV=production
+APP_KEY=base64:UiE1I9GhKwWASbaV0b7VcKsdmsshwCpCjM2y8Q7ZnkQ=
+APP_DEBUG=false
+APP_URL=https://excellis-invest-group.jofedigital.com/api
+
+DB_CONNECTION=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=c1663907c_eig-database
+DB_USERNAME=c1663907c_eig_database_user
+DB_PASSWORD=[mot de passe confidentiel]
+
+JWT_SECRET=[valeur generee par jwt:secret]
+JWT_TTL=10080
+
+FRONTEND_URL=https://excellis-invest-group.jofedigital.com
+ADMIN_URL=https://excellis-invest-group.jofedigital.com/admin
+
+UPLOAD_DIR=/home/c1663907c/public_html/excellis-invest-group/uploads
+
+CACHE_STORE=file
+SESSION_DRIVER=file
+QUEUE_CONNECTION=sync
+LOG_CHANNEL=single
+FILESYSTEM_DISK=local
+
+
+------------------------------------------------------------
+FICHIERS .HTACCESS EN PRODUCTION
+------------------------------------------------------------
+
+-- public_html/excellis-invest-group/.htaccess --
+Options -MultiViews
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/admin/
+RewriteCond %{REQUEST_URI} !^/api/
+RewriteRule ^ index.html [L]
+
+-- public_html/excellis-invest-group/api/.htaccess --
+<IfModule mod_rewrite.c>
+    Options -MultiViews -Indexes
+    RewriteEngine On
+    RewriteBase /api/
+
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+-- public_html/excellis-invest-group/admin/.htaccess --
+Options -MultiViews
+RewriteEngine On
+RewriteBase /admin/
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]
+
+
+------------------------------------------------------------
+CORRECTIF CRITIQUE : api/index.php
+------------------------------------------------------------
+
+Laravel dans un sous-dossier /api/ calcule mal le chemin de base
+et retourne 404 sur toutes les routes. Solution : ecraser
+SCRIPT_NAME avant la capture de la requete.
+
+Contenu final de public_html/excellis-invest-group/api/index.php :
+
+<?php
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+
+define('LARAVEL_START', microtime(true));
+
+if (file_exists($maintenance = __DIR__.'/../../../eig-laravel/storage/framework/maintenance.php')) {
+    require $maintenance;
+}
+
+require __DIR__.'/../../../eig-laravel/vendor/autoload.php';
+$app = require_once __DIR__.'/../../../eig-laravel/bootstrap/app.php';
+
+$_SERVER['SCRIPT_NAME']     = '/index.php';
+$_SERVER['SCRIPT_FILENAME'] = __DIR__ . '/index.php';
+$_SERVER['PHP_SELF']        = '/index.php';
+
+$app->handleRequest(Request::capture());
+
+
+------------------------------------------------------------
+COMMANDES EXECUTEES SUR LE SERVEUR (dans l ordre)
+------------------------------------------------------------
+
+cd ~/eig-laravel
+
+composer install --no-dev --optimize-autoloader
+
+echo "APP_KEY=" >> .env
+php artisan key:generate
+php artisan jwt:secret
+
+php artisan config:clear
+
+php artisan migrate --force
+php artisan db:seed --class=EigSeeder
+
+chmod -R 775 storage bootstrap/cache
+touch storage/logs/laravel.log
+chmod 664 storage/logs/laravel.log
+
+
+------------------------------------------------------------
+VITE_API_URL UTILISE POUR LES BUILDS
+------------------------------------------------------------
+
+Fichier : .env.production.local (frontend et admin)
+  VITE_API_URL=https://excellis-invest-group.jofedigital.com/api
+
+Build frontend :
+  cd /home/olli/excellis-invest-group
+  npm run build -- --mode production.local
+
+Build admin :
+  cd /home/olli/excellis-invest-group/admin
+  npm run build -- --mode production.local
+
+
+------------------------------------------------------------
+PROBLEMES RENCONTRES ET SOLUTIONS
+------------------------------------------------------------
+
+1. composer install echoue : "php version 8.0 does not satisfy ^8.3"
+   Solution : Changer PHP vers 8.3 dans cPanel -> PHP Selector
+
+2. "No APP_KEY variable was found"
+   Solution : Ajouter manuellement APP_KEY= dans .env avant key:generate
+
+3. Laravel utilise sqlite au lieu de mysql
+   Solution : Ajouter explicitement DB_CONNECTION=mysql dans .env
+
+4. PHP non execute dans api/ (404 Apache pur)
+   Cause : AddHandler application/x-httpd-alt-php83 dans .htaccess
+           avec un nom de handler inexistant sur ce serveur
+   Solution : Supprimer la ligne AddHandler, configurer PHP via
+              cPanel PHP Selector uniquement
+
+5. .htaccess principal contient le mauvais contenu
+   Cause : Fichier ecrase lors d une edition nano ratee
+   Solution : Utiliser cat > fichier << 'EOF' au lieu de nano
+
+6. Toutes les routes API retournent 404 malgre PHP fonctionnel
+   Cause : index.php dans sous-dossier /api/ -> Laravel recoit
+           /filiales au lieu de /api/filiales
+   Solution : Correctif SCRIPT_NAME dans api/index.php (voir ci-dessus)
+
+7. Build admin appelle la mauvaise URL API
+   Cause : Ancienne URL /excellis-invest-group/api dans le JS
+   Solution : sed -i 's|/excellis-invest-group/api|/api|g' admin/assets/*.js
+
+
+------------------------------------------------------------
+COMMANDES DE VERIFICATION RAPIDE
+------------------------------------------------------------
+
+# API repond ?
+curl -s https://excellis-invest-group.jofedigital.com/api/health
+
+# Donnees filiales ?
+curl -s https://excellis-invest-group.jofedigital.com/api/filiales | head -100
+
+# Login admin ?
+curl -s -X POST https://excellis-invest-group.jofedigital.com/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@excellis-invest-group.com","password":"Admin@EIG2026!"}'
+
+# Logs Laravel
+tail -50 ~/eig-laravel/storage/logs/laravel.log
+
+============================================================

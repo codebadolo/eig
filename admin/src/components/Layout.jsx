@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import logoEig from '../assets/logo-eig.png'
 import {
   LayoutDashboard, Building2, Briefcase, Newspaper, Users,
-  Settings, MessageSquare, LogOut, Menu, X,
+  Settings, MessageSquare, LogOut, Menu,
   Globe, Rocket, ImageIcon,
 } from 'lucide-react'
 
@@ -57,19 +58,11 @@ function Sidebar({ onClose }) {
   return (
     <div className="flex flex-col h-full" style={{ background: '#0F4855' }}>
       {/* Logo */}
-      <div className="px-5 py-5 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+      <div className="px-5 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <div className="flex items-center gap-3">
-          <div style={{
-            width: 36, height: 36, borderRadius: '50%',
-            background: 'linear-gradient(135deg, #1A6B7A, #0F1924)',
-            border: '1.5px solid #B8922A',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0,
-          }}>
-            <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: 16, color: '#D4AA4A', letterSpacing: '0.05em' }}>EIG</span>
-          </div>
+          <img src={logoEig} alt="Excellis Invest Group" style={{ height: 38, width: 'auto', objectFit: 'contain', flexShrink: 0 }} />
           <div>
-            <div style={{ fontFamily: '"Jost", sans-serif', fontWeight: 600, fontSize: 13, color: 'white', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            <div style={{ fontFamily: '"Jost", sans-serif', fontWeight: 600, fontSize: 12, color: 'white', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               Administration
             </div>
             <div style={{ fontFamily: '"Cormorant Garamond", serif', fontStyle: 'italic', fontSize: 11, color: '#D4AA4A', letterSpacing: '0.06em' }}>
@@ -145,9 +138,7 @@ export default function Layout() {
           <button onClick={() => setOpen(true)} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-600">
             <Menu size={20} />
           </button>
-          <span style={{ fontFamily: '"Cormorant Garamond", serif', fontWeight: 600, fontSize: 16, color: '#0F4855' }}>
-            EIG Admin
-          </span>
+          <img src={logoEig} alt="Excellis Invest Group" style={{ height: 28, width: 'auto', objectFit: 'contain' }} />
         </header>
 
         <main className="flex-1 overflow-y-auto p-5 lg:p-7">

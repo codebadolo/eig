@@ -199,15 +199,14 @@ nav.navbar.scrolled .nav-hamburger span { background: var(--dark); }
 .nav-logo-img-wrap {
   display: flex;
   align-items: center;
-  background: rgba(255,255,255,0.92);
+  background: transparent;
   border-radius: 6px;
-  padding: 7px 14px;
+  padding: 4px 0;
   transition: all var(--transition);
-  backdrop-filter: blur(8px);
 }
 .nav-logo-img-wrap.scrolled {
   background: transparent;
-  padding: 0;
+  padding: 4px 0;
 }
 .nav-logo-img {
   height: 42px;

@@ -1,0 +1,297 @@
+========================================================
+  GUIDE DE DÉPLOIEMENT LARAVEL SUR CPANEL
+  Projet : Excellis Invest Group
+  Date : Mai 2026
+========================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. ARCHITECTURE À RESPECTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+~/public_html/mon-site/           ← Document root du sous-domaine
+    index.html                    ← Frontend React
+    assets/                       ← Assets frontend
+    admin/                        ← Admin React
+        index.html
+        assets/
+        .htaccess                 ← React Router admin
+    api/                          ← Point d'entrée Laravel
+        index.php                 ← Bootstrap Laravel
+        .htaccess                 ← Rewrite vers index.php
+    uploads/                      ← Fichiers uploadés
+    .htaccess                     ← React Router frontend
+
+~/eig-laravel/                    ← App Laravel (HORS public_html)
+    app/
+    bootstrap/
+    config/
+    database/
+    routes/
+    storage/
+    vendor/
+    .env
+
+RÈGLE CRITIQUE : Le dossier Laravel doit être HORS public_html
+pour des raisons de sécurité.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. VÉRIFIER LE DOCUMENT ROOT AVANT TOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Toujours confirmer le document root du sous-domaine en créant
+un fichier test :
+
+    echo "test" > ~/public_html/mon-site/test.txt
+    curl -s https://mon-sous-domaine.com/test.txt
+    → Si retourne "test" : document root = ~/public_html/mon-site/
+
+Cela détermine les RewriteBase de tous les .htaccess.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. FICHIERS .HTACCESS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  NE PAS utiliser AddHandler application/x-httpd-alt-php83
+    (handler souvent inexistant → casse tout le .htaccess)
+    La version PHP se configure dans cPanel → PHP Selector.
+
+--- public_html/mon-site/.htaccess ---
+Options -MultiViews
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/admin/
+RewriteCond %{REQUEST_URI} !^/api/
+RewriteRule ^ index.html [L]
+
+--- public_html/mon-site/api/.htaccess ---
+<IfModule mod_rewrite.c>
+    Options -MultiViews -Indexes
+    RewriteEngine On
+    RewriteBase /api/
+
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+--- public_html/mon-site/admin/.htaccess ---
+Options -MultiViews
+RewriteEngine On
+RewriteBase /admin/
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. api/index.php — CORRECTIF OBLIGATOIRE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Quand index.php est dans un sous-dossier /api/, Laravel calcule
+mal le chemin de base et retourne 404 sur toutes les routes.
+Fix : écraser SCRIPT_NAME avant la capture de la requête.
+
+--- public_html/mon-site/api/index.php ---
+<?php
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+
+define('LARAVEL_START', microtime(true));
+
+if (file_exists($maintenance = __DIR__.'/../../../eig-laravel/storage/framework/maintenance.php')) {
+    require $maintenance;
+}
+
+require __DIR__.'/../../../eig-laravel/vendor/autoload.php';
+
+$app = require_once __DIR__.'/../../../eig-laravel/bootstrap/app.php';
+
+// CORRECTIF : Laravel dans sous-dossier /api/
+$_SERVER['SCRIPT_NAME'] = '/index.php';
+$_SERVER['SCRIPT_FILENAME'] = __DIR__ . '/index.php';
+$_SERVER['PHP_SELF'] = '/index.php';
+
+$app->handleRequest(Request::capture());
+
+NB : Le chemin '../../../eig-laravel/' dépend de la profondeur
+du dossier api/ par rapport au home (~/).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. CONFIGURATION .ENV LARAVEL (PRODUCTION)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+APP_NAME="Mon App"
+APP_ENV=production
+APP_KEY=                          ← Générer avec: php artisan key:generate
+APP_DEBUG=false
+APP_URL=https://mon-domaine.com/api
+
+DB_CONNECTION=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=cpaneluser_dbname
+DB_USERNAME=cpaneluser_dbuser
+DB_PASSWORD=mot_de_passe
+
+JWT_SECRET=                       ← Générer avec: php artisan jwt:secret
+JWT_TTL=10080
+
+FRONTEND_URL=https://mon-domaine.com
+ADMIN_URL=https://mon-domaine.com/admin
+
+UPLOAD_DIR=/home/cpaneluser/public_html/mon-site/uploads
+
+CACHE_STORE=file                  ← Utiliser file (pas database) sur mutualisé
+SESSION_DRIVER=file
+QUEUE_CONNECTION=sync
+LOG_CHANNEL=single
+FILESYSTEM_DISK=local
+
+⚠️  S'assurer que DB_CONNECTION=mysql est explicitement défini
+    sinon Laravel utilise sqlite par défaut.
+
+⚠️  L'APP_KEY doit être ajoutée manuellement dans .env avant
+    de lancer php artisan key:generate :
+    echo "APP_KEY=" >> .env && php artisan key:generate
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6. COMMANDES SSH DANS L'ORDRE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+cd ~/eig-laravel
+
+# 1. Installer les dépendances
+composer install --no-dev --optimize-autoloader
+
+# 2. Configurer l'environnement
+cp .env.example .env
+nano .env                         ← Remplir DB_, JWT_SECRET, etc.
+echo "APP_KEY=" >> .env
+php artisan key:generate
+php artisan jwt:secret
+
+# 3. Base de données
+php artisan migrate --force
+php artisan db:seed --class=EigSeeder
+
+# 4. Permissions
+chmod -R 775 storage bootstrap/cache
+touch storage/logs/laravel.log
+chmod 664 storage/logs/laravel.log
+
+# 5. Vider les caches
+php artisan config:clear
+
+# 6. Vérification
+php artisan about
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7. VERSION PHP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Laravel 13 requiert PHP 8.3 minimum
+- Changer la version PHP dans cPanel → PHP Selector (ou MultiPHP Manager)
+- La version CLI et Web doivent correspondre
+- Vérifier : php -v
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+8. BUILD FRONTEND — URL API
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+L'URL API dans .env.production.local doit correspondre
+EXACTEMENT au document root du sous-domaine.
+
+Si document root = ~/public_html/mon-site/ :
+    VITE_API_URL=https://mon-domaine.com/api
+
+Si document root = ~/public_html/ (site dans un sous-dossier) :
+    VITE_API_URL=https://mon-domaine.com/mon-site/api
+
+Toujours reconstruire après avoir changé l'URL :
+    npm run build -- --mode production.local
+
+Vérifier l'URL dans le build :
+    grep -o '"https://[^"]*api[^"]*"' dist/assets/*.js | head -1
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+9. DÉPLOIEMENT DES BUILDS FRONTEND
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Créer les zips depuis le dossier dist/ (sans sous-dossier parent)
+cd dist/ && zip -r ../frontend.zip assets/ index.html robots.txt
+cd admin/dist/ && zip -r ../../admin.zip assets/ index.html
+
+# Uploader via cPanel File Manager dans public_html/mon-site/
+# Puis dézipper depuis le terminal SSH :
+cd ~/public_html/mon-site/
+unzip -o frontend.zip
+unzip -o admin.zip -d admin/
+rm frontend.zip admin.zip
+
+# Corriger une URL dans un build sans reconstruire :
+sed -i 's|ancienne-url|nouvelle-url|g' ~/public_html/mon-site/assets/*.js
+sed -i 's|ancienne-url|nouvelle-url|g' ~/public_html/mon-site/admin/assets/*.js
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10. DIAGNOSTIC RAPIDE EN CAS DE PROBLÈME
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# PHP s'exécute ?
+echo "<?php echo phpversion();" > ~/public_html/mon-site/api/test.php
+curl https://mon-domaine.com/api/test.php
+rm ~/public_html/mon-site/api/test.php
+
+# Laravel démarre ?
+cd ~/eig-laravel && php artisan about
+
+# Routes enregistrées ?
+php artisan route:list | grep nom-de-route
+
+# Log d'erreurs Laravel
+tail -50 ~/eig-laravel/storage/logs/laravel.log
+
+# Tester un endpoint API
+curl -s https://mon-domaine.com/api/health
+curl -s https://mon-domaine.com/api/filiales | head -100
+
+# Tester le login
+curl -s -X POST https://mon-domaine.com/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@exemple.com","password":"MotDePasse"}'
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+11. ERREURS FRÉQUENTES ET SOLUTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ERREUR : composer install échoue (version PHP incompatible)
+→ Changer PHP vers 8.3 dans cPanel PHP Selector
+
+ERREUR : "No APP_KEY variable was found"
+→ echo "APP_KEY=" >> .env && php artisan key:generate
+
+ERREUR : Database sqlite au lieu de mysql
+→ Vérifier que DB_CONNECTION=mysql est dans .env
+
+ERREUR : 404 sur toutes les routes API
+→ Ajouter le correctif SCRIPT_NAME dans api/index.php (voir §4)
+
+ERREUR : "Unexpected token '<'" dans le frontend
+→ L'API retourne du HTML au lieu de JSON
+→ Vérifier l'URL API dans le build avec grep
+→ Corriger avec sed ou reconstruire
+
+ERREUR : .htaccess ignoré / PHP non exécuté
+→ Supprimer la ligne AddHandler du .htaccess
+→ Configurer PHP via cPanel PHP Selector uniquement
+
+ERREUR : Phusion Passenger "Web application could not be started"
+→ Vérifier APP_KEY, DB_CONNECTION, permissions storage/
+→ Activer APP_DEBUG=true temporairement pour voir l'erreur
+
+========================================================

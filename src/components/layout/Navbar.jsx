@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import eigLogo from '../../assets/excellis-invest-group.png'
+import eigLogo from '../../assets/logo-eig-dark.png'
 
 const links = [
   { to: '/le-groupe', label: 'Le Groupe' },
