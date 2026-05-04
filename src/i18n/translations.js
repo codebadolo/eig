@@ -1,0 +1,456 @@
+export const translations = {
+  fr: {
+    // Navbar
+    nav: {
+      groupe: 'Le Groupe',
+      metiers: 'Nos Métiers',
+      filiales: 'Nos Filiales',
+      gouvernance: 'Gouvernance',
+      actualites: 'Actualités',
+      carrieres: 'Carrières',
+      contact: 'Nous Contacter',
+    },
+
+    // Hero
+    hero: {
+      badge: "Holding d'investissement multisectorielle · Burkina Faso",
+      title1: 'Catalyseur de croissance,',
+      title2: 'architecte de valeur durable',
+      title3: 'en Afrique.',
+      discover: 'Découvrir le Groupe',
+      investors: 'Espace Investisseurs',
+      scroll: 'Découvrir',
+    },
+
+    // CallToAction
+    cta: {
+      title: 'Construisons ensemble.',
+      sub: "Investisseur, partenaire institutionnel ou client d'une filiale — prenons le temps d'un échange pour explorer les opportunités.",
+      contact: 'Nous contacter',
+      investors: 'Espace Investisseurs',
+    },
+
+    // Footer
+    footer: {
+      tagline: 'Investir autrement',
+      desc: "Holding d'investissement multisectorielle basée au Burkina Faso. 20 milliards FCFA de capital social. 17 filiales. 9 secteurs stratégiques. Noté Bloomfield.",
+      col1: 'Le Groupe',
+      col2: 'Nos Activités',
+      col3: 'EIG & Vous',
+      links1: { qui: 'Qui sommes-nous ?', vision: 'Vision & Mission', histoire: 'Notre histoire', gouvernance: 'Gouvernance' },
+      links2: { metiers: 'Nos Métiers', filiales: 'Nos Filiales', finance: 'Services Financiers', assurance: 'Assurance', fintech: 'Fintech' },
+      links3: { actualites: 'Actualités', carrieres: 'Carrières', contact: 'Contact', presse: 'Relations Presse', partenariats: 'Partenariats' },
+      rights: 'Tous droits réservés.',
+      legal: 'Mentions légales',
+      privacy: 'Politique de confidentialité',
+      cookies: 'Cookies',
+      // Newsletter
+      nl_title: 'Restez informé',
+      nl_sub: 'Recevez les actualités et publications d\'EIG directement dans votre boîte mail.',
+      nl_placeholder: 'Votre adresse email',
+      nl_btn: "S'abonner",
+      nl_success: 'Merci ! Vous êtes bien inscrit(e) à notre newsletter.',
+      nl_error: 'Une erreur est survenue. Veuillez réessayer.',
+      nl_already: 'Cette adresse est déjà inscrite.',
+    },
+
+    // Pages — section labels
+    common: {
+      loading: 'Chargement...',
+      notFound: 'Page introuvable',
+      back: 'Retour',
+      readMore: 'Lire la suite',
+      learnMore: 'En savoir plus',
+      apply: 'Postuler',
+      send: 'Envoyer',
+      sending: 'Envoi en cours...',
+      sent: 'Envoyé !',
+      seeAll: 'Voir tout',
+      active: 'Actif',
+      inactive: 'Inactif',
+    },
+
+    // Contact page
+    contact: {
+      label: 'Contact',
+      title: 'Parlons de vos',
+      titleSpan: 'opportunités',
+      sub: "Investisseur, partenaire institutionnel, presse ou candidat — nous sommes à votre écoute pour explorer les opportunités ensemble.",
+      coordLabel: 'Coordonnées',
+      coordTitle: 'Nous',
+      coordTitleSpan: 'contacter',
+      follow: 'Suivez-nous',
+      formTitle: 'Formulaire de contact',
+      fname: 'Prénom',
+      lname: 'Nom',
+      email: 'Email',
+      phone: 'Téléphone',
+      subject: 'Objet de la demande',
+      subjects: {
+        information: 'Information générale',
+        investissement: 'Investissement / Partenariat',
+        presse: 'Relations presse',
+        recrutement: 'Recrutement / Carrières',
+        filiale: 'Contact filiale',
+        autre: 'Autre',
+      },
+      message: 'Message',
+      messagePlaceholder: 'Décrivez votre demande...',
+      submit: 'Envoyer le message',
+      successTitle: 'Message envoyé !',
+      successText: 'Merci pour votre message. Notre équipe vous répondra dans les plus brefs délais.',
+      successBtn: 'Envoyer un autre message',
+      adresse: 'Adresse',
+      telephone: 'Téléphone',
+    },
+
+    // Careers page
+    careers: {
+      label: 'Carrières',
+      title1: 'Construisez votre avenir',
+      title2: 'avec Excellis Invest Group',
+      sub: "Rejoignez un groupe panafricain en pleine croissance et contribuez à la transformation économique de l'Afrique de l'Ouest.",
+      why: 'Pourquoi nous rejoindre',
+      whyTitle1: 'Un groupe où',
+      whyTitle2: 'vos talents',
+      whyTitle3: 'créent de la valeur',
+      whyText: "Excellis Invest Group réunit des professionnels engagés, animés par la conviction que l'Afrique peut créer sa propre valeur avec ses propres talents.",
+      spontaneous: 'Candidature spontanée →',
+      postsLabel: 'Postes ouverts',
+      postsTitle1: 'Nos',
+      postsTitle2: "offres d'emploi",
+      noOffers: 'Aucune offre ouverte en ce moment.',
+      noOffersText: 'Déposez une candidature spontanée, nous l\'étudierons avec attention.',
+      noPostTitle: "Vous ne trouvez pas le poste idéal ?",
+      noPostText: "Envoyez-nous votre candidature spontanée, nous sommes toujours ouverts aux profils talentueux.",
+      contract: 'Type de contrat',
+      department: 'Département',
+      location: 'Lieu',
+      salary: 'Rémunération',
+      deadline: 'Date limite',
+      allOffers: '← Voir toutes les offres',
+      post: 'Le poste',
+      descTitle: 'Description du poste',
+      missions: 'Vos missions',
+      profile: 'Profil recherché',
+      benefits: 'Ce que nous offrons',
+      expires: 'Expire :',
+      applyTitle: 'Formulaire de candidature',
+      applyLabel: 'Postuler',
+      applyBtn: 'Envoyer ma candidature →',
+      cvLabel: 'CV (PDF, Word — max 5 Mo)',
+      cvHint: 'Glissez votre CV ici ou',
+      cvBrowse: 'parcourir',
+      motivation: 'Lettre de motivation',
+      motivationPlaceholder: 'Présentez-vous et expliquez votre motivation...',
+      sentTitle: 'Candidature envoyée !',
+      sentText: 'Merci {name}, nous avons bien reçu votre candidature pour le poste {poste}. Notre équipe RH vous contactera dans les meilleurs délais.',
+      interested: "Intéressé(e) par ce poste ?",
+    },
+
+    // Group page
+    groupe: {
+      label: 'Le Groupe',
+      titleSpan: 'Un acteur d\'envergure africaine',
+      whoLabel: 'Qui sommes-nous',
+      whoTitle: 'Une holding de',
+      whoSpan: 'référence',
+      whoEnd: 'au cœur de l\'Afrique',
+      whoText: "La solidité de sa gouvernance et la qualité de sa structure financière sont reconnues par la notation attribuée par Bloomfield Investment Corporation, lui conférant l'avantage d'une bonne signature, gage de crédibilité auprès des investisseurs, partenaires et institutions.",
+      constituted: 'Constitué en SA de droit burkinabè',
+      rating: 'Notation Bloomfield Investment Corporation',
+      purposeLabel: "Raison d'être",
+      purposeTitle: 'Mission, Vision & Valeurs',
+      mission: 'Mission',
+      vision: 'Vision',
+      values: 'Valeurs',
+    },
+
+    // Subsidiaries
+    filiales: {
+      label: 'Nos Filiales',
+      title1: 'Un portefeuille de filiales',
+      title2: 'au service de la croissance',
+      sub: 'Chacune de nos filiales opère avec autonomie stratégique tout en bénéficiant de la force du groupe.',
+      country: 'Pays',
+      sector: 'Secteur',
+      backToAll: '← Toutes les filiales',
+      discover: 'Découvrir la filiale →',
+    },
+
+    // Sectors
+    metiers: {
+      label: 'Nos Métiers',
+      title1: 'Des expertises',
+      title2: 'à fort impact',
+      challenges: 'Enjeux sectoriels',
+      contribution: 'Notre contribution',
+      ourFiliales: 'Nos filiales dans ce secteur',
+      backToAll: '← Tous les métiers',
+    },
+
+    // Governance
+    gouvernance: {
+      label: 'Gouvernance',
+      title1: 'Une gouvernance',
+      title2: 'exemplaire',
+      sub: "Transparence, rigueur et responsabilité — les fondements de notre gouvernance au service de la confiance des investisseurs et des partenaires.",
+      team: 'Notre équipe dirigeante',
+      backToAll: '← Gouvernance',
+    },
+
+    // News
+    news: {
+      label: 'Actualités',
+      title1: 'Les dernières',
+      title2: 'nouvelles du Groupe',
+      noNews: 'Aucune actualité publiée pour le moment.',
+      published: 'Publié le',
+      backToAll: '← Toutes les actualités',
+      related: 'Autres actualités',
+    },
+
+    // Unsubscribe page
+    unsubscribe: {
+      title: 'Désinscription',
+      success: 'Vous avez été désinscrit(e) de notre newsletter avec succès.',
+      error: 'Ce lien est invalide ou déjà utilisé.',
+      home: 'Retour à l\'accueil',
+    },
+
+    // Atouts (careers page)
+    atouts: [
+      { titre: 'Impact panafricain', texte: "Rejoindre EIG, c'est contribuer au développement économique de l'Afrique de l'Ouest." },
+      { titre: 'Évolution de carrière', texte: "Un écosystème de filiales offrant de multiples opportunités d'évolution et de mobilité." },
+      { titre: 'Formation continue', texte: "Un investissement constant dans le développement des compétences et le leadership." },
+      { titre: 'Culture collaborative', texte: "L'esprit d'équipe comme valeur fondamentale, au service de la performance collective." },
+    ],
+  },
+
+  en: {
+    // Navbar
+    nav: {
+      groupe: 'The Group',
+      metiers: 'Our Businesses',
+      filiales: 'Our Subsidiaries',
+      gouvernance: 'Governance',
+      actualites: 'News',
+      carrieres: 'Careers',
+      contact: 'Contact Us',
+    },
+
+    // Hero
+    hero: {
+      badge: 'Multi-sector investment holding · Burkina Faso',
+      title1: 'A catalyst for growth,',
+      title2: 'an architect of lasting value',
+      title3: 'in Africa.',
+      discover: 'Discover the Group',
+      investors: 'Investor Relations',
+      scroll: 'Discover',
+    },
+
+    // CallToAction
+    cta: {
+      title: "Let's build together.",
+      sub: "Investor, institutional partner or subsidiary client — let's take the time to explore opportunities together.",
+      contact: 'Contact us',
+      investors: 'Investor Relations',
+    },
+
+    // Footer
+    footer: {
+      tagline: 'Investing differently',
+      desc: 'Multi-sector investment holding based in Burkina Faso. FCFA 20 billion share capital. 17 subsidiaries. 9 strategic sectors. Bloomfield-rated.',
+      col1: 'The Group',
+      col2: 'Our Activities',
+      col3: 'EIG & You',
+      links1: { qui: 'Who we are', vision: 'Vision & Mission', histoire: 'Our history', gouvernance: 'Governance' },
+      links2: { metiers: 'Our Businesses', filiales: 'Our Subsidiaries', finance: 'Financial Services', assurance: 'Insurance', fintech: 'Fintech' },
+      links3: { actualites: 'News', carrieres: 'Careers', contact: 'Contact', presse: 'Press Relations', partenariats: 'Partnerships' },
+      rights: 'All rights reserved.',
+      legal: 'Legal notice',
+      privacy: 'Privacy policy',
+      cookies: 'Cookies',
+      nl_title: 'Stay informed',
+      nl_sub: 'Receive EIG news and publications directly in your inbox.',
+      nl_placeholder: 'Your email address',
+      nl_btn: 'Subscribe',
+      nl_success: 'Thank you! You are now subscribed to our newsletter.',
+      nl_error: 'An error occurred. Please try again.',
+      nl_already: 'This email is already subscribed.',
+    },
+
+    // Pages — section labels
+    common: {
+      loading: 'Loading...',
+      notFound: 'Page not found',
+      back: 'Back',
+      readMore: 'Read more',
+      learnMore: 'Learn more',
+      apply: 'Apply',
+      send: 'Send',
+      sending: 'Sending...',
+      sent: 'Sent!',
+      seeAll: 'See all',
+      active: 'Active',
+      inactive: 'Inactive',
+    },
+
+    // Contact page
+    contact: {
+      label: 'Contact',
+      title: 'Let\'s discuss your',
+      titleSpan: 'opportunities',
+      sub: 'Investor, institutional partner, press or candidate — we are listening to explore opportunities together.',
+      coordLabel: 'Contact details',
+      coordTitle: 'Contact',
+      coordTitleSpan: 'us',
+      follow: 'Follow us',
+      formTitle: 'Contact form',
+      fname: 'First name',
+      lname: 'Last name',
+      email: 'Email',
+      phone: 'Phone',
+      subject: 'Subject',
+      subjects: {
+        information: 'General information',
+        investissement: 'Investment / Partnership',
+        presse: 'Press relations',
+        recrutement: 'Recruitment / Careers',
+        filiale: 'Subsidiary contact',
+        autre: 'Other',
+      },
+      message: 'Message',
+      messagePlaceholder: 'Describe your request...',
+      submit: 'Send message',
+      successTitle: 'Message sent!',
+      successText: 'Thank you for your message. Our team will get back to you as soon as possible.',
+      successBtn: 'Send another message',
+      adresse: 'Address',
+      telephone: 'Phone',
+    },
+
+    // Careers page
+    careers: {
+      label: 'Careers',
+      title1: 'Build your future',
+      title2: 'with Excellis Invest Group',
+      sub: 'Join a fast-growing pan-African group and contribute to the economic transformation of West Africa.',
+      why: 'Why join us',
+      whyTitle1: 'A group where',
+      whyTitle2: 'your talent',
+      whyTitle3: 'creates value',
+      whyText: 'Excellis Invest Group brings together committed professionals, driven by the belief that Africa can create its own value with its own talent.',
+      spontaneous: 'Spontaneous application →',
+      postsLabel: 'Open positions',
+      postsTitle1: 'Our',
+      postsTitle2: 'job openings',
+      noOffers: 'No open positions at the moment.',
+      noOffersText: 'Send us a spontaneous application — we will review it carefully.',
+      noPostTitle: "Can't find the right position?",
+      noPostText: 'Send us your spontaneous application — we are always open to talented profiles.',
+      contract: 'Contract type',
+      department: 'Department',
+      location: 'Location',
+      salary: 'Compensation',
+      deadline: 'Deadline',
+      allOffers: '← All job openings',
+      post: 'The position',
+      descTitle: 'Job description',
+      missions: 'Your missions',
+      profile: 'Profile sought',
+      benefits: 'What we offer',
+      expires: 'Expires:',
+      applyTitle: 'Application form',
+      applyLabel: 'Apply',
+      applyBtn: 'Submit my application →',
+      cvLabel: 'CV (PDF, Word — max 5 MB)',
+      cvHint: 'Drag your CV here or',
+      cvBrowse: 'browse',
+      motivation: 'Cover letter',
+      motivationPlaceholder: 'Introduce yourself and explain your motivation...',
+      sentTitle: 'Application submitted!',
+      sentText: 'Thank you {name}, we have received your application for {poste}. Our HR team will contact you shortly.',
+      interested: 'Interested in this position?',
+    },
+
+    // Group page
+    groupe: {
+      label: 'The Group',
+      titleSpan: 'A major African player',
+      whoLabel: 'Who we are',
+      whoTitle: 'A leading',
+      whoSpan: 'investment holding',
+      whoEnd: 'at the heart of Africa',
+      whoText: 'The solidity of its governance and the quality of its financial structure are recognised by Bloomfield Investment Corporation\'s rating, giving it the advantage of a strong signature, a mark of credibility with investors, partners and institutions.',
+      constituted: 'Incorporated as a Burkinabè public limited company',
+      rating: 'Bloomfield Investment Corporation rating',
+      purposeLabel: 'Our purpose',
+      purposeTitle: 'Mission, Vision & Values',
+      mission: 'Mission',
+      vision: 'Vision',
+      values: 'Values',
+    },
+
+    // Subsidiaries
+    filiales: {
+      label: 'Our Subsidiaries',
+      title1: 'A portfolio of subsidiaries',
+      title2: 'driving growth',
+      sub: 'Each of our subsidiaries operates with strategic autonomy while benefiting from the strength of the group.',
+      country: 'Country',
+      sector: 'Sector',
+      backToAll: '← All subsidiaries',
+      discover: 'Explore subsidiary →',
+    },
+
+    // Sectors
+    metiers: {
+      label: 'Our Businesses',
+      title1: 'Expertise with',
+      title2: 'high impact',
+      challenges: 'Sector challenges',
+      contribution: 'Our contribution',
+      ourFiliales: 'Our subsidiaries in this sector',
+      backToAll: '← All businesses',
+    },
+
+    // Governance
+    gouvernance: {
+      label: 'Governance',
+      title1: 'Exemplary',
+      title2: 'governance',
+      sub: 'Transparency, rigour and accountability — the foundations of our governance in the service of investor and partner confidence.',
+      team: 'Our executive team',
+      backToAll: '← Governance',
+    },
+
+    // News
+    news: {
+      label: 'News',
+      title1: 'Latest',
+      title2: 'Group news',
+      noNews: 'No news published yet.',
+      published: 'Published on',
+      backToAll: '← All news',
+      related: 'More news',
+    },
+
+    // Unsubscribe page
+    unsubscribe: {
+      title: 'Unsubscribe',
+      success: 'You have been successfully unsubscribed from our newsletter.',
+      error: 'This link is invalid or has already been used.',
+      home: 'Back to home',
+    },
+
+    // Atouts (careers page)
+    atouts: [
+      { titre: 'Pan-African impact', texte: 'Joining EIG means contributing to the economic development of West Africa.' },
+      { titre: 'Career growth', texte: 'An ecosystem of subsidiaries offering multiple opportunities for advancement and mobility.' },
+      { titre: 'Continuous learning', texte: 'A constant investment in skills development and leadership.' },
+      { titre: 'Collaborative culture', texte: 'Teamwork as a core value, in the service of collective performance.' },
+    ],
+  },
+}

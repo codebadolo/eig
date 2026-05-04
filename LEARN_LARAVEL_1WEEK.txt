@@ -1,0 +1,1759 @@
+================================================================================
+  LEARN LARAVEL IN LESS THAN A WEEK — Complete Guide
+  Target : PHP developers / beginners with basic PHP knowledge
+  Goal   : Build and understand a real Laravel REST API + MVC app
+================================================================================
+
+TABLE OF CONTENTS
+-----------------
+  DAY 1 — Installation, Structure, Routing, Controllers
+  DAY 2 — Blade Views, Layouts, Components
+  DAY 3 — Database, Migrations, Eloquent ORM
+  DAY 4 — Relationships, Eloquent Advanced
+  DAY 5 — Authentication, Middleware, Validation
+  DAY 6 — File Uploads, Storage, Mail, API (JSON)
+  DAY 7 — Testing, Deployment, Best Practices
+  BONUS  — Commands Cheat Sheet + Common Errors
+
+
+================================================================================
+  DAY 1 — INSTALLATION, STRUCTURE, ROUTING, CONTROLLERS
+================================================================================
+
+------------------------------------------------------------------------
+1.1 REQUIREMENTS
+------------------------------------------------------------------------
+  - PHP >= 8.2
+  - Composer (https://getcomposer.org)
+  - Node.js (for assets, optional)
+  - MySQL or SQLite
+
+------------------------------------------------------------------------
+1.2 INSTALL LARAVEL
+------------------------------------------------------------------------
+
+  # Create new project
+  composer create-project laravel/laravel my-app
+
+  # OR using Laravel installer
+  composer global require laravel/installer
+  laravel new my-app
+
+  # Enter project
+  cd my-app
+
+  # Start dev server
+  php artisan serve
+  # Visit: http://localhost:8000
+
+------------------------------------------------------------------------
+1.3 PROJECT STRUCTURE
+------------------------------------------------------------------------
+
+  my-app/
+  ├── app/
+  │   ├── Http/
+  │   │   ├── Controllers/     ← Your controllers (logic)
+  │   │   ├── Middleware/      ← Filters for requests
+  │   │   └── Requests/        ← Form validation classes
+  │   ├── Models/              ← Eloquent models (database)
+  │   └── Providers/           ← Service providers (bootstrap)
+  ├── bootstrap/               ← App initialization
+  ├── config/                  ← Configuration files
+  ├── database/
+  │   ├── migrations/          ← Database structure (version control)
+  │   ├── seeders/             ← Fake/initial data
+  │   └── factories/           ← Generate fake models
+  ├── public/                  ← Web root (index.php lives here)
+  ├── resources/
+  │   ├── views/               ← Blade templates (HTML)
+  │   ├── css/
+  │   └── js/
+  ├── routes/
+  │   ├── api.php              ← API routes (/api/...)
+  │   ├── web.php              ← Web routes (with session/cookie)
+  │   └── console.php          ← Artisan commands
+  ├── storage/                 ← Logs, cache, uploads
+  ├── tests/                   ← Automated tests
+  ├── .env                     ← Environment variables (SECRET, DB)
+  ├── composer.json            ← PHP dependencies
+  └── artisan                  ← CLI tool
+
+  IMPORTANT: Never put sensitive data in code. Use .env file.
+
+------------------------------------------------------------------------
+1.4 ENVIRONMENT FILE (.env)
+------------------------------------------------------------------------
+
+  APP_NAME=MyApp
+  APP_ENV=local          # local | production | testing
+  APP_DEBUG=true         # false in production!
+  APP_URL=http://localhost:8000
+
+  DB_CONNECTION=mysql
+  DB_HOST=127.0.0.1
+  DB_PORT=3306
+  DB_DATABASE=my_database
+  DB_USERNAME=root
+  DB_PASSWORD=secret
+
+  # After editing .env, clear cache:
+  php artisan config:clear
+
+------------------------------------------------------------------------
+1.5 ROUTING — routes/web.php and routes/api.php
+------------------------------------------------------------------------
+
+  BASIC ROUTE:
+  ─────────────
+  // routes/web.php
+  use Illuminate\Support\Facades\Route;
+
+  Route::get('/', function () {
+      return view('welcome');
+  });
+
+  Route::get('/hello', function () {
+      return 'Hello World!';
+  });
+
+
+  ROUTE WITH PARAMETER:
+  ──────────────────────
+  Route::get('/user/{id}', function ($id) {
+      return "User ID: $id";
+  });
+
+  // Optional parameter
+  Route::get('/user/{name?}', function ($name = 'Guest') {
+      return "Hello $name";
+  });
+
+
+  NAMED ROUTES:
+  ──────────────
+  Route::get('/dashboard', function () {
+      return view('dashboard');
+  })->name('dashboard');
+
+  // Use in Blade: {{ route('dashboard') }}
+
+
+  ROUTE GROUPS:
+  ──────────────
+  Route::prefix('/admin')->group(function () {
+      Route::get('/users', [UserController::class, 'index']);
+      Route::get('/settings', [SettingsController::class, 'index']);
+  });
+
+  // All routes here → /admin/users, /admin/settings
+
+
+  HTTP METHODS:
+  ──────────────
+  Route::get('/items', ...);        // Read
+  Route::post('/items', ...);       // Create
+  Route::put('/items/{id}', ...);   // Update (full)
+  Route::patch('/items/{id}', ...); // Update (partial)
+  Route::delete('/items/{id}', ...); // Delete
+
+  Route::any('/items', ...);        // All methods
+  Route::match(['get','post'], ...); // Specific methods
+
+
+  RESOURCE ROUTES (shortcut for CRUD):
+  ──────────────────────────────────────
+  Route::resource('articles', ArticleController::class);
+  // Creates automatically:
+  // GET    /articles           → index()
+  // POST   /articles           → store()
+  // GET    /articles/{id}      → show()
+  // PUT    /articles/{id}      → update()
+  // DELETE /articles/{id}      → destroy()
+  // GET    /articles/create    → create()
+  // GET    /articles/{id}/edit → edit()
+
+
+  API ROUTES (routes/api.php):
+  ─────────────────────────────
+  // Automatically prefixed with /api
+  Route::get('/health', fn() => response()->json(['status' => 'ok']));
+  Route::apiResource('articles', ArticleController::class);
+  // Same as resource but without create() and edit() (no HTML forms)
+
+  # List all routes
+  php artisan route:list
+
+
+------------------------------------------------------------------------
+1.6 CONTROLLERS
+------------------------------------------------------------------------
+
+  # Generate a controller
+  php artisan make:controller ArticleController
+
+  # Generate with all CRUD methods
+  php artisan make:controller ArticleController --resource
+
+  # Generate API controller (no create/edit)
+  php artisan make:controller ArticleController --api
+
+
+  BASIC CONTROLLER:
+  ──────────────────
+  // app/Http/Controllers/ArticleController.php
+  <?php
+  namespace App\Http\Controllers;
+
+  use Illuminate\Http\Request;
+
+  class ArticleController extends Controller {
+
+      // GET /articles
+      public function index() {
+          return view('articles.index');
+      }
+
+      // GET /articles/{id}
+      public function show($id) {
+          return view('articles.show', ['id' => $id]);
+      }
+
+      // POST /articles
+      public function store(Request $request) {
+          // $request contains form data
+          $title = $request->input('title');
+          return redirect('/articles');
+      }
+
+      // DELETE /articles/{id}
+      public function destroy($id) {
+          return redirect('/articles');
+      }
+  }
+
+
+  REQUEST OBJECT:
+  ────────────────
+  $request->input('name')        // Get field value
+  $request->get('name')          // Same
+  $request->name                 // Magic property
+  $request->all()                // All fields as array
+  $request->only('name','email') // Subset
+  $request->except('password')   // All except
+  $request->has('name')          // Check if field exists
+  $request->filled('name')       // Check if not empty
+  $request->file('avatar')       // File upload
+  $request->ip()                 // Client IP
+  $request->method()             // GET, POST, etc.
+  $request->is('admin/*')        // URL pattern match
+  $request->header('Authorization') // HTTP header
+
+
+================================================================================
+  DAY 2 — BLADE VIEWS, LAYOUTS, COMPONENTS
+================================================================================
+
+------------------------------------------------------------------------
+2.1 WHAT IS BLADE?
+------------------------------------------------------------------------
+
+  Blade is Laravel's templating engine.
+  Files have .blade.php extension in resources/views/
+
+  It compiles to plain PHP — very fast.
+  No performance cost for using Blade syntax.
+
+------------------------------------------------------------------------
+2.2 BLADE BASICS
+------------------------------------------------------------------------
+
+  DISPLAY VARIABLE (auto-escaped, prevents XSS):
+  ───────────────────────────────────────────────
+  {{ $name }}
+  {{ $user->email }}
+  {{ $article->title ?? 'No title' }}   // Default if null
+
+  // Raw HTML (use carefully, only with trusted content):
+  {!! $htmlContent !!}
+
+
+  CONDITIONALS:
+  ──────────────
+  @if ($user->isAdmin())
+      <p>Welcome admin</p>
+  @elseif ($user->isModerator())
+      <p>Welcome moderator</p>
+  @else
+      <p>Welcome user</p>
+  @endif
+
+  @unless ($user->isLoggedIn())
+      <p>Please login</p>
+  @endunless
+
+
+  LOOPS:
+  ───────
+  @foreach ($articles as $article)
+      <p>{{ $article->title }}</p>
+  @endforeach
+
+  @forelse ($articles as $article)
+      <p>{{ $article->title }}</p>
+  @empty
+      <p>No articles found</p>
+  @endforelse
+
+  @for ($i = 0; $i < 10; $i++)
+      {{ $i }}
+  @endfor
+
+  @while ($condition)
+      ...
+  @endwhile
+
+  // Inside loops, use $loop variable:
+  @foreach ($items as $item)
+      @if ($loop->first) FIRST @endif
+      {{ $loop->index }}        // 0-based
+      {{ $loop->iteration }}    // 1-based
+      {{ $loop->remaining }}    // Items left
+      {{ $loop->count }}        // Total
+      @if ($loop->last) LAST @endif
+  @endforeach
+
+
+  SWITCH:
+  ────────
+  @switch($status)
+      @case('active')
+          Active
+          @break
+      @case('inactive')
+          Inactive
+          @break
+      @default
+          Unknown
+  @endswitch
+
+
+  COMMENTS:
+  ──────────
+  {{-- This is a Blade comment, not visible in HTML --}}
+
+
+------------------------------------------------------------------------
+2.3 LAYOUTS (Template Inheritance)
+------------------------------------------------------------------------
+
+  BASE LAYOUT (resources/views/layouts/app.blade.php):
+  ──────────────────────────────────────────────────────
+  <!DOCTYPE html>
+  <html>
+  <head>
+      <title>@yield('title', 'My App')</title>
+  </head>
+  <body>
+      <nav>
+          <a href="/">Home</a>
+          <a href="/articles">Articles</a>
+      </nav>
+
+      <main>
+          @yield('content')
+      </main>
+
+      <footer>
+          @yield('footer', '© 2026')
+      </footer>
+  </body>
+  </html>
+
+
+  CHILD PAGE (resources/views/articles/index.blade.php):
+  ────────────────────────────────────────────────────────
+  @extends('layouts.app')
+
+  @section('title', 'Articles')
+
+  @section('content')
+      <h1>All Articles</h1>
+      @foreach ($articles as $article)
+          <p>{{ $article->title }}</p>
+      @endforeach
+  @endsection
+
+
+------------------------------------------------------------------------
+2.4 BLADE COMPONENTS (Modern approach, Laravel 7+)
+------------------------------------------------------------------------
+
+  # Create component
+  php artisan make:component Alert
+
+  // app/View/Components/Alert.php
+  class Alert extends Component {
+      public function __construct(public string $type = 'info') {}
+      public function render() {
+          return view('components.alert');
+      }
+  }
+
+  // resources/views/components/alert.blade.php
+  <div class="alert alert-{{ $type }}">
+      {{ $slot }}
+  </div>
+
+  // Use in any view:
+  <x-alert type="success">
+      Your changes were saved!
+  </x-alert>
+
+
+------------------------------------------------------------------------
+2.5 PASSING DATA TO VIEWS
+------------------------------------------------------------------------
+
+  // In controller:
+  return view('articles.show', [
+      'article' => $article,
+      'comments' => $comments,
+  ]);
+
+  // OR using compact():
+  $title = 'My Article';
+  $body  = 'Content here';
+  return view('articles.show', compact('title', 'body'));
+
+  // OR with() chaining:
+  return view('articles.show')
+              ->with('article', $article)
+              ->with('user', $user);
+
+
+------------------------------------------------------------------------
+2.6 USEFUL BLADE DIRECTIVES
+------------------------------------------------------------------------
+
+  @auth
+      <p>You are logged in as {{ auth()->user()->name }}</p>
+  @endauth
+
+  @guest
+      <a href="/login">Login</a>
+  @endguest
+
+  @csrf          // CSRF token for forms (required for POST)
+  @method('PUT') // Fake PUT method for HTML forms
+
+  @include('partials.header')        // Include another view
+  @include('partials.card', ['item' => $article])
+
+  @php
+      $now = now()->format('Y');
+  @endphp
+
+  @dump($variable)       // Debug dump
+  @dd($variable)         // Dump and die
+
+
+================================================================================
+  DAY 3 — DATABASE, MIGRATIONS, ELOQUENT ORM
+================================================================================
+
+------------------------------------------------------------------------
+3.1 CONFIGURE DATABASE
+------------------------------------------------------------------------
+
+  In .env:
+  DB_CONNECTION=mysql
+  DB_HOST=127.0.0.1
+  DB_DATABASE=my_app
+  DB_USERNAME=root
+  DB_PASSWORD=secret
+
+  # Test connection
+  php artisan db
+
+  # Use SQLite (zero config, great for learning)
+  DB_CONNECTION=sqlite
+  # Creates database/database.sqlite automatically
+
+
+------------------------------------------------------------------------
+3.2 MIGRATIONS — Version control for your database
+------------------------------------------------------------------------
+
+  # Create migration
+  php artisan make:migration create_articles_table
+
+  # Migration file (database/migrations/..._create_articles_table.php):
+  use Illuminate\Database\Migrations\Migration;
+  use Illuminate\Database\Schema\Blueprint;
+  use Illuminate\Support\Facades\Schema;
+
+  return new class extends Migration {
+      public function up(): void {
+          Schema::create('articles', function (Blueprint $table) {
+              $table->id();                          // Auto-increment PK
+              $table->string('title');               // VARCHAR 255
+              $table->string('slug')->unique();      // Unique URL
+              $table->text('body');                  // Long text
+              $table->string('image')->nullable();   // Can be null
+              $table->boolean('published')->default(false);
+              $table->foreignId('user_id')->constrained(); // FK → users.id
+              $table->timestamps();                  // created_at, updated_at
+          });
+      }
+
+      public function down(): void {
+          Schema::dropIfExists('articles');
+      }
+  };
+
+
+  COLUMN TYPES:
+  ──────────────
+  $table->id()                   // BIGINT UNSIGNED AUTO_INCREMENT
+  $table->string('name')         // VARCHAR(255)
+  $table->string('name', 100)    // VARCHAR(100)
+  $table->text('body')           // TEXT
+  $table->longText('content')    // LONGTEXT
+  $table->integer('count')       // INT
+  $table->bigInteger('views')    // BIGINT
+  $table->float('price')         // FLOAT
+  $table->decimal('amount', 8, 2) // DECIMAL(8,2)
+  $table->boolean('active')      // TINYINT 0/1
+  $table->date('birth_date')     // DATE
+  $table->datetime('published_at') // DATETIME
+  $table->timestamp('deleted_at') // TIMESTAMP
+  $table->json('metadata')       // JSON
+  $table->enum('status', ['active','inactive']) // ENUM
+  $table->uuid('id')             // UUID string
+  $table->softDeletes()          // deleted_at (for soft delete)
+  $table->timestamps()           // created_at + updated_at
+
+
+  COLUMN MODIFIERS:
+  ──────────────────
+  ->nullable()          // Allow NULL
+  ->default('value')    // Default value
+  ->unique()            // Unique constraint
+  ->index()             // Add index (faster queries)
+  ->unsigned()          // No negative values
+  ->after('column')     // Position after column
+
+
+  MIGRATION COMMANDS:
+  ────────────────────
+  php artisan migrate                    // Run all pending migrations
+  php artisan migrate:rollback           // Undo last batch
+  php artisan migrate:rollback --step=2  // Undo last 2 batches
+  php artisan migrate:reset              // Undo ALL migrations
+  php artisan migrate:fresh              // Drop all + re-migrate
+  php artisan migrate:fresh --seed       // + run seeders
+  php artisan migrate:status             // See migration status
+
+
+------------------------------------------------------------------------
+3.3 SEEDERS — Fill database with data
+------------------------------------------------------------------------
+
+  # Create seeder
+  php artisan make:seeder ArticleSeeder
+
+  // database/seeders/ArticleSeeder.php
+  class ArticleSeeder extends Seeder {
+      public function run(): void {
+          DB::table('articles')->insert([
+              'title' => 'First Article',
+              'slug'  => 'first-article',
+              'body'  => 'Content...',
+              'published' => true,
+              'created_at' => now(),
+              'updated_at' => now(),
+          ]);
+      }
+  }
+
+  // database/seeders/DatabaseSeeder.php
+  class DatabaseSeeder extends Seeder {
+      public function run(): void {
+          $this->call([
+              ArticleSeeder::class,
+          ]);
+      }
+  }
+
+  # Run seeders
+  php artisan db:seed
+  php artisan db:seed --class=ArticleSeeder
+
+
+------------------------------------------------------------------------
+3.4 ELOQUENT ORM — The heart of Laravel
+------------------------------------------------------------------------
+
+  Eloquent maps database tables to PHP classes (Models).
+  One model = one table.
+
+  # Create model
+  php artisan make:model Article
+
+  # Model + migration
+  php artisan make:model Article -m
+
+  # Model + migration + controller + seeder + factory
+  php artisan make:model Article -mcfs
+
+
+  BASIC MODEL:
+  ─────────────
+  // app/Models/Article.php
+  <?php
+  namespace App\Models;
+
+  use Illuminate\Database\Eloquent\Model;
+
+  class Article extends Model {
+      // Table name (auto: "articles" from "Article")
+      protected $table = 'articles';
+
+      // Primary key (default: 'id')
+      protected $primaryKey = 'id';
+
+      // Which fields can be mass-assigned
+      protected $fillable = ['title', 'slug', 'body', 'published'];
+
+      // Which fields to HIDE (JSON responses)
+      protected $hidden = ['password', 'remember_token'];
+
+      // Type casting
+      protected $casts = [
+          'published'    => 'boolean',
+          'published_at' => 'datetime',
+          'metadata'     => 'array',
+      ];
+  }
+
+
+  ELOQUENT CRUD OPERATIONS:
+  ──────────────────────────
+
+  // CREATE
+  $article = Article::create([
+      'title'     => 'New Article',
+      'slug'      => 'new-article',
+      'body'      => 'Content...',
+      'published' => true,
+  ]);
+
+  // OR: new + save
+  $article = new Article();
+  $article->title = 'New Article';
+  $article->save();
+
+  // READ — Get all
+  $articles = Article::all();
+
+  // READ — Find by PK
+  $article = Article::find(1);         // Returns null if not found
+  $article = Article::findOrFail(1);   // Throws 404 if not found
+
+  // READ — With conditions
+  $articles = Article::where('published', true)->get();
+  $article  = Article::where('slug', 'new-article')->first();
+
+  // UPDATE
+  $article = Article::find(1);
+  $article->title = 'Updated Title';
+  $article->save();
+
+  // OR:
+  Article::where('id', 1)->update(['title' => 'Updated']);
+
+  // MASS UPDATE with model:
+  $article->update(['title' => 'New Title', 'published' => false]);
+
+  // DELETE
+  $article = Article::find(1);
+  $article->delete();
+
+  // OR:
+  Article::destroy(1);          // By PK
+  Article::destroy([1, 2, 3]);  // Multiple PKs
+
+
+  QUERY BUILDER (ELOQUENT METHODS):
+  ───────────────────────────────────
+  Article::all()                          // All records
+  Article::count()                        // Count
+  Article::first()                        // First record
+  Article::latest()->get()                // Order by created_at DESC
+  Article::oldest()->get()                // Order by created_at ASC
+  Article::orderBy('title', 'asc')->get() // Custom order
+  Article::limit(10)->get()               // Limit
+  Article::offset(20)->limit(10)->get()   // Pagination manual
+
+  // WHERE conditions
+  ->where('status', 'active')            // =
+  ->where('views', '>', 100)             // >
+  ->where('title', 'like', '%laravel%')  // LIKE
+  ->whereIn('status', ['active','draft']) // IN (...)
+  ->whereNull('deleted_at')              // IS NULL
+  ->whereNotNull('published_at')         // IS NOT NULL
+  ->whereBetween('views', [10, 100])     // BETWEEN
+  ->whereDate('created_at', '2026-01-01') // Date only
+
+  // Multiple conditions
+  ->where('published', true)->where('views', '>', 10)
+  ->where([['published', true], ['views', '>', 10]])
+
+  // OR conditions
+  ->where('title', 'Laravel')->orWhere('title', 'PHP')
+
+  // SELECT specific columns
+  ->select('id', 'title', 'slug')->get()
+
+  // PAGINATION (built-in, works with Blade)
+  $articles = Article::paginate(15);
+  // In Blade: {{ $articles->links() }}
+
+  // Simple paginate (no total count, faster)
+  $articles = Article::simplePaginate(15);
+
+  // Chunk for large datasets (memory-efficient)
+  Article::chunk(100, function ($articles) {
+      foreach ($articles as $article) {
+          // process...
+      }
+  });
+
+
+  AGGREGATES:
+  ────────────
+  Article::count()
+  Article::sum('views')
+  Article::avg('rating')
+  Article::max('views')
+  Article::min('price')
+
+
+  FIRST OR CREATE:
+  ─────────────────
+  $article = Article::firstOrCreate(
+      ['slug' => 'my-article'],           // Search by this
+      ['title' => 'My Article', 'body' => '...'] // Create with this if not found
+  );
+
+  $article = Article::updateOrCreate(
+      ['slug' => 'my-article'],           // Find by this
+      ['title' => 'Updated Title']        // Update/create with this
+  );
+
+
+  SOFT DELETES:
+  ──────────────
+  // In migration:
+  $table->softDeletes();
+
+  // In model:
+  use Illuminate\Database\Eloquent\SoftDeletes;
+  class Article extends Model {
+      use SoftDeletes;
+  }
+
+  $article->delete();             // Sets deleted_at, not actually deleted
+  Article::withTrashed()->get()   // Include soft-deleted
+  Article::onlyTrashed()->get()   // Only soft-deleted
+  $article->restore()             // Restore
+  $article->forceDelete()         // Permanently delete
+
+
+================================================================================
+  DAY 4 — RELATIONSHIPS, ELOQUENT ADVANCED
+================================================================================
+
+------------------------------------------------------------------------
+4.1 ELOQUENT RELATIONSHIPS
+------------------------------------------------------------------------
+
+  ONE TO ONE (hasOne / belongsTo):
+  ──────────────────────────────────
+  // User has one Profile
+  class User extends Model {
+      public function profile() {
+          return $this->hasOne(Profile::class);
+          // Looks for user_id in profiles table
+      }
+  }
+
+  class Profile extends Model {
+      public function user() {
+          return $this->belongsTo(User::class);
+      }
+  }
+
+  // Usage:
+  $profile = User::find(1)->profile;
+  $user    = Profile::find(1)->user;
+
+
+  ONE TO MANY (hasMany / belongsTo):
+  ────────────────────────────────────
+  // User has many Articles
+  class User extends Model {
+      public function articles() {
+          return $this->hasMany(Article::class);
+          // Looks for user_id in articles table
+      }
+  }
+
+  class Article extends Model {
+      public function user() {
+          return $this->belongsTo(User::class);
+          // Looks for user_id in articles table
+      }
+  }
+
+  // Usage:
+  $articles = User::find(1)->articles;              // Collection
+  $articles = User::find(1)->articles()->where('published', true)->get();
+  $user     = Article::find(1)->user;               // Single model
+
+
+  MANY TO MANY (belongsToMany):
+  ──────────────────────────────
+  // Article has many Tags, Tag has many Articles
+  // Needs pivot table: article_tag (article_id, tag_id)
+
+  class Article extends Model {
+      public function tags() {
+          return $this->belongsToMany(Tag::class);
+      }
+  }
+
+  class Tag extends Model {
+      public function articles() {
+          return $this->belongsToMany(Article::class);
+      }
+  }
+
+  // Usage:
+  $tags     = Article::find(1)->tags;
+  $articles = Tag::find(1)->articles;
+
+  // Attach/detach pivot:
+  $article->tags()->attach($tagId);
+  $article->tags()->detach($tagId);
+  $article->tags()->sync([1, 2, 3]); // Replace all tags
+
+
+  HAS MANY THROUGH:
+  ──────────────────
+  // Country → Users → Articles
+  class Country extends Model {
+      public function articles() {
+          return $this->hasManyThrough(Article::class, User::class);
+      }
+  }
+
+
+------------------------------------------------------------------------
+4.2 EAGER LOADING (N+1 Problem Fix)
+------------------------------------------------------------------------
+
+  // BAD — N+1 queries (1 for articles + N for each user)
+  $articles = Article::all();
+  foreach ($articles as $article) {
+      echo $article->user->name;   // Query per article!
+  }
+
+  // GOOD — Eager loading (2 total queries)
+  $articles = Article::with('user')->get();
+  foreach ($articles as $article) {
+      echo $article->user->name;   // No extra query
+  }
+
+  // Load multiple relationships
+  $articles = Article::with(['user', 'tags', 'comments'])->get();
+
+  // Nested
+  $articles = Article::with('user.profile')->get();
+
+  // Conditional eager load
+  $articles = Article::with(['comments' => function ($q) {
+      $q->where('approved', true)->orderBy('created_at');
+  }])->get();
+
+  // Load after the fact
+  $articles = Article::all();
+  $articles->load('user');
+
+
+------------------------------------------------------------------------
+4.3 ACCESSORS & MUTATORS
+------------------------------------------------------------------------
+
+  class Article extends Model {
+      // Accessor: modify value when reading
+      protected function title(): Attribute {
+          return Attribute::make(
+              get: fn($value) => strtoupper($value),
+          );
+      }
+
+      // Mutator: modify value when writing
+      protected function slug(): Attribute {
+          return Attribute::make(
+              set: fn($value) => Str::slug($value),
+          );
+      }
+
+      // Custom attribute (not in database)
+      protected function fullUrl(): Attribute {
+          return Attribute::make(
+              get: fn() => url('/articles/' . $this->slug),
+          );
+      }
+  }
+
+  // Usage:
+  $article->title      // Returns uppercased title
+  $article->slug = 'My New Post'  // Stored as 'my-new-post'
+  $article->full_url   // Returns full URL (snake_case access)
+
+
+------------------------------------------------------------------------
+4.4 SCOPES — Reusable query constraints
+------------------------------------------------------------------------
+
+  class Article extends Model {
+      // Local scope
+      public function scopePublished($query) {
+          return $query->where('published', true);
+      }
+
+      public function scopePopular($query, $minViews = 100) {
+          return $query->where('views', '>', $minViews);
+      }
+  }
+
+  // Usage (drop "scope" prefix):
+  Article::published()->get();
+  Article::published()->popular()->get();
+  Article::published()->popular(500)->latest()->paginate(10);
+
+
+------------------------------------------------------------------------
+4.5 MODEL EVENTS & OBSERVERS
+------------------------------------------------------------------------
+
+  // Observe lifecycle events (creating, created, updating, etc.)
+  php artisan make:observer ArticleObserver --model=Article
+
+  class ArticleObserver {
+      public function creating(Article $article): void {
+          $article->slug = Str::slug($article->title);
+      }
+
+      public function deleting(Article $article): void {
+          // Clean up files
+          Storage::delete($article->image);
+      }
+  }
+
+  // Register in AppServiceProvider:
+  Article::observe(ArticleObserver::class);
+
+
+================================================================================
+  DAY 5 — AUTHENTICATION, MIDDLEWARE, VALIDATION
+================================================================================
+
+------------------------------------------------------------------------
+5.1 AUTHENTICATION
+------------------------------------------------------------------------
+
+  STARTER KITS (quickest way):
+  ──────────────────────────────
+  # Full auth with Blade views
+  composer require laravel/breeze --dev
+  php artisan breeze:install blade
+  npm install && npm run dev
+  php artisan migrate
+
+  # API auth (stateless, tokens)
+  php artisan breeze:install api
+
+
+  JWT AUTHENTICATION (for APIs — what EIG uses):
+  ────────────────────────────────────────────────
+  composer require tymon/jwt-auth
+  php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+  php artisan jwt:secret          # Generates JWT_SECRET in .env
+
+  // In User model:
+  use Tymon\JWTAuth\Contracts\JWTSubject;
+  class User extends Authenticatable implements JWTSubject {
+      public function getJWTIdentifier() { return $this->getKey(); }
+      public function getJWTCustomClaims() { return []; }
+  }
+
+  // In AuthController:
+  public function login(Request $request) {
+      $credentials = $request->only('email', 'password');
+      if (!$token = auth('api')->attempt($credentials)) {
+          return response()->json(['error' => 'Unauthorized'], 401);
+      }
+      return response()->json(['token' => $token]);
+  }
+
+  public function me() {
+      return response()->json(auth('api')->user());
+  }
+
+  // Protect routes:
+  Route::middleware('auth:api')->group(function () {
+      Route::get('/me', [AuthController::class, 'me']);
+  });
+
+  // In config/auth.php:
+  'guards' => [
+      'api' => [
+          'driver'   => 'jwt',
+          'provider' => 'users',
+      ],
+  ],
+
+
+  AUTH HELPERS:
+  ──────────────
+  auth()->user()          // Current user
+  auth()->id()            // Current user ID
+  auth()->check()         // Is logged in?
+  auth()->guest()         // Is guest?
+  auth()->logout()        // Logout
+  auth('api')->user()     // For JWT guard
+
+
+------------------------------------------------------------------------
+5.2 MIDDLEWARE
+------------------------------------------------------------------------
+
+  Middleware runs BEFORE your controller.
+  Use for: auth checks, logging, rate limiting, etc.
+
+  # Create middleware
+  php artisan make:middleware CheckRole
+
+  // app/Http/Middleware/CheckRole.php
+  class CheckRole {
+      public function handle(Request $request, Closure $next, string $role): Response {
+          if ($request->user()->role !== $role) {
+              abort(403, 'Unauthorized');
+          }
+          return $next($request); // Continue to controller
+      }
+  }
+
+  // Register in bootstrap/app.php (Laravel 11):
+  ->withMiddleware(function (Middleware $middleware) {
+      $middleware->alias(['role' => CheckRole::class]);
+  })
+
+  // Apply to routes:
+  Route::get('/admin', ...)->middleware('role:admin');
+  Route::middleware(['auth', 'role:admin'])->group(function () {
+      // ...
+  });
+
+  BUILT-IN MIDDLEWARE:
+  ─────────────────────
+  'auth'         // Must be authenticated
+  'auth:api'     // JWT authenticated
+  'guest'        // Must NOT be authenticated
+  'throttle:60,1' // 60 requests per 1 minute
+  'cors'         // CORS headers
+
+
+------------------------------------------------------------------------
+5.3 VALIDATION
+------------------------------------------------------------------------
+
+  INLINE VALIDATION (in controller):
+  ────────────────────────────────────
+  public function store(Request $request) {
+      $validated = $request->validate([
+          'title'       => 'required|string|min:3|max:255',
+          'email'       => 'required|email|unique:users',
+          'age'         => 'required|integer|min:18|max:120',
+          'image'       => 'nullable|image|max:2048',
+          'status'      => 'required|in:active,inactive,draft',
+          'published_at'=> 'nullable|date',
+          'password'    => 'required|min:8|confirmed', // needs password_confirmation
+          'user_id'     => 'required|exists:users,id', // Must exist in DB
+      ]);
+
+      // $validated only contains validated fields (safe!)
+      Article::create($validated);
+  }
+
+  COMMON VALIDATION RULES:
+  ─────────────────────────
+  required         // Field must be present and not empty
+  nullable         // Can be null
+  string           // Must be string
+  integer          // Must be integer
+  numeric          // Number
+  boolean          // true/false/1/0
+  array            // Must be array
+  email            // Valid email format
+  url              // Valid URL
+  date             // Valid date
+  min:3            // Min length (string) / min value (number)
+  max:255          // Max length (string) / max value (number)
+  unique:table,col // Must not exist in DB
+  exists:table,col // Must exist in DB
+  in:a,b,c         // Must be one of these
+  not_in:a,b       // Must NOT be one of these
+  regex:/pattern/  // Must match regex
+  image            // Must be image file
+  mimes:pdf,docx   // File types
+  file             // Must be a file
+  max:2048         // File max 2MB (kilobytes)
+  confirmed        // field + field_confirmation must match
+  sometimes        // Only validate if field is present
+  filled           // Not empty if present
+
+  FORM REQUEST (cleaner, reusable):
+  ───────────────────────────────────
+  php artisan make:request StoreArticleRequest
+
+  // app/Http/Requests/StoreArticleRequest.php
+  class StoreArticleRequest extends FormRequest {
+      public function authorize(): bool {
+          return auth()->check(); // Who can submit
+      }
+
+      public function rules(): array {
+          return [
+              'title' => 'required|string|max:255',
+              'body'  => 'required|string',
+          ];
+      }
+
+      public function messages(): array {
+          return [
+              'title.required' => 'Le titre est obligatoire.',
+              'body.required'  => 'Le contenu ne peut pas être vide.',
+          ];
+      }
+  }
+
+  // In controller (auto-validates before entering method):
+  public function store(StoreArticleRequest $request) {
+      Article::create($request->validated());
+  }
+
+
+  MANUAL VALIDATOR:
+  ──────────────────
+  use Illuminate\Support\Facades\Validator;
+
+  $validator = Validator::make($request->all(), [
+      'name' => 'required',
+  ]);
+
+  if ($validator->fails()) {
+      return response()->json($validator->errors(), 422);
+  }
+
+
+================================================================================
+  DAY 6 — FILE UPLOADS, STORAGE, MAIL, API JSON
+================================================================================
+
+------------------------------------------------------------------------
+6.1 FILE UPLOADS
+------------------------------------------------------------------------
+
+  // HTML form must have: enctype="multipart/form-data"
+
+  // Validation
+  $request->validate([
+      'avatar' => 'required|image|mimes:jpg,png,webp|max:2048',
+      'document' => 'nullable|file|mimes:pdf,docx|max:5120',
+  ]);
+
+  // Store file
+  $path = $request->file('avatar')->store('avatars', 'public');
+  // Stored in: storage/app/public/avatars/filename.jpg
+  // $path = 'avatars/generated_name.jpg'
+
+  // Store with custom name
+  $path = $request->file('avatar')->storeAs('avatars', 'user_' . $id . '.jpg', 'public');
+
+  // Move to custom directory (outside storage)
+  $file = $request->file('cv');
+  $filename = time() . '.' . $file->getClientOriginalExtension();
+  $file->move(public_path('uploads'), $filename);
+  // Accessible at: /uploads/filename.pdf
+
+  // Get file info
+  $file = $request->file('avatar');
+  $file->getClientOriginalName()     // original name
+  $file->getClientOriginalExtension() // extension
+  $file->getSize()                   // bytes
+  $file->getMimeType()               // mime type
+
+  // Create public symlink (run once)
+  php artisan storage:link
+  // Now files in storage/app/public are at /storage/...
+
+  // Get URL of stored file
+  url('storage/' . $path)            // Manual
+  Storage::url($path)                // Via storage facade
+
+
+------------------------------------------------------------------------
+6.2 STORAGE FACADE
+------------------------------------------------------------------------
+
+  use Illuminate\Support\Facades\Storage;
+
+  Storage::disk('public')->put('file.txt', 'content');
+  Storage::disk('public')->get('file.txt');
+  Storage::disk('public')->exists('file.txt');
+  Storage::disk('public')->delete('file.txt');
+  Storage::disk('public')->url('file.txt');
+  Storage::disk('public')->files('avatars');  // List files
+  Storage::disk('public')->allFiles('avatars'); // Recursive
+
+  // Disks configured in config/filesystems.php
+  // local, public, s3, ftp, etc.
+
+
+------------------------------------------------------------------------
+6.3 MAIL
+------------------------------------------------------------------------
+
+  # Generate Mailable class
+  php artisan make:mail WelcomeMail
+
+  // .env for SMTP
+  MAIL_MAILER=smtp
+  MAIL_HOST=smtp.gmail.com
+  MAIL_PORT=587
+  MAIL_USERNAME=your@gmail.com
+  MAIL_PASSWORD=app_password
+  MAIL_ENCRYPTION=tls
+  MAIL_FROM_ADDRESS=your@gmail.com
+  MAIL_FROM_NAME="${APP_NAME}"
+
+  // For development (log to file instead of sending)
+  MAIL_MAILER=log
+
+  // app/Mail/WelcomeMail.php
+  class WelcomeMail extends Mailable {
+      use Queueable, SerializesModels;
+
+      public function __construct(public User $user) {}
+
+      public function envelope(): Envelope {
+          return new Envelope(subject: 'Welcome to My App!');
+      }
+
+      public function content(): Content {
+          return new Content(view: 'emails.welcome');
+          // view: resources/views/emails/welcome.blade.php
+      }
+  }
+
+  // Send email
+  use Illuminate\Support\Facades\Mail;
+
+  Mail::to($user->email)->send(new WelcomeMail($user));
+  Mail::to('admin@site.com')->send(new NewContactMail($contact));
+
+  // Multiple recipients
+  Mail::to($user)->cc('manager@site.com')->send(new WelcomeMail($user));
+
+
+------------------------------------------------------------------------
+6.4 BUILDING A REST API
+------------------------------------------------------------------------
+
+  JSON RESPONSES:
+  ────────────────
+  return response()->json(['status' => 'ok']);
+  return response()->json(['data' => $articles], 200);
+  return response()->json(['error' => 'Not found'], 404);
+  return response()->json(['errors' => $validator->errors()], 422);
+
+  COMMON STATUS CODES:
+  ─────────────────────
+  200 OK              // Success (GET, PUT)
+  201 Created         // Resource created (POST)
+  204 No Content      // Success, no body (DELETE)
+  400 Bad Request     // Invalid input
+  401 Unauthorized    // Not authenticated
+  403 Forbidden       // Authenticated but no permission
+  404 Not Found       // Resource not found
+  422 Unprocessable   // Validation failed
+  500 Server Error    // Bug on server side
+
+  API CONTROLLER PATTERN:
+  ────────────────────────
+  class ArticleController extends Controller {
+
+      public function index() {
+          return response()->json(Article::all());
+      }
+
+      public function show($id) {
+          $article = Article::find($id);
+          if (!$article) {
+              return response()->json(['error' => 'Not found'], 404);
+          }
+          return response()->json($article);
+      }
+
+      public function store(Request $request) {
+          $request->validate([...]);
+          $article = Article::create($request->validated());
+          return response()->json($article, 201);
+      }
+
+      public function update(Request $request, $id) {
+          $article = Article::findOrFail($id);
+          $article->update($request->all());
+          return response()->json($article);
+      }
+
+      public function destroy($id) {
+          Article::findOrFail($id)->delete();
+          return response()->json(null, 204);
+      }
+  }
+
+  API RESOURCES (transform models for JSON):
+  ────────────────────────────────────────────
+  php artisan make:resource ArticleResource
+
+  // app/Http/Resources/ArticleResource.php
+  class ArticleResource extends JsonResource {
+      public function toArray(Request $request): array {
+          return [
+              'id'         => $this->id,
+              'title'      => $this->title,
+              'excerpt'    => substr($this->body, 0, 100),
+              'author'     => $this->user->name,
+              'created_at' => $this->created_at->format('Y-m-d'),
+              // Never expose: password, internal fields
+          ];
+      }
+  }
+
+  // Use in controller:
+  return new ArticleResource($article);
+  return ArticleResource::collection($articles);
+
+  CORS (Cross-Origin Resource Sharing):
+  ───────────────────────────────────────
+  // config/cors.php
+  'allowed_origins' => ['*'],    // Or specific domain
+  'allowed_methods' => ['*'],
+  'allowed_headers' => ['*'],
+
+  // Laravel includes CORS middleware by default
+
+
+------------------------------------------------------------------------
+6.5 RATE LIMITING
+------------------------------------------------------------------------
+
+  // Built-in throttle middleware
+  Route::post('/contact', ...)->middleware('throttle:10,1');
+  // 10 requests per 1 minute per IP
+
+  // Customize in RouteServiceProvider or bootstrap/app.php:
+  RateLimiter::for('api', function (Request $request) {
+      return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+  });
+
+
+================================================================================
+  DAY 7 — TESTING, DEPLOYMENT, BEST PRACTICES
+================================================================================
+
+------------------------------------------------------------------------
+7.1 TESTING BASICS
+------------------------------------------------------------------------
+
+  # Run tests
+  php artisan test
+  php artisan test --filter ArticleTest
+
+  # Create test
+  php artisan make:test ArticleTest
+  php artisan make:test ArticleTest --unit
+
+  FEATURE TEST EXAMPLE:
+  ──────────────────────
+  // tests/Feature/ArticleTest.php
+  class ArticleTest extends TestCase {
+      use RefreshDatabase;  // Reset DB each test
+
+      public function test_can_list_articles(): void {
+          Article::factory(5)->create();
+
+          $response = $this->get('/api/articles');
+
+          $response->assertStatus(200)
+                   ->assertJsonCount(5);
+      }
+
+      public function test_can_create_article(): void {
+          $user = User::factory()->create();
+
+          $response = $this->actingAs($user)->postJson('/api/articles', [
+              'title' => 'Test Article',
+              'body'  => 'Content',
+          ]);
+
+          $response->assertStatus(201);
+          $this->assertDatabaseHas('articles', ['title' => 'Test Article']);
+      }
+
+      public function test_requires_auth_to_create(): void {
+          $response = $this->postJson('/api/articles', ['title' => 'Test']);
+          $response->assertStatus(401);
+      }
+  }
+
+  FACTORIES (generate fake models):
+  ───────────────────────────────────
+  php artisan make:factory ArticleFactory --model=Article
+
+  class ArticleFactory extends Factory {
+      public function definition(): array {
+          return [
+              'title'     => fake()->sentence(),
+              'slug'      => fake()->slug(),
+              'body'      => fake()->paragraphs(3, true),
+              'published' => fake()->boolean(),
+              'user_id'   => User::factory(),
+          ];
+      }
+  }
+
+  // Use in tests or seeders:
+  Article::factory()->create();
+  Article::factory(10)->create();
+  Article::factory()->create(['title' => 'Specific Title']);
+
+
+------------------------------------------------------------------------
+7.2 ARTISAN COMMANDS — Quick Reference
+------------------------------------------------------------------------
+
+  # Info
+  php artisan                          // List all commands
+  php artisan --version                // Laravel version
+  php artisan route:list               // Show all routes
+  php artisan route:list --method=GET  // Filter by method
+  php artisan model:show Article       // Show model info
+
+  # Make commands (code generators)
+  php artisan make:model Name
+  php artisan make:model Name -m       // + migration
+  php artisan make:model Name -mc      // + migration + controller
+  php artisan make:controller Name
+  php artisan make:controller Name --api
+  php artisan make:migration name
+  php artisan make:seeder Name
+  php artisan make:factory Name
+  php artisan make:middleware Name
+  php artisan make:request Name
+  php artisan make:mail Name
+  php artisan make:job Name
+  php artisan make:event Name
+  php artisan make:listener Name
+  php artisan make:resource Name
+  php artisan make:test Name
+
+  # Database
+  php artisan migrate
+  php artisan migrate:rollback
+  php artisan migrate:fresh
+  php artisan migrate:fresh --seed
+  php artisan db:seed
+  php artisan db:seed --class=NameSeeder
+  php artisan db                       // Interactive DB shell
+
+  # Cache management
+  php artisan config:clear
+  php artisan config:cache             // Cache for production
+  php artisan route:clear
+  php artisan route:cache              // Cache for production
+  php artisan view:clear
+  php artisan cache:clear
+  php artisan optimize                 // Cache everything
+  php artisan optimize:clear          // Clear everything
+
+  # Storage
+  php artisan storage:link             // Create public symlink
+
+  # Queue
+  php artisan queue:work               // Process jobs
+  php artisan queue:failed             // Show failed jobs
+
+  # REPL
+  php artisan tinker                   // Interactive Laravel shell
+
+
+------------------------------------------------------------------------
+7.3 TINKER — Interactive Testing
+------------------------------------------------------------------------
+
+  php artisan tinker
+
+  # Then inside tinker:
+  >>> Article::count()
+  >>> Article::first()
+  >>> Article::where('published', true)->get()
+  >>> Article::create(['title' => 'Test', 'slug' => 'test', 'body' => 'hi'])
+  >>> User::find(1)->articles()->count()
+  >>> now()
+  >>> \Illuminate\Support\Str::slug('Hello World')
+
+
+------------------------------------------------------------------------
+7.4 DEPLOYMENT ON CPANEL
+------------------------------------------------------------------------
+
+  STRUCTURE ON CPANEL:
+  ─────────────────────
+  ~/                                   ← Home directory
+  ├── eig-laravel/                     ← Laravel source (OUTSIDE public_html)
+  │   ├── app/
+  │   ├── bootstrap/
+  │   ├── config/
+  │   ├── database/
+  │   ├── routes/
+  │   ├── storage/
+  │   ├── vendor/
+  │   └── .env
+  └── public_html/
+      └── excellis-invest-group/
+          └── api/                     ← Laravel public/ folder
+              ├── index.php            ← Modified to point to ~/eig-laravel
+              └── .htaccess
+
+  WHY OUTSIDE public_html?
+  Security: The app code (database credentials, .env, config)
+  must never be accessible via browser.
+  Only the public/ folder is exposed to the web.
+
+  MODIFIED index.php FOR CPANEL:
+  ───────────────────────────────
+  <?php
+  define('LARAVEL_START', microtime(true));
+
+  if (file_exists($m = __DIR__.'/../../../eig-laravel/storage/framework/maintenance.php'))
+      require $m;
+
+  require __DIR__.'/../../../eig-laravel/vendor/autoload.php';
+  $app = require_once __DIR__.'/../../../eig-laravel/bootstrap/app.php';
+  $app->handleRequest(Illuminate\Http\Request::capture());
+
+
+  DEPLOYMENT STEPS:
+  ──────────────────
+  1. Upload your zip to ~/
+  2. Extract
+  3. SSH into server:
+     cd ~/eig-laravel
+     composer install --no-dev --optimize-autoloader
+     cp .env.example .env
+     # Edit .env with production values
+     php artisan key:generate
+     php artisan jwt:secret          # If using JWT
+     php artisan migrate --force
+     php artisan db:seed --class=EigSeeder
+     php artisan optimize            # Cache routes, config, views
+     chmod -R 775 storage bootstrap/cache
+     touch storage/logs/laravel.log
+     chmod 664 storage/logs/laravel.log
+
+  IMPORTANT .env FOR PRODUCTION:
+  ───────────────────────────────
+  APP_ENV=production
+  APP_DEBUG=false         # CRITICAL: Never true in production
+  APP_KEY=base64:...      # Generated by key:generate
+
+  DB_CONNECTION=mysql
+  DB_HOST=localhost       # Usually localhost on shared hosting
+  DB_DATABASE=user_dbname
+  DB_USERNAME=user_dbuser
+  DB_PASSWORD=strong_password
+
+  CACHE_STORE=file        # Redis not available on shared hosting
+  SESSION_DRIVER=file
+  QUEUE_CONNECTION=sync   # No queue worker on shared hosting
+  LOG_CHANNEL=single
+
+
+------------------------------------------------------------------------
+7.5 BEST PRACTICES
+------------------------------------------------------------------------
+
+  SECURITY:
+  ──────────
+  1. NEVER set APP_DEBUG=true in production
+  2. ALWAYS validate user input ($request->validate())
+  3. ALWAYS use $fillable in models (prevent mass assignment)
+  4. NEVER expose passwords, tokens in JSON responses (use $hidden)
+  5. Use rate limiting on auth routes (throttle middleware)
+  6. Keep .env in .gitignore — never commit it
+  7. Use HTTPS in production
+  8. Escape output in Blade: {{ $var }} not {!! $var !!}
+
+  PERFORMANCE:
+  ─────────────
+  1. Always eager load relationships (with()) to avoid N+1
+  2. Use select() to only fetch needed columns
+  3. Add database indexes to frequently queried columns
+  4. Cache config and routes in production (php artisan optimize)
+  5. Use paginate() instead of all() for large datasets
+  6. Use chunk() for processing large datasets in jobs
+
+  CODE QUALITY:
+  ──────────────
+  1. Fat models, thin controllers — put logic in models/services
+  2. Use Form Requests for complex validation
+  3. Use API Resources to control JSON output
+  4. Use Eloquent scopes for reusable query constraints
+  5. Use migrations for ALL database changes — never modify DB manually
+  6. Write tests for critical features (auth, payments, etc.)
+  7. Use meaningful variable and method names
+  8. One controller = one resource (don't put everything in one file)
+
+
+================================================================================
+  BONUS — COMMANDS CHEAT SHEET
+================================================================================
+
+  ARTISAN QUICK REFERENCE:
+  ─────────────────────────
+  php artisan serve                    # Start dev server :8000
+  php artisan migrate                  # Run migrations
+  php artisan migrate:fresh --seed     # Reset + seed
+  php artisan make:model X -mc         # Model + migration + controller
+  php artisan route:list               # List routes
+  php artisan tinker                   # REPL
+  php artisan optimize:clear           # Clear all caches
+  php artisan config:clear             # Clear config cache
+  php artisan storage:link             # Link storage to public
+
+  COMPOSER QUICK REFERENCE:
+  ──────────────────────────
+  composer install                     # Install from composer.lock
+  composer update                      # Update all packages
+  composer require package/name        # Add package
+  composer require package/name --dev  # Dev dependency
+  composer remove package/name         # Remove package
+  composer dump-autoload               # Regenerate autoloader
+  composer install --no-dev --optimize-autoloader  # Production install
+
+
+================================================================================
+  BONUS — COMMON ERRORS & FIXES
+================================================================================
+
+  ERROR: "Class not found"
+  FIX:   composer dump-autoload
+
+  ERROR: "SQLSTATE: could not find driver"
+  FIX:   Enable php_pdo_mysql extension in php.ini
+
+  ERROR: "The page has expired due to inactivity" (CSRF)
+  FIX:   Add @csrf inside your form, or add route to csrf exclusions
+
+  ERROR: "permission denied" on storage/
+  FIX:   chmod -R 775 storage bootstrap/cache
+
+  ERROR: "Column not found" after migration
+  FIX:   php artisan migrate:fresh (WARNING: deletes all data)
+         OR make a new migration to add the column
+
+  ERROR: "Illuminate\Database\Eloquent\MassAssignmentException"
+  FIX:   Add the field to $fillable in your Model
+
+  ERROR: "419 Page Expired" on API
+  FIX:   Use routes/api.php (not web.php) — api.php has no CSRF
+
+  ERROR: "No application encryption key"
+  FIX:   php artisan key:generate
+
+  ERROR: 500 Server Error (production)
+  FIX:   Check storage/logs/laravel.log for the real error
+         Make sure APP_DEBUG=false and check file permissions
+
+  ERROR: "Class 'App\Http\Controllers\...' not found"
+  FIX:   Check namespace at top of file matches folder structure
+         Run: composer dump-autoload
+
+
+================================================================================
+  BONUS — LARAVEL PACKAGES TO KNOW
+================================================================================
+
+  AUTHENTICATION:
+  tymon/jwt-auth           → JWT tokens for APIs
+  laravel/sanctum          → Simple token auth (SPAs)
+  laravel/passport         → OAuth2 server
+  laravel/breeze           → Simple auth scaffold
+
+  UTILITIES:
+  spatie/laravel-permission → Roles & permissions
+  spatie/laravel-medialibrary → Advanced file management
+  intervention/image        → Image resizing/manipulation
+  barryvdh/laravel-debugbar → Debug toolbar (dev only)
+  laravel/telescope         → Beautiful debug dashboard
+  laravel/horizon           → Queue management dashboard
+
+  API:
+  dedoc/scramble            → Auto API documentation
+  fruitcake/laravel-cors    → CORS headers (built-in since L9)
+
+  TESTING:
+  pestphp/pest              → More elegant testing syntax
+
+
+================================================================================
+  LEARNING ROADMAP — AFTER THIS WEEK
+================================================================================
+
+  Week 1 (this guide): Core concepts, CRUD, Auth, API, Deploy
+  Week 2: Queues & Jobs, Events & Listeners, Notifications
+  Week 3: Advanced Eloquent, Caching (Redis), Scheduled tasks
+  Week 4: Testing (TDD), Service Container, Design Patterns
+  Month 2: Multi-tenancy, Microservices, Performance optimization
+
+  RESOURCES:
+  ───────────
+  Official Docs     : https://laravel.com/docs
+  Laracasts         : https://laracasts.com (best video tutorials)
+  Laravel News      : https://laravel-news.com
+  Laravel Daily     : https://laraveldaily.com
+  GitHub            : https://github.com/laravel/laravel
+
+
+================================================================================
+  END OF GUIDE — Laravel in Less Than a Week
+  Version: Laravel 11 | PHP 8.2+
+  Last updated: 2026
+================================================================================

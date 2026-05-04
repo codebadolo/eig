@@ -1,16 +1,15 @@
 import { Link } from 'react-router-dom'
+import { useLang } from '../../contexts/LangContext'
 
 export default function CallToAction() {
+  const { t } = useLang()
   return (
     <section className="section-cta">
-      <h2 className="cta-title">Construisons ensemble.</h2>
-      <p className="cta-sub">
-        Investisseur, partenaire institutionnel ou client d'une filiale — prenons le temps
-        d'un échange pour explorer les opportunités.
-      </p>
+      <h2 className="cta-title">{t('cta.title')}</h2>
+      <p className="cta-sub">{t('cta.sub')}</p>
       <div className="cta-actions">
-        <Link to="/contact" className="btn-cta-white">Nous contacter</Link>
-        <Link to="/contact" className="btn-cta-outline">Espace Investisseurs</Link>
+        <Link to="/contact" className="btn-cta-white">{t('cta.contact')}</Link>
+        <Link to="/contact" className="btn-cta-outline">{t('cta.investors')}</Link>
       </div>
     </section>
   )

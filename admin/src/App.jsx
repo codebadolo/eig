@@ -17,6 +17,7 @@ import Carrieres from './pages/Carrieres'
 import CarriereForm from './pages/CarriereForm'
 import Candidatures from './pages/Candidatures'
 import CandidatureDetail from './pages/CandidatureDetail'
+import Newsletter from './pages/Newsletter'
 import Images from './pages/Images'
 import Parametres from './pages/Parametres'
 
@@ -52,6 +53,7 @@ function AppRoutes() {
         <Route path="carrieres/:id/modifier" element={<CarriereForm />} />
         <Route path="candidatures" element={<Candidatures />} />
         <Route path="candidatures/:id" element={<CandidatureDetail />} />
+        <Route path="newsletter" element={<Newsletter />} />
         <Route path="parametres" element={<Parametres />} />
       </Route>
     </Routes>

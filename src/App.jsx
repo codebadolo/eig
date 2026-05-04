@@ -14,6 +14,7 @@ import CarriereDetail from './pages/CarriereDetail'
 import DirigeantDetail from './pages/DirigeantDetail'
 import Contact from './pages/Contact'
 import NotFound from './pages/NotFound'
+import Unsubscribe from './pages/Unsubscribe'
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="contact" element={<Contact />} />
         <Route path="*" element={<NotFound />} />
       </Route>
+      <Route path="/unsubscribe" element={<Unsubscribe />} />
     </Routes>
   )
 }

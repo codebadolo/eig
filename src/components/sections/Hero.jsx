@@ -1,17 +1,19 @@
 import { Link } from 'react-router-dom'
 import { useApi } from '../../hooks/useApi'
+import { useLang } from '../../contexts/LangContext'
 
 const API = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
 export default function Hero({ company }) {
+  const { t, pick } = useLang()
   const { data: heroImgs = [] } = useApi('/images?section=hero&actif=true')
   const heroImg = heroImgs[0]
 
   const kpis = company?.kpis ?? [
     { num: '20', unite: 'Mds', label: 'FCFA Capital Social' },
     { num: '17', unite: '', label: 'Filiales opérationnelles' },
-    { num: '9', unite: '', label: 'Secteurs stratégiques' },
-    { num: '2', unite: '', label: 'Pays(BF+CI)' },
+    { num: '9',  unite: '', label: 'Secteurs stratégiques' },
+    { num: '2',  unite: '', label: 'Pays (BF+CI)' },
   ]
 
   return (
@@ -29,17 +31,17 @@ export default function Hero({ company }) {
       <div className="hero-content">
         <div className="hero-badge">
           <span className="hero-badge-dot" />
-          <span>Holding d'investissement multisectorielle · Burkina Faso</span>
+          <span>{t('hero.badge')}</span>
         </div>
 
         <h1 className="hero-title">
-          Catalyseur de croissance,
-          <em>architecte de valeur durable</em>
-          en Afrique.
+          {t('hero.title1')}
+          <em>{t('hero.title2')}</em>
+          {t('hero.title3')}
         </h1>
 
         <p className="hero-subtitle">
-          {company?.description ||
+          {pick(company, 'description') ||
             "Excellis Invest Group mobilise des expertises, des capitaux et des mécanismes d'intervention à forte valeur ajoutée pour accompagner les institutions et entreprises africaines dans leur transformation durable."}
         </p>
 
@@ -57,20 +59,18 @@ export default function Hero({ company }) {
 
         <div className="hero-actions">
           <Link to="/le-groupe" className="btn-primary">
-            Découvrir le Groupe
+            {t('hero.discover')}
             <span className="btn-arrow">→</span>
           </Link>
           <Link to="/contact" className="btn-secondary">
-            Espace Investisseurs
+            {t('hero.investors')}
             <span className="btn-arrow">→</span>
           </Link>
         </div>
       </div>
 
-
-
       <div className="hero-scroll" aria-hidden="true">
-        <span>Découvrir</span>
+        <span>{t('hero.scroll')}</span>
         <div className="scroll-line" />
       </div>
     </section>

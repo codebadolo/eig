@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 class Article extends Model {
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['id','slug','titre','categorie','date','extrait','contenu','couleur','featured','image','publie'];
+    protected $fillable = ['id','slug','titre','titre_en','categorie','date','extrait','extrait_en','contenu','contenu_en','couleur','featured','image','publie'];
     protected $casts = ['featured' => 'boolean', 'publie' => 'boolean'];
 
     protected static function boot() {
