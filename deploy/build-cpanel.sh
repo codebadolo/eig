@@ -4,48 +4,24 @@
 # Usage : ./deploy/build-cpanel.sh https://excellis-invest-group.jofedigital.com
 #
 # Produit : deploy/eig-cpanel.zip
-#
-# Structure après extraction dans ~/ sur cPanel :
-#
-#   ~/
-#   ├── eig-laravel/                   ← source Laravel (hors public_html)
-#   │   ├── app/ bootstrap/ config/
-#   │   ├── database/ routes/ storage/
-#   │   └── (sans vendor/ ni .env)
-#   └── public_html/
-#       └── excellis-invest-group/
-#           ├── index.html             ← frontend React
-#           ├── assets/
-#           ├── .htaccess
-#           ├── uploads/               ← fichiers uploadés (images)
-#           ├── admin/
-#           │   ├── index.html         ← admin React
-#           │   └── .htaccess
-#           └── api/                   ← Laravel public/
-#               ├── index.php          ← modifié → pointe vers ~/eig-laravel/
-#               └── .htaccess
-#
-# Sur cPanel après extraction :
-#   1. cd ~/eig-laravel && composer install --no-dev --optimize-autoloader
-#   2. cp .env.example .env  →  remplir les valeurs MySQL
-#   3. php artisan key:generate && php artisan jwt:secret
-#   4. php artisan migrate && php artisan db:seed --class=EigSeeder
 # ─────────────────────────────────────────────────────────────────────────────
 
 set -e
 
 DOMAIN="${1:-https://excellis-invest-group.jofedigital.com}"
 SUBFOLDER="excellis-invest-group"
-API_FULL="${DOMAIN}/${SUBFOLDER}/api"
+API_BASE="${DOMAIN}/api"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="$ROOT/deploy/eig-cpanel-build"
 LARAVEL_OUT="$OUT/eig-laravel"
 WEB_OUT="$OUT/public_html/$SUBFOLDER"
 
 echo ""
-echo "  EIG — Build cPanel"
-echo "  Domaine : $DOMAIN"
-echo "  API URL : $API_FULL"
+echo "  ┌─────────────────────────────────────────────────────────┐"
+echo "  │  EIG — Build cPanel                                     │"
+echo "  │  Domaine : $DOMAIN                                      │"
+echo "  │  API URL : $API_BASE                                    │"
+echo "  └─────────────────────────────────────────────────────────┘"
 echo ""
 
 # ── Nettoyage ─────────────────────────────────────────────────────────────────
@@ -56,48 +32,79 @@ mkdir -p "$WEB_OUT/api"
 mkdir -p "$LARAVEL_OUT"
 
 # ── 1. Build FRONTEND ─────────────────────────────────────────────────────────
-echo "► Build frontend..."
+echo "► [1/5] Build frontend..."
 cd "$ROOT"
-echo "VITE_API_URL=$API_FULL" > .env.production.local
-npm install --silent
+echo "VITE_API_URL=$API_BASE" > .env.production.local
+npm install --no-audit --no-fund
 npm run build
 cp -r dist/. "$WEB_OUT/"
-cp "$ROOT/deploy/htaccess-frontend" "$WEB_OUT/.htaccess"
-echo "  ✓ Frontend"
+
+# .htaccess frontend
+cat > "$WEB_OUT/.htaccess" << 'EOF'
+Options -MultiViews
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/admin/
+RewriteCond %{REQUEST_URI} !^/api/
+RewriteRule ^ index.html [L]
+EOF
+echo "  ✓ Frontend + .htaccess"
 
 # ── 2. Build ADMIN ────────────────────────────────────────────────────────────
-echo "► Build admin..."
+echo "► [2/5] Build admin..."
 cd "$ROOT/admin"
-echo "VITE_API_URL=$API_FULL" > .env.production.local
-npm install --silent
+echo "VITE_API_URL=$API_BASE" > .env.production.local
+npm install --no-audit --no-fund
 npm run build
 cp -r dist/. "$WEB_OUT/admin/"
-cp "$ROOT/deploy/htaccess-admin" "$WEB_OUT/admin/.htaccess"
-echo "  ✓ Admin"
 
-# ── 3. Laravel public/ → api/ ────────────────────────────────────────────────
-echo "► Copie Laravel public/..."
+# .htaccess admin
+cat > "$WEB_OUT/admin/.htaccess" << 'EOF'
+Options -MultiViews
+RewriteEngine On
+RewriteBase /admin/
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]
+EOF
+echo "  ✓ Admin + .htaccess"
+
+# ── 3. Laravel public/ → api/ avec correction CRITIQUE ────────────────────────
+echo "► [3/5] Configuration API Laravel..."
 cp -r "$ROOT/backend-php/public/." "$WEB_OUT/api/"
 
-# Modifier index.php pour pointer vers ~/eig-laravel/
-# __DIR__ = ~/public_html/excellis-invest-group/api
-# ../../../eig-laravel = ~/eig-laravel ✓
-sed -i \
-  "s|require __DIR__\.'/../vendor/autoload.php';|require __DIR__.'/../../../eig-laravel/vendor/autoload.php';|g" \
-  "$WEB_OUT/api/index.php"
-sed -i \
-  "s|require_once __DIR__\.'/../bootstrap/app.php';|require_once __DIR__.'/../../../eig-laravel/bootstrap/app.php';|g" \
-  "$WEB_OUT/api/index.php"
+# Index.php CORRIGÉ avec SCRIPT_NAME (solution au problème 404)
+cat > "$WEB_OUT/api/index.php" << 'EOF'
+<?php
+use Illuminate\Http\Request;
 
-# .htaccess pour le dossier api/ — PHP 8.3 uniquement pour ce dossier
+define('LARAVEL_START', microtime(true));
+
+if (file_exists($maintenance = __DIR__.'/../../../eig-laravel/storage/framework/maintenance.php')) {
+    require $maintenance;
+}
+
+require __DIR__.'/../../../eig-laravel/vendor/autoload.php';
+$app = require_once __DIR__.'/../../../eig-laravel/bootstrap/app.php';
+
+// CORRECTION CRITIQUE : Force SCRIPT_NAME pour que Laravel voie /api/les routes
+$_SERVER['SCRIPT_NAME']     = '/index.php';
+$_SERVER['SCRIPT_FILENAME'] = __DIR__ . '/index.php';
+$_SERVER['PHP_SELF']        = '/index.php';
+
+$app->handleRequest(Request::capture());
+EOF
+
+# .htaccess api (SANS AddHandler - problème connu LWS)
 cat > "$WEB_OUT/api/.htaccess" << 'EOF'
-# Utiliser PHP 8.3 pour ce dossier uniquement (sans affecter les autres apps)
-AddHandler application/x-httpd-alt-php83 .php
-
 <IfModule mod_rewrite.c>
     Options -MultiViews -Indexes
     RewriteEngine On
-    RewriteBase /excellis-invest-group/api/
+    RewriteBase /api/
 
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -108,14 +115,12 @@ AddHandler application/x-httpd-alt-php83 .php
 </IfModule>
 EOF
 
-# Supprimer le dossier uploads/ copié depuis public/ (uploads vont dans le parent)
-rm -rf "$WEB_OUT/api/uploads"
-rm -f "$WEB_OUT/api/storage"
+# Nettoyage des fichiers inutiles
+rm -rf "$WEB_OUT/api/uploads" "$WEB_OUT/api/storage"
+echo "  ✓ API Laravel (avec correction 404)"
 
-echo "  ✓ API Laravel (public/)"
-
-# ── 4. Laravel source → eig-laravel/ ─────────────────────────────────────────
-echo "► Copie source Laravel..."
+# ── 4. Source Laravel → eig-laravel/ ─────────────────────────────────────────
+echo "► [4/5] Copie source Laravel..."
 rsync -a \
   --exclude='vendor/' \
   --exclude='.env' \
@@ -128,30 +133,29 @@ rsync -a \
   --exclude='bootstrap/cache/*.php' \
   "$ROOT/backend-php/" "$LARAVEL_OUT/"
 
-# .env.example pour cPanel
+# .env.example pour cPanel (adapté à la structure)
 cat > "$LARAVEL_OUT/.env.example" << EOF
 APP_NAME="EIG Backend"
 APP_ENV=production
 APP_KEY=
 APP_DEBUG=false
-APP_URL=${API_FULL}
+APP_URL=${API_BASE}
 
 DB_CONNECTION=mysql
 DB_HOST=localhost
 DB_PORT=3306
-DB_DATABASE=CPANEL_USER_eig_db
-DB_USERNAME=CPANEL_USER_eig
-DB_PASSWORD=MOT_DE_PASSE
+DB_DATABASE=c1663907c_eig-database
+DB_USERNAME=c1663907c_eig_database_user
+DB_PASSWORD=VOTRE_MOT_DE_PASSE
 
 JWT_SECRET=
 JWT_TTL=10080
 
 FRONTEND_URL=${DOMAIN}
-ADMIN_URL=${DOMAIN}
+ADMIN_URL=${DOMAIN}/admin
 
-# Dossier uploads (hors api/, dans excellis-invest-group/)
-# Remplacer CPANEL_USER par votre vrai nom d'utilisateur cPanel
-UPLOAD_DIR=/home/CPANEL_USER/public_html/${SUBFOLDER}/uploads
+# Dossier uploads (dans public_html/excellis-invest-group/uploads)
+UPLOAD_DIR=/home/c1663907c/public_html/${SUBFOLDER}/uploads
 
 CACHE_STORE=file
 SESSION_DRIVER=file
@@ -160,36 +164,43 @@ LOG_CHANNEL=single
 FILESYSTEM_DISK=local
 EOF
 
-echo "  ✓ Source Laravel"
+echo "  ✓ Source Laravel + .env.example"
 
 # ── 5. ZIP final ──────────────────────────────────────────────────────────────
-echo "► Création du zip..."
+echo "► [5/5] Création du zip..."
 cd "$OUT"
 rm -f "$ROOT/deploy/eig-cpanel.zip"
-zip -r "$ROOT/deploy/eig-cpanel.zip" .
+zip -rq "$ROOT/deploy/eig-cpanel.zip" .
 echo "  ✓ deploy/eig-cpanel.zip"
 
-# ── 6. Résumé ─────────────────────────────────────────────────────────────────
+# ── 6. Instructions de déploiement ────────────────────────────────────────────
 echo ""
-echo "══════════════════════════════════════════════════════════"
-echo "  Build terminé : deploy/eig-cpanel.zip"
-echo "══════════════════════════════════════════════════════════"
+echo "═══════════════════════════════════════════════════════════════════════════"
+echo "  ✅ BUILD TERMINÉ : deploy/eig-cpanel.zip"
+echo "═══════════════════════════════════════════════════════════════════════════"
 echo ""
-echo "  SUR CPANEL :"
+echo "  📦 SUR CPANEL (LWS) :"
 echo ""
-echo "  1. Gestionnaire de fichiers → uploader eig-cpanel.zip dans ~/"
-echo "  2. Extraire → crée ~/eig-laravel/ et ~/public_html/${SUBFOLDER}/"
+echo "  1. Uploader eig-cpanel.zip dans le dossier /home/c1663907c/"
+echo "  2. Extraire le zip (crée eig-laravel/ et public_html/excellis-invest-group/)"
 echo ""
-echo "  3. SSH Terminal :"
+echo "  3. Configurer PHP 8.3 dans cPanel → PHP Selector"
+echo ""
+echo "  4. En SSH :"
 echo "     cd ~/eig-laravel"
 echo "     composer install --no-dev --optimize-autoloader"
 echo "     cp .env.example .env"
-echo "     # Editer .env avec vos valeurs MySQL et CPANEL_USER"
+echo "     # Éditer .env : DB_DATABASE, DB_USERNAME, DB_PASSWORD"
 echo "     php artisan key:generate"
 echo "     php artisan jwt:secret"
-echo "     php artisan migrate"
+echo "     php artisan migrate --force"
 echo "     php artisan db:seed --class=EigSeeder"
+echo "     chmod -R 775 storage bootstrap/cache"
+echo "     touch storage/logs/laravel.log"
+echo "     chmod 664 storage/logs/laravel.log"
 echo ""
-echo "  4. Site accessible : ${DOMAIN}/${SUBFOLDER}/"
-echo "     API health      : ${API_FULL}/health"
+echo "  5. Vérifications :"
+echo "     curl ${API_BASE}/health"
+echo "     curl ${DOMAIN}/admin/"
 echo ""
+echo "═══════════════════════════════════════════════════════════════════════════"

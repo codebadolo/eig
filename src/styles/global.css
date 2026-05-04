@@ -197,20 +197,31 @@ nav.navbar.scrolled .nav-hamburger span { background: var(--dark); }
 
 /* ─── NAV LOGO IMAGE ─── */
 .nav-logo-img-wrap {
+  height: 52px;
+  overflow: hidden;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   background: transparent;
-  padding: 4px 0;
-  transition: all var(--transition);
 }
-.nav-logo-img {
-  height: 56px;
+.nav-logo-hidden {
+  display: none !important;
+}
+.nav-logo-light {
+  height: 64px;
   width: auto;
   display: block;
-  transition: all var(--transition);
+  margin-top: -6px;
+}
+.nav-logo-dark {
+  height: 154px;
+  width: auto;
+  display: block;
+  margin-top: -52px;
 }
 @media (max-width: 768px) {
-  .nav-logo-img { height: 42px; }
+  .nav-logo-img-wrap { height: 40px; }
+  .nav-logo-light    { height: 50px; margin-top: -5px; }
+  .nav-logo-dark     { height: 119px; margin-top: -40px; }
 }
 
 /* ─── HERO VISUAL ─── */

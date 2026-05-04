@@ -1,8 +1,11 @@
 import { useParams, Link } from 'react-router-dom'
+import { useState } from 'react'
 import ScrollReveal from '../components/ui/ScrollReveal'
 import CallToAction from '../components/sections/CallToAction'
 import { useApi } from '../hooks/useApi'
 import PageHero from '../components/ui/PageHero'
+
+const API_BASE = import.meta.env.VITE_API_URL || '/api'
 
 function BulletList({ text, color = 'var(--teal)' }) {
   if (!text) return null
@@ -23,6 +26,150 @@ function InfoBadge({ label, value, accent }) {
     <div style={{ background: accent ? 'var(--gold-pale)' : 'var(--ivory)', padding: '16px 20px', borderRadius: 6, border: `1px solid ${accent ? 'rgba(184,146,42,0.25)' : 'var(--gray-light)'}` }}>
       <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: accent ? 'var(--gold)' : 'var(--gray-mid)', marginBottom: 4 }}>{label}</div>
       <div style={{ fontWeight: 600, color: accent ? 'var(--teal-dark)' : 'var(--black)', fontSize: 14 }}>{value}</div>
+    </div>
+  )
+}
+
+const STATUT_LABELS = {
+  recue: { label: 'Reçue', color: '#1A6B7A' },
+  en_cours: { label: 'En cours', color: '#B8922A' },
+  acceptee: { label: 'Acceptée', color: '#10B981' },
+  refusee: { label: 'Refusée', color: '#EF4444' },
+}
+
+function CandidatureForm({ offre }) {
+  const [form, setForm] = useState({ nom: '', prenom: '', email: '', telephone: '', lettre: '' })
+  const [cv, setCv] = useState(null)
+  const [sending, setSending] = useState(false)
+  const [sent, setSent] = useState(false)
+  const [error, setError] = useState('')
+
+  const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }))
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!form.nom || !form.prenom || !form.email) return setError('Veuillez remplir les champs obligatoires.')
+    setSending(true)
+    setError('')
+    try {
+      const fd = new FormData()
+      fd.append('carriere_id', offre.id)
+      Object.entries(form).forEach(([k, v]) => fd.append(k, v))
+      if (cv) fd.append('cv', cv)
+      const res = await fetch(`${API_BASE}/candidatures`, { method: 'POST', body: fd })
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.message || 'Erreur lors de l\'envoi')
+      }
+      setSent(true)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSending(false)
+    }
+  }
+
+  const inputStyle = {
+    width: '100%', padding: '12px 16px', borderRadius: 6,
+    border: '1px solid var(--gray-light)', background: 'white',
+    fontSize: 14, color: 'var(--dark)', outline: 'none',
+    boxSizing: 'border-box', transition: 'border-color 0.2s',
+  }
+  const labelStyle = {
+    fontSize: 11, fontWeight: 700, letterSpacing: '0.12em',
+    textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 6, display: 'block',
+  }
+
+  if (sent) return (
+    <div style={{ background: 'var(--ivory)', border: '1px solid rgba(16,185,129,0.3)', borderRadius: 8, padding: '40px 32px', textAlign: 'center' }}>
+      <div style={{ fontSize: 48, marginBottom: 16 }}>✓</div>
+      <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, color: 'var(--teal-dark)', marginBottom: 10 }}>
+        Candidature envoyée !
+      </div>
+      <p style={{ fontSize: 15, color: 'var(--gray-mid)', lineHeight: 1.7 }}>
+        Merci <strong>{form.prenom}</strong>, nous avons bien reçu votre candidature pour le poste <strong>{offre.titre}</strong>. Notre équipe RH vous contactera dans les meilleurs délais.
+      </p>
+    </div>
+  )
+
+  return (
+    <div style={{ background: 'var(--ivory)', borderRadius: 8, padding: '40px 32px', border: '1px solid var(--gray-light)' }}>
+      <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold)' }}>Postuler</span>
+      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 28, color: 'var(--dark)', margin: '8px 0 4px' }}>Formulaire de candidature</h2>
+      <div style={{ width: 32, height: 2, background: 'var(--gold)', marginBottom: 28 }} />
+
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div>
+            <label style={labelStyle}>Prénom <span style={{ color: 'var(--gold)' }}>*</span></label>
+            <input style={inputStyle} value={form.prenom} onChange={set('prenom')} placeholder="Votre prénom"
+              onFocus={e => e.target.style.borderColor = 'var(--teal)'}
+              onBlur={e => e.target.style.borderColor = 'var(--gray-light)'} />
+          </div>
+          <div>
+            <label style={labelStyle}>Nom <span style={{ color: 'var(--gold)' }}>*</span></label>
+            <input style={inputStyle} value={form.nom} onChange={set('nom')} placeholder="Votre nom"
+              onFocus={e => e.target.style.borderColor = 'var(--teal)'}
+              onBlur={e => e.target.style.borderColor = 'var(--gray-light)'} />
+          </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div>
+            <label style={labelStyle}>Email <span style={{ color: 'var(--gold)' }}>*</span></label>
+            <input type="email" style={inputStyle} value={form.email} onChange={set('email')} placeholder="votre@email.com"
+              onFocus={e => e.target.style.borderColor = 'var(--teal)'}
+              onBlur={e => e.target.style.borderColor = 'var(--gray-light)'} />
+          </div>
+          <div>
+            <label style={labelStyle}>Téléphone</label>
+            <input style={inputStyle} value={form.telephone} onChange={set('telephone')} placeholder="+226 XX XX XX XX"
+              onFocus={e => e.target.style.borderColor = 'var(--teal)'}
+              onBlur={e => e.target.style.borderColor = 'var(--gray-light)'} />
+          </div>
+        </div>
+
+        <div>
+          <label style={labelStyle}>CV (PDF, Word — max 5 Mo)</label>
+          <label style={{ display: 'block', cursor: 'pointer' }}>
+            <div style={{
+              border: `2px dashed ${cv ? 'var(--teal)' : 'var(--gray-light)'}`,
+              borderRadius: 6, padding: '20px 16px', textAlign: 'center',
+              background: cv ? 'rgba(26,107,122,0.04)' : 'white', transition: 'all 0.2s',
+            }}>
+              {cv
+                ? <span style={{ fontSize: 13, color: 'var(--teal)', fontWeight: 600 }}>📎 {cv.name}</span>
+                : <span style={{ fontSize: 13, color: 'var(--gray-mid)' }}>Glissez votre CV ici ou <span style={{ color: 'var(--teal)', textDecoration: 'underline' }}>parcourir</span></span>
+              }
+            </div>
+            <input type="file" accept=".pdf,.doc,.docx" onChange={e => setCv(e.target.files[0])} style={{ display: 'none' }} />
+          </label>
+        </div>
+
+        <div>
+          <label style={labelStyle}>Lettre de motivation</label>
+          <textarea style={{ ...inputStyle, height: 140, resize: 'vertical' }} value={form.lettre} onChange={set('lettre')}
+            placeholder="Présentez-vous et expliquez votre motivation..."
+            onFocus={e => e.target.style.borderColor = 'var(--teal)'}
+            onBlur={e => e.target.style.borderColor = 'var(--gray-light)'} />
+        </div>
+
+        {error && (
+          <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: 6, padding: '12px 16px', fontSize: 14, color: '#DC2626' }}>
+            {error}
+          </div>
+        )}
+
+        <button type="submit" disabled={sending} style={{
+          background: sending ? '#9CA3AF' : 'var(--teal-dark)', color: 'white',
+          border: 'none', borderRadius: 6, padding: '14px 32px',
+          fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase',
+          cursor: sending ? 'not-allowed' : 'pointer', alignSelf: 'flex-start',
+          transition: 'opacity 0.2s',
+        }}>
+          {sending ? 'Envoi en cours...' : 'Envoyer ma candidature →'}
+        </button>
+      </form>
     </div>
   )
 }
@@ -102,16 +249,6 @@ export default function CarriereDetail() {
 
           <ScrollReveal delay={0.1}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, position: 'sticky', top: 100 }}>
-              <div style={{ background: 'var(--teal-dark)', borderRadius: 8, padding: '28px 24px', textAlign: 'center' }}>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: 18, color: 'white', marginBottom: 8 }}>Intéressé(e) par ce poste ?</div>
-                <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', marginBottom: 20, lineHeight: 1.6 }}>
-                  Envoyez votre CV et lettre de motivation à notre équipe RH.
-                </p>
-                <Link to="/contact" className="btn-primary" style={{ display: 'block', textAlign: 'center' }}>
-                  Postuler maintenant →
-                </Link>
-              </div>
-
               <InfoBadge label="Type de contrat" value={offre.type} />
               <InfoBadge label="Département" value={offre.departement} />
               <InfoBadge label="Lieu" value={`📍 ${offre.lieu}`} />
@@ -124,6 +261,14 @@ export default function CarriereDetail() {
                 </Link>
               </div>
             </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section style={{ background: 'var(--white)' }}>
+        <div style={{ maxWidth: 820, margin: '0 auto' }}>
+          <ScrollReveal>
+            <CandidatureForm offre={offre} />
           </ScrollReveal>
         </div>
       </section>

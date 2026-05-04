@@ -1,14 +1,9 @@
 Options -MultiViews
 RewriteEngine On
-RewriteBase /excellis-invest-group/
+RewriteBase /
 
-# Ne pas réécrire les fichiers et dossiers existants
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-# Ne pas intercepter /admin/ ni /api/
-RewriteCond %{REQUEST_URI} !^/excellis-invest-group/admin/
-RewriteCond %{REQUEST_URI} !^/excellis-invest-group/api/
-
-# Toutes les autres routes → index.html (React Router)
+RewriteCond %{REQUEST_URI} !^/admin/
+RewriteCond %{REQUEST_URI} !^/api/
 RewriteRule ^ index.html [L]

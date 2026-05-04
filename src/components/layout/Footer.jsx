@@ -53,7 +53,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} Excellis Invest Group — Tous droits réservés</span>
+        <span>© {new Date().getFullYear()}  Jofé° — Tous droits réservés.</span>
         <div className="footer-legal">
           <Link to="/contact">Mentions légales</Link>
           <Link to="/contact">Politique de confidentialité</Link>

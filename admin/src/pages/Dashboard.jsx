@@ -4,7 +4,7 @@ import { api } from '../lib/api'
 import {
   Building2, Briefcase, Newspaper, MessageSquare, Users,
   Rocket, ImageIcon, Plus, Globe, Star,
-  TrendingUp, FileText, CheckCircle, Eye, EyeOff, ChevronRight,
+  TrendingUp, FileText, CheckCircle, Eye, EyeOff, ChevronRight, ClipboardList,
 } from 'lucide-react'
 
 const API = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3001'
@@ -168,8 +168,9 @@ export default function Dashboard() {
       api.get('/contact').catch(() => []),
       api.get('/carrieres').catch(() => []),
       api.get('/images').catch(() => []),
-    ]).then(([filiales, metiers, articles, dirigeants, msgs, carrieres, images]) => {
-      setData({ filiales, metiers, articles, dirigeants, msgs, carrieres, images })
+      api.get('/candidatures').catch(() => []),
+    ]).then(([filiales, metiers, articles, dirigeants, msgs, carrieres, images, candidatures]) => {
+      setData({ filiales, metiers, articles, dirigeants, msgs, carrieres, images, candidatures })
     }).finally(() => setLoading(false))
   }, [])
 
@@ -179,12 +180,13 @@ export default function Dashboard() {
     </div>
   )
 
-  const { filiales, metiers, articles, dirigeants, msgs, carrieres, images } = data
+  const { filiales, metiers, articles, dirigeants, msgs, carrieres, images, candidatures } = data
   const articlesPublies    = articles.filter(a => a.publie)
   const articlesBrouillons = articles.filter(a => !a.publie)
   const filialesActives    = filiales.filter(f => f.actif)
   const carriereActives    = carrieres.filter(c => c.actif)
   const msgsNonLus         = msgs.filter(m => !m.lu)
+  const candidaturesNouvelles = candidatures.filter(c => c.statut === 'recue')
   const recentArticles     = [...articles].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5)
   const recentMsgs         = msgsNonLus.slice(0, 4)
 
@@ -225,10 +227,11 @@ export default function Dashboard() {
 
         {/* Stats */}
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', position: 'relative' }}>
-          <HeroStat value={filialesActives.length}  label="Filiales actives"   to="/filiales"  />
-          <HeroStat value={articlesPublies.length}  label="Articles publiés"   to="/articles"  />
-          <HeroStat value={carriereActives.length}  label="Offres d'emploi"    to="/carrieres" />
-          <HeroStat value={msgsNonLus.length}       label="Messages non lus"   to="/messages"  />
+          <HeroStat value={filialesActives.length}      label="Filiales actives"    to="/filiales"      />
+          <HeroStat value={articlesPublies.length}      label="Articles publiés"    to="/articles"      />
+          <HeroStat value={carriereActives.length}      label="Offres d'emploi"     to="/carrieres"     />
+          <HeroStat value={candidaturesNouvelles.length} label="Nouvelles candid."  to="/candidatures"  />
+          <HeroStat value={msgsNonLus.length}           label="Messages non lus"    to="/messages"      />
         </div>
       </div>
 
@@ -274,8 +277,9 @@ export default function Dashboard() {
             <SiteSection icon={Briefcase}     label="Métiers"      desc="Secteurs d'activité"        to="/metiers"    badge={metiers.length} />
             <SiteSection icon={Users}         label="Gouvernance"  desc="Équipe dirigeante"          to="/dirigeants" badge={dirigeants.length} />
             <SiteSection icon={Globe}         label="Le Groupe"    desc="Mission, valeurs, KPIs"     to="/company" />
-            <SiteSection icon={Rocket}        label="Carrières"    desc="Offres d'emploi"            to="/carrieres"  badge={carriereActives.length} />
-            <SiteSection icon={ImageIcon}     label="Médiathèque"  desc="Images des sections"        to="/images"     badge={images.length} />
+            <SiteSection icon={Rocket}        label="Carrières"      desc="Offres d'emploi"          to="/carrieres"      badge={carriereActives.length} />
+            <SiteSection icon={ClipboardList} label="Candidatures"  desc="Dossiers reçus"            to="/candidatures"  badge={candidaturesNouvelles.length} />
+            <SiteSection icon={ImageIcon}     label="Médiathèque"   desc="Images des sections"       to="/images"        badge={images.length} />
             <SiteSection icon={MessageSquare} label="Messages"     desc="Formulaire de contact"      to="/messages"   badge={msgsNonLus.length} />
           </div>
         </div>

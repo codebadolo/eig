@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
-import { useForm, useFieldArray } from 'react-hook-form'
-import { api } from '../lib/api'
-import toast from 'react-hot-toast'
-import PageHeader from '../components/PageHeader'
-import ImageUpload from '../components/ImageUpload'
 import { Plus, Trash2 } from 'lucide-react'
-import FaIcon, { ICON_LIST } from '../components/FaIcon'
+import { useEffect, useState } from 'react'
+import { useFieldArray, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { ICON_LIST } from '../components/FaIcon'
+import ImageUpload from '../components/ImageUpload'
+import PageHeader from '../components/PageHeader'
+import { api } from '../lib/api'
 
 export default function Company() {
   const [saving, setSaving] = useState(false)
@@ -23,6 +23,7 @@ export default function Company() {
     }).catch(() => toast.error('Données non trouvées')).finally(() => setLoading(false))
   }, [reset])
 
+  
   const onSubmit = async (data) => {
     setSaving(true)
     try {

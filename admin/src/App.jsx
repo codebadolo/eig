@@ -15,6 +15,8 @@ import Company from './pages/Company'
 import Messages from './pages/Messages'
 import Carrieres from './pages/Carrieres'
 import CarriereForm from './pages/CarriereForm'
+import Candidatures from './pages/Candidatures'
+import CandidatureDetail from './pages/CandidatureDetail'
 import Images from './pages/Images'
 import Parametres from './pages/Parametres'
 
@@ -48,6 +50,8 @@ function AppRoutes() {
         <Route path="carrieres" element={<Carrieres />} />
         <Route path="carrieres/nouveau" element={<CarriereForm />} />
         <Route path="carrieres/:id/modifier" element={<CarriereForm />} />
+        <Route path="candidatures" element={<Candidatures />} />
+        <Route path="candidatures/:id" element={<CandidatureDetail />} />
         <Route path="parametres" element={<Parametres />} />
       </Route>
     </Routes>
