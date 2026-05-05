@@ -1,13 +1,61 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLang } from '../../contexts/LangContext'
+import { useApi } from '../../hooks/useApi'
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api'
+
+const DEFAULT_COLS = [
+  {
+    title: null,
+    links: [
+      { label: null, href: '/le-groupe' },
+      { label: null, href: '/le-groupe' },
+      { label: null, href: '/le-groupe' },
+      { label: null, href: '/gouvernance' },
+    ],
+  },
+  {
+    title: null,
+    links: [
+      { label: null, href: '/nos-metiers' },
+      { label: null, href: '/nos-filiales' },
+      { label: null, href: '/nos-metiers/services-financiers' },
+      { label: null, href: '/nos-metiers/assurance' },
+      { label: null, href: '/nos-metiers/technologies-fintech' },
+    ],
+  },
+  {
+    title: null,
+    links: [
+      { label: null, href: '/actualites' },
+      { label: null, href: '/carrieres' },
+      { label: null, href: '/contact' },
+      { label: null, href: '/contact' },
+      { label: null, href: '/contact' },
+    ],
+  },
+]
+
+const FALLBACK_COL_TITLES = ['footer.col1', 'footer.col2', 'footer.col3']
+const FALLBACK_LINKS = [
+  ['footer.links1.qui', 'footer.links1.vision', 'footer.links1.histoire', 'footer.links1.gouvernance'],
+  ['footer.links2.metiers', 'footer.links2.filiales', 'footer.links2.finance', 'footer.links2.assurance', 'footer.links2.fintech'],
+  ['footer.links3.actualites', 'footer.links3.carrieres', 'footer.links3.contact', 'footer.links3.presse', 'footer.links3.partenariats'],
+]
+
+function ColLink({ href, label }) {
+  const isExternal = href && (href.startsWith('http://') || href.startsWith('https://'))
+  if (isExternal) {
+    return <a href={href} target="_blank" rel="noopener noreferrer">{label}</a>
+  }
+  return <Link to={href || '/'}>{label}</Link>
+}
 
 function NewsletterWidget() {
   const { t } = useLang()
   const [email, setEmail] = useState('')
-  const [state, setState] = useState('idle') // idle | sending | success | error | already
+  const [state, setState] = useState('idle')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -36,10 +84,7 @@ function NewsletterWidget() {
   }[state]
 
   return (
-    <div style={{
-      borderTop: '1px solid rgba(255,255,255,0.08)',
-      paddingTop: 40, marginTop: 16,
-    }}>
+    <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 40, marginTop: 16 }}>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'center' }}>
         <div>
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 8 }}>
@@ -48,9 +93,7 @@ function NewsletterWidget() {
           <div className="footer-brand-name" style={{ fontSize: 22, marginBottom: 8 }}>
             {t('footer.nl_title')}
           </div>
-          <p className="footer-desc" style={{ marginBottom: 0 }}>
-            {t('footer.nl_sub')}
-          </p>
+          <p className="footer-desc" style={{ marginBottom: 0 }}>{t('footer.nl_sub')}</p>
         </div>
 
         <div>
@@ -98,62 +141,79 @@ function NewsletterWidget() {
 
 export default function Footer() {
   const { t } = useLang()
+  const { data: company } = useApi('/company')
+
+  const socials = [
+    company?.linkedin   && { href: company.linkedin,   label: 'LinkedIn',    icon: 'in' },
+    company?.facebook   && { href: company.facebook,   label: 'Facebook',    icon: 'f' },
+    company?.twitter    && { href: company.twitter,    label: 'X / Twitter', icon: '𝕏' },
+    company?.instagram  && { href: company.instagram,  label: 'Instagram',   icon: '◈' },
+    company?.youtube    && { href: company.youtube,    label: 'YouTube',     icon: '▶' },
+    company?.whatsapp   && { href: `https://wa.me/${company.whatsapp.replace(/\D/g, '')}`, label: 'WhatsApp', icon: 'W' },
+  ].filter(Boolean)
+
+  const cols = (company?.footerCols?.length === 3) ? company.footerCols : DEFAULT_COLS
+
+  const mentionsHref   = company?.footerMentions        || '/contact'
+  const privacyHref    = company?.footerConfidentialite || '/contact'
+  const cookiesHref    = company?.footerCookies         || '/contact'
+  const copyrightText  = company?.footerCopyright       || company?.nom || 'Excellis Invest Group'
+  const tagline        = company?.footerTagline         || company?.tagline || t('footer.tagline')
+  const desc           = company?.footerDesc            || t('footer.desc')
 
   return (
     <footer>
       <div className="footer-main">
+        {/* Brand */}
         <div>
-          <div className="footer-brand-name">Excellis Invest Group</div>
-          <span className="footer-brand-tagline">{t('footer.tagline')}</span>
-          <p className="footer-desc">{t('footer.desc')}</p>
-          <div className="footer-social">
-            <a href="#" className="social-btn" title="LinkedIn" aria-label="LinkedIn">in</a>
-            <a href="#" className="social-btn" title="Facebook" aria-label="Facebook">f</a>
-            <a href="#" className="social-btn" title="WhatsApp" aria-label="WhatsApp">W</a>
+          <div className="footer-brand-name">{company?.nom || 'Excellis Invest Group'}</div>
+          <span className="footer-brand-tagline">{tagline}</span>
+          <p className="footer-desc">{desc}</p>
+          {socials.length > 0 ? (
+            <div className="footer-social">
+              {socials.map(s => (
+                <a key={s.label} href={s.href} className="social-btn" title={s.label} aria-label={s.label}
+                  target="_blank" rel="noopener noreferrer">
+                  {s.icon}
+                </a>
+              ))}
+            </div>
+          ) : (
+            <div className="footer-social">
+              <a href="#" className="social-btn" title="LinkedIn" aria-label="LinkedIn">in</a>
+              <a href="#" className="social-btn" title="Facebook" aria-label="Facebook">f</a>
+            </div>
+          )}
+        </div>
+
+        {/* 3 colonnes dynamiques */}
+        {cols.map((col, i) => (
+          <div key={i}>
+            <div className="footer-col-title">
+              {col.title || t(FALLBACK_COL_TITLES[i])}
+            </div>
+            <ul className="footer-links">
+              {col.links.map((link, j) => (
+                <li key={j}>
+                  <ColLink
+                    href={link.href}
+                    label={link.label || t(FALLBACK_LINKS[i]?.[j] || '')}
+                  />
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
-
-        <div>
-          <div className="footer-col-title">{t('footer.col1')}</div>
-          <ul className="footer-links">
-            <li><Link to="/le-groupe">{t('footer.links1.qui')}</Link></li>
-            <li><Link to="/le-groupe">{t('footer.links1.vision')}</Link></li>
-            <li><Link to="/le-groupe">{t('footer.links1.histoire')}</Link></li>
-            <li><Link to="/gouvernance">{t('footer.links1.gouvernance')}</Link></li>
-          </ul>
-        </div>
-
-        <div>
-          <div className="footer-col-title">{t('footer.col2')}</div>
-          <ul className="footer-links">
-            <li><Link to="/nos-metiers">{t('footer.links2.metiers')}</Link></li>
-            <li><Link to="/nos-filiales">{t('footer.links2.filiales')}</Link></li>
-            <li><Link to="/nos-metiers/services-financiers">{t('footer.links2.finance')}</Link></li>
-            <li><Link to="/nos-metiers/assurance">{t('footer.links2.assurance')}</Link></li>
-            <li><Link to="/nos-metiers/technologies-fintech">{t('footer.links2.fintech')}</Link></li>
-          </ul>
-        </div>
-
-        <div>
-          <div className="footer-col-title">{t('footer.col3')}</div>
-          <ul className="footer-links">
-            <li><Link to="/actualites">{t('footer.links3.actualites')}</Link></li>
-            <li><Link to="/carrieres">{t('footer.links3.carrieres')}</Link></li>
-            <li><Link to="/contact">{t('footer.links3.contact')}</Link></li>
-            <li><Link to="/contact">{t('footer.links3.presse')}</Link></li>
-            <li><Link to="/contact">{t('footer.links3.partenariats')}</Link></li>
-          </ul>
-        </div>
+        ))}
       </div>
 
       <NewsletterWidget />
 
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} Jofé° — {t('footer.rights')}</span>
+        <span>© {new Date().getFullYear()} {copyrightText} — {t('footer.rights')}</span>
         <div className="footer-legal">
-          <Link to="/contact">{t('footer.legal')}</Link>
-          <Link to="/contact">{t('footer.privacy')}</Link>
-          <Link to="/contact">{t('footer.cookies')}</Link>
+          <ColLink href={mentionsHref} label={t('footer.legal')} />
+          <ColLink href={privacyHref}  label={t('footer.privacy')} />
+          <ColLink href={cookiesHref}  label={t('footer.cookies')} />
         </div>
       </div>
     </footer>

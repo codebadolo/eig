@@ -8,8 +8,8 @@ class ContactMessage extends Model {
     public $incrementing = false;
     public $timestamps = false;
     protected $keyType = 'string';
-    protected $fillable = ['id','nom','email','telephone','sujet','message','lu'];
-    protected $casts = ['lu' => 'boolean'];
+    protected $fillable = ['id','nom','email','telephone','sujet','message','lu','traite','note'];
+    protected $casts = ['lu' => 'boolean', 'traite' => 'boolean'];
 
     protected static function boot() {
         parent::boot();

@@ -20,6 +20,7 @@ import CandidatureDetail from './pages/CandidatureDetail'
 import Newsletter from './pages/Newsletter'
 import Images from './pages/Images'
 import Parametres from './pages/Parametres'
+import FooterPage from './pages/Footer'
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
@@ -54,6 +55,7 @@ function AppRoutes() {
         <Route path="candidatures" element={<Candidatures />} />
         <Route path="candidatures/:id" element={<CandidatureDetail />} />
         <Route path="newsletter" element={<Newsletter />} />
+        <Route path="footer" element={<FooterPage />} />
         <Route path="parametres" element={<Parametres />} />
       </Route>
     </Routes>

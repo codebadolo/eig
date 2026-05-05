@@ -94,8 +94,39 @@ export default function Company() {
               <input className="input" {...register('telephone')} />
             </div>
             <div>
-              <label className="label">WhatsApp (numéro sans +)</label>
-              <input className="input" {...register('whatsapp')} />
+              <label className="label">WhatsApp (numéro avec +)</label>
+              <input className="input" placeholder="+22601020304" {...register('whatsapp')} />
+            </div>
+          </div>
+        </div>
+
+        <div className="card p-6 space-y-4">
+          <h2 className="font-semibold text-gray-900">Réseaux sociaux & liens web</h2>
+          <p className="text-xs text-gray-400">Ces liens apparaissent dans le pied de page du site.</p>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="label">LinkedIn</label>
+              <input type="url" className="input" placeholder="https://linkedin.com/company/..." {...register('linkedin')} />
+            </div>
+            <div>
+              <label className="label">Facebook</label>
+              <input type="url" className="input" placeholder="https://facebook.com/..." {...register('facebook')} />
+            </div>
+            <div>
+              <label className="label">Twitter / X</label>
+              <input type="url" className="input" placeholder="https://x.com/..." {...register('twitter')} />
+            </div>
+            <div>
+              <label className="label">Instagram</label>
+              <input type="url" className="input" placeholder="https://instagram.com/..." {...register('instagram')} />
+            </div>
+            <div>
+              <label className="label">YouTube</label>
+              <input type="url" className="input" placeholder="https://youtube.com/@..." {...register('youtube')} />
+            </div>
+            <div>
+              <label className="label">Site web officiel</label>
+              <input type="url" className="input" placeholder="https://www.excellisinvest.com" {...register('website')} />
             </div>
           </div>
         </div>

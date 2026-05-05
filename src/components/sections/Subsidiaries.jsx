@@ -31,15 +31,10 @@ export default function Subsidiaries({ filiales = [] }) {
         {preview.map((f, i) => (
           <ScrollReveal key={f.id} delay={Math.floor(i / 4) * 0.1 + (i % 4) * 0.05}>
             <Link to={`/nos-filiales/${f.id}`} className="filiale-card">
-              <FilialeLogo id={f.id} sigle={f.sigle} size={72} logo={f.logo} />
-              <div>
-                <div className="filiale-name">{f.nom}</div>
-                <div className="filiale-sector" style={{ marginTop: 6 }}>{f.secteur}</div>
-              </div>
-              <div className="filiale-card-footer">
-                <div className="filiale-country">📍 {f.pays}</div>
-                <span className="filiale-card-arrow">→</span>
-              </div>
+              <FilialeLogo id={f.id} sigle={f.sigle} size={56} logo={f.logo} />
+              <div className="filiale-name">{f.nom}</div>
+              <div className="filiale-sector">{f.secteur}</div>
+              <div className="filiale-country">📍 {f.pays}</div>
             </Link>
           </ScrollReveal>
         ))}

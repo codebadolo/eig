@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import ScrollReveal from '../components/ui/ScrollReveal'
-import FilialeLogo from '../components/ui/FilialeLogo'
 import CallToAction from '../components/sections/CallToAction'
-import { useApi } from '../hooks/useApi'
+import FilialeLogo from '../components/ui/FilialeLogo'
 import PageHero from '../components/ui/PageHero'
+import ScrollReveal from '../components/ui/ScrollReveal'
 import { useLang } from '../contexts/LangContext'
+import { useApi } from '../hooks/useApi'
 
 export default function NosFiliales() {
   const { t, pick } = useLang()
@@ -75,42 +75,17 @@ export default function NosFiliales() {
         <div className="filiales-page-grid">
           {filtered.map((f, i) => (
             <ScrollReveal key={f.id} delay={(i % 3) * 0.06}>
-              <div className="filiale-full-card">
-                {/* Header teal */}
-                <div className="filiale-full-card-header">
-                  <FilialeLogo id={f.id} sigle={f.sigle} size={72} logo={f.logo} />
-                  <div style={{ flex: 1, minWidth: 0 }}>
+              <Link to={`/nos-filiales/${f.id}`} className="filiale-full-card">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                  <FilialeLogo id={f.id} sigle={f.sigle} size={64} />
+                  <div>
                     <div className="filiale-name">{f.nom}</div>
-                    <div className="filiale-sector" style={{ marginTop: 6 }}>{f.secteur}</div>
+                    <div className="filiale-sector">{f.secteur}</div>
                   </div>
                 </div>
-
-                {/* Body */}
-                <div className="filiale-full-card-body">
-                  <p className="filiale-desc">{pick(f, 'description')}</p>
-
-                  <div className="filiale-full-card-meta">
-                    <div className="filiale-country">📍 {f.pays}</div>
-
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      {f.website && (
-                        <a
-                          href={f.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="filiale-full-card-website"
-                          onClick={e => e.stopPropagation()}
-                        >
-                          🌐 {t('filiales.website') || 'Site web'}
-                        </a>
-                      )}
-                      <Link to={`/nos-filiales/${f.id}`} className="filiale-full-card-cta">
-                        {t('filiales.discover')}
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                <p className="filiale-desc">{pick(f, 'description')}</p>
+                <div className="filiale-country">📍 {f.pays}</div>
+              </Link>
             </ScrollReveal>
           ))}
         </div>

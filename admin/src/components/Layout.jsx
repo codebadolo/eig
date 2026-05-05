@@ -5,7 +5,7 @@ import logoEig from '../assets/logo-eig.png'
 import {
   LayoutDashboard, Building2, Briefcase, Newspaper, Users,
   Settings, MessageSquare, LogOut, Menu,
-  Globe, Rocket, ImageIcon, ClipboardList, Mail,
+  Globe, Rocket, ImageIcon, ClipboardList, Mail, PanelBottom,
 } from 'lucide-react'
 
 const nav = [
@@ -20,6 +20,7 @@ const nav = [
   { to: '/newsletter',   icon: Mail,          label: 'Newsletter' },
   { to: '/images',       icon: ImageIcon,     label: 'Médiathèque' },
   { to: '/messages', icon: MessageSquare, label: 'Messages' },
+  { to: '/footer', icon: PanelBottom, label: 'Pied de page' },
   { to: '/parametres', icon: Settings, label: 'Paramètres' },
 ]
 
