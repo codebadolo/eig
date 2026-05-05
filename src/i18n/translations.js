@@ -132,6 +132,8 @@ export const translations = {
       sentTitle: 'Candidature envoyée !',
       sentText: 'Merci {name}, nous avons bien reçu votre candidature pour le poste {poste}. Notre équipe RH vous contactera dans les meilleurs délais.',
       interested: "Intéressé(e) par ce poste ?",
+      notFound: 'Offre introuvable',
+      backBtn: '← Retour aux offres',
     },
     groupe: {
       label: 'Le Groupe',
@@ -203,6 +205,7 @@ export const translations = {
       contribution: 'Notre contribution',
       ourFiliales: 'Nos filiales dans ce secteur',
       backToAll: '← Tous les métiers',
+      ofSector: 'du secteur',
     },
     gouvernance: {
       label: 'Gouvernance',
@@ -231,6 +234,13 @@ export const translations = {
       sub: "Transparence, rigueur et responsabilité — les fondements de notre gouvernance au service de la confiance des investisseurs et des partenaires.",
       team: 'Notre équipe dirigeante',
       backToAll: '← Gouvernance',
+      bioLabel: 'Biographie',
+      expertiseLabel: "Domaines d'expertise",
+      experiencesLabel: 'Parcours professionnel',
+      formationLabel: 'Formation académique',
+      fonctionLabel: 'Fonction',
+      linkedinBtn: 'Voir le profil LinkedIn',
+      backToTeam: "← Retour à l'équipe dirigeante",
     },
     news: {
       label: 'Actualités & Médias',
@@ -450,6 +460,8 @@ export const translations = {
       sentTitle: 'Application submitted!',
       sentText: 'Thank you {name}, we have received your application for {poste}. Our HR team will contact you shortly.',
       interested: 'Interested in this position?',
+      notFound: 'Job offer not found',
+      backBtn: '← Back to offers',
     },
     groupe: {
       label: 'The Group',
@@ -521,6 +533,7 @@ export const translations = {
       contribution: 'Our contribution',
       ourFiliales: 'Our subsidiaries in this sector',
       backToAll: '← All businesses',
+      ofSector: 'in this sector',
     },
     gouvernance: {
       label: 'Governance',
@@ -549,6 +562,13 @@ export const translations = {
       sub: 'Transparency, rigour and accountability — the foundations of our governance in the service of investor and partner confidence.',
       team: 'Our executive team',
       backToAll: '← Governance',
+      bioLabel: 'Biography',
+      expertiseLabel: 'Areas of expertise',
+      experiencesLabel: 'Professional background',
+      formationLabel: 'Academic background',
+      fonctionLabel: 'Position',
+      linkedinBtn: 'View LinkedIn profile',
+      backToTeam: '← Back to the executive team',
     },
     news: {
       label: 'News & Media',

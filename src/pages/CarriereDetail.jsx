@@ -4,6 +4,7 @@ import ScrollReveal from '../components/ui/ScrollReveal'
 import CallToAction from '../components/sections/CallToAction'
 import { useApi } from '../hooks/useApi'
 import PageHero from '../components/ui/PageHero'
+import { useLang } from '../contexts/LangContext'
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api'
 
@@ -30,14 +31,7 @@ function InfoBadge({ label, value, accent }) {
   )
 }
 
-const STATUT_LABELS = {
-  recue: { label: 'Reçue', color: '#1A6B7A' },
-  en_cours: { label: 'En cours', color: '#B8922A' },
-  acceptee: { label: 'Acceptée', color: '#10B981' },
-  refusee: { label: 'Refusée', color: '#EF4444' },
-}
-
-function CandidatureForm({ offre }) {
+function CandidatureForm({ offre, t }) {
   const [form, setForm] = useState({ nom: '', prenom: '', email: '', telephone: '', lettre: '' })
   const [cv, setCv] = useState(null)
   const [sending, setSending] = useState(false)
@@ -75,7 +69,6 @@ function CandidatureForm({ offre }) {
       const res = await fetch(`${API_BASE}/candidatures`, { method: 'POST', body: fd })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))
-        // Extraire le premier message d'erreur de validation Laravel
         const firstError = data.errors
           ? Object.values(data.errors).flat()[0]
           : null
@@ -104,31 +97,31 @@ function CandidatureForm({ offre }) {
     <div style={{ background: 'var(--ivory)', border: '1px solid rgba(16,185,129,0.3)', borderRadius: 8, padding: '40px 32px', textAlign: 'center' }}>
       <div style={{ fontSize: 48, marginBottom: 16 }}>✓</div>
       <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, color: 'var(--teal-dark)', marginBottom: 10 }}>
-        Candidature envoyée !
+        {t('careers.sentTitle')}
       </div>
       <p style={{ fontSize: 15, color: 'var(--gray-mid)', lineHeight: 1.7 }}>
-        Merci <strong>{form.prenom}</strong>, nous avons bien reçu votre candidature pour le poste <strong>{offre.titre}</strong>. Notre équipe RH vous contactera dans les meilleurs délais.
+        {t('careers.sentText').replace('{name}', form.prenom).replace('{poste}', offre.titre)}
       </p>
     </div>
   )
 
   return (
     <div style={{ background: 'var(--ivory)', borderRadius: 8, padding: '40px 32px', border: '1px solid var(--gray-light)' }}>
-      <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold)' }}>Postuler</span>
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 28, color: 'var(--dark)', margin: '8px 0 4px' }}>Formulaire de candidature</h2>
+      <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold)' }}>{t('careers.applyLabel')}</span>
+      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 28, color: 'var(--dark)', margin: '8px 0 4px' }}>{t('careers.applyTitle')}</h2>
       <div style={{ width: 32, height: 2, background: 'var(--gold)', marginBottom: 28 }} />
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
           <div>
-            <label style={labelStyle}>Prénom <span style={{ color: 'var(--gold)' }}>*</span></label>
-            <input style={inputStyle} value={form.prenom} onChange={set('prenom')} placeholder="Votre prénom"
+            <label style={labelStyle}>{t('contact.fname')} <span style={{ color: 'var(--gold)' }}>*</span></label>
+            <input style={inputStyle} value={form.prenom} onChange={set('prenom')} placeholder={t('contact.fname')}
               onFocus={e => e.target.style.borderColor = 'var(--teal)'}
               onBlur={e => e.target.style.borderColor = 'var(--gray-light)'} />
           </div>
           <div>
-            <label style={labelStyle}>Nom <span style={{ color: 'var(--gold)' }}>*</span></label>
-            <input style={inputStyle} value={form.nom} onChange={set('nom')} placeholder="Votre nom"
+            <label style={labelStyle}>{t('contact.lname')} <span style={{ color: 'var(--gold)' }}>*</span></label>
+            <input style={inputStyle} value={form.nom} onChange={set('nom')} placeholder={t('contact.lname')}
               onFocus={e => e.target.style.borderColor = 'var(--teal)'}
               onBlur={e => e.target.style.borderColor = 'var(--gray-light)'} />
           </div>
@@ -136,13 +129,13 @@ function CandidatureForm({ offre }) {
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
           <div>
-            <label style={labelStyle}>Email <span style={{ color: 'var(--gold)' }}>*</span></label>
+            <label style={labelStyle}>{t('contact.email')} <span style={{ color: 'var(--gold)' }}>*</span></label>
             <input type="email" style={inputStyle} value={form.email} onChange={set('email')} placeholder="votre@email.com"
               onFocus={e => e.target.style.borderColor = 'var(--teal)'}
               onBlur={e => e.target.style.borderColor = 'var(--gray-light)'} />
           </div>
           <div>
-            <label style={labelStyle}>Téléphone</label>
+            <label style={labelStyle}>{t('contact.phone')}</label>
             <input style={inputStyle} value={form.telephone} onChange={set('telephone')} placeholder="+226 XX XX XX XX"
               onFocus={e => e.target.style.borderColor = 'var(--teal)'}
               onBlur={e => e.target.style.borderColor = 'var(--gray-light)'} />
@@ -150,7 +143,7 @@ function CandidatureForm({ offre }) {
         </div>
 
         <div>
-          <label style={labelStyle}>CV — PDF ou Word <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>(max {MAX_CV_MB} Mo)</span></label>
+          <label style={labelStyle}>{t('careers.cvLabel')}</label>
           <label style={{ display: 'block', cursor: 'pointer' }}>
             <div style={{
               border: `2px dashed ${cv ? 'var(--teal)' : 'var(--gray-light)'}`,
@@ -166,7 +159,7 @@ function CandidatureForm({ offre }) {
                 </span>
               ) : (
                 <span style={{ fontSize: 13, color: 'var(--gray-mid)' }}>
-                  Glissez votre CV ici ou <span style={{ color: 'var(--teal)', textDecoration: 'underline' }}>parcourir</span>
+                  {t('careers.cvHint')} <span style={{ color: 'var(--teal)', textDecoration: 'underline' }}>{t('careers.cvBrowse')}</span>
                   <span style={{ display: 'block', fontSize: 11, marginTop: 4, color: '#D1D5DB' }}>.pdf · .doc · .docx</span>
                 </span>
               )}
@@ -176,9 +169,9 @@ function CandidatureForm({ offre }) {
         </div>
 
         <div>
-          <label style={labelStyle}>Lettre de motivation</label>
+          <label style={labelStyle}>{t('careers.motivation')}</label>
           <textarea style={{ ...inputStyle, height: 140, resize: 'vertical' }} value={form.lettre} onChange={set('lettre')}
-            placeholder="Présentez-vous et expliquez votre motivation..."
+            placeholder={t('careers.motivationPlaceholder')}
             onFocus={e => e.target.style.borderColor = 'var(--teal)'}
             onBlur={e => e.target.style.borderColor = 'var(--gray-light)'} />
         </div>
@@ -196,7 +189,7 @@ function CandidatureForm({ offre }) {
           cursor: sending ? 'not-allowed' : 'pointer', alignSelf: 'flex-start',
           transition: 'opacity 0.2s',
         }}>
-          {sending ? 'Envoi en cours...' : 'Envoyer ma candidature →'}
+          {sending ? t('common.sending') : t('careers.applyBtn')}
         </button>
       </form>
     </div>
@@ -205,16 +198,17 @@ function CandidatureForm({ offre }) {
 
 export default function CarriereDetail() {
   const { id } = useParams()
+  const { t } = useLang()
   const { data: offre, loading } = useApi(`/carrieres/${id}`)
 
-  if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>Chargement...</div>
+  if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>{t('common.loading')}</div>
 
   if (!offre) {
     return (
       <div style={{ padding: '180px 5% 80px', textAlign: 'center' }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 48 }}>Offre introuvable</h1>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 48 }}>{t('careers.notFound')}</h1>
         <Link to="/carrieres" className="btn-primary" style={{ marginTop: 32, display: 'inline-flex' }}>
-          ← Retour aux offres
+          {t('careers.backBtn')}
         </Link>
       </div>
     )
@@ -224,7 +218,7 @@ export default function CarriereDetail() {
     <>
       <PageHero section="careers">
         <Link to="/carrieres" style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 20 }}>
-          ← Toutes les offres
+          {t('careers.allOffers')}
         </Link>
         <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
           <span style={{ background: 'var(--gold)', color: 'var(--teal-dark)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '4px 12px', borderRadius: 3 }}>{offre.type}</span>
@@ -234,7 +228,7 @@ export default function CarriereDetail() {
         <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', marginTop: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
           <span>📍 {offre.lieu}</span>
           {offre.salaire && <><span style={{ opacity: 0.3 }}>·</span><span>💼 {offre.salaire}</span></>}
-          {offre.dateExpiration && <><span style={{ opacity: 0.3 }}>·</span><span>📅 Expire : {offre.dateExpiration}</span></>}
+          {offre.dateExpiration && <><span style={{ opacity: 0.3 }}>·</span><span>📅 {t('careers.expires')} {offre.dateExpiration}</span></>}
         </p>
       </PageHero>
 
@@ -242,8 +236,8 @@ export default function CarriereDetail() {
         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 64, alignItems: 'start' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
             <ScrollReveal>
-              <span className="section-label">Le poste</span>
-              <h2 className="section-title" style={{ fontSize: 'clamp(22px,2.8vw,34px)' }}>Description du poste</h2>
+              <span className="section-label">{t('careers.post')}</span>
+              <h2 className="section-title" style={{ fontSize: 'clamp(22px,2.8vw,34px)' }}>{t('careers.descTitle')}</h2>
               <div className="gold-rule" />
               <p style={{ fontSize: 16, color: 'var(--gray-mid)', lineHeight: 1.85 }}>{offre.description}</p>
             </ScrollReveal>
@@ -251,7 +245,7 @@ export default function CarriereDetail() {
             {offre.missions && (
               <ScrollReveal delay={0.08}>
                 <div style={{ borderLeft: '3px solid var(--teal)', paddingLeft: 24 }}>
-                  <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, color: 'var(--dark)', marginBottom: 20 }}>Vos missions</h3>
+                  <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, color: 'var(--dark)', marginBottom: 20 }}>{t('careers.missions')}</h3>
                   <BulletList text={offre.missions} color="var(--teal)" />
                 </div>
               </ScrollReveal>
@@ -260,7 +254,7 @@ export default function CarriereDetail() {
             {offre.profil && (
               <ScrollReveal delay={0.12}>
                 <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 24 }}>
-                  <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, color: 'var(--dark)', marginBottom: 20 }}>Profil recherché</h3>
+                  <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, color: 'var(--dark)', marginBottom: 20 }}>{t('careers.profile')}</h3>
                   <BulletList text={offre.profil} color="var(--gold)" />
                 </div>
               </ScrollReveal>
@@ -269,7 +263,7 @@ export default function CarriereDetail() {
             {offre.avantages && (
               <ScrollReveal delay={0.16}>
                 <div style={{ background: 'var(--ivory)', borderRadius: 8, padding: '28px 32px', border: '1px solid var(--gray-light)' }}>
-                  <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, color: 'var(--dark)', marginBottom: 20 }}>Ce que nous offrons</h3>
+                  <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, color: 'var(--dark)', marginBottom: 20 }}>{t('careers.benefits')}</h3>
                   <BulletList text={offre.avantages} color="var(--teal)" />
                 </div>
               </ScrollReveal>
@@ -278,15 +272,15 @@ export default function CarriereDetail() {
 
           <ScrollReveal delay={0.1}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, position: 'sticky', top: 100 }}>
-              <InfoBadge label="Type de contrat" value={offre.type} />
-              <InfoBadge label="Département" value={offre.departement} />
-              <InfoBadge label="Lieu" value={`📍 ${offre.lieu}`} />
-              {offre.salaire && <InfoBadge label="Rémunération" value={offre.salaire} accent />}
-              {offre.dateExpiration && <InfoBadge label="Date limite" value={`📅 ${offre.dateExpiration}`} />}
+              <InfoBadge label={t('careers.contract')} value={offre.type} />
+              <InfoBadge label={t('careers.department')} value={offre.departement} />
+              <InfoBadge label={t('careers.location')} value={`📍 ${offre.lieu}`} />
+              {offre.salaire && <InfoBadge label={t('careers.salary')} value={offre.salaire} accent />}
+              {offre.dateExpiration && <InfoBadge label={t('careers.deadline')} value={`📅 ${offre.dateExpiration}`} />}
 
               <div style={{ marginTop: 8, padding: '16px 0', borderTop: '1px solid var(--gray-light)' }}>
                 <Link to="/carrieres" style={{ fontSize: 13, color: 'var(--teal)', textDecoration: 'none' }}>
-                  ← Voir toutes les offres
+                  {t('careers.allOffers')}
                 </Link>
               </div>
             </div>
@@ -297,7 +291,7 @@ export default function CarriereDetail() {
       <section style={{ background: 'var(--white)' }}>
         <div style={{ maxWidth: 820, margin: '0 auto' }}>
           <ScrollReveal>
-            <CandidatureForm offre={offre} />
+            <CandidatureForm offre={offre} t={t} />
           </ScrollReveal>
         </div>
       </section>

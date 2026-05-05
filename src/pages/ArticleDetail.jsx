@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import ScrollReveal from '../components/ui/ScrollReveal'
 import CallToAction from '../components/sections/CallToAction'
 import { useApi } from '../hooks/useApi'
+import { useLang } from '../contexts/LangContext'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
@@ -88,22 +89,23 @@ function ArticleBlock({ block }) {
 
 export default function ArticleDetail() {
   const { slug } = useParams()
+  const { t, pick } = useLang()
   const { data: article, loading, error } = useApi(`/articles/${slug}`)
   const { data: allArticles = [] } = useApi('/articles?publie=true')
 
   if (loading) return (
     <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>
-      Chargement...
+      {t('common.loading')}
     </div>
   )
 
   if (error || !article) return (
     <div style={{ padding: '180px 5% 80px', textAlign: 'center' }}>
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 48, marginBottom: 16 }}>
-        Article introuvable
+        {t('news.notFound')}
       </h1>
       <Link to="/actualites" className="btn-primary" style={{ display: 'inline-flex' }}>
-        ← Retour aux actualités
+        {t('news.backFromArticle')}
       </Link>
     </div>
   )
@@ -125,7 +127,6 @@ export default function ArticleDetail() {
 
   return (
     <>
-      {/* Hero article */}
       <div className="page-hero" style={{ minHeight: '50vh' }}>
         {article.image && (
           <div style={{
@@ -151,7 +152,7 @@ export default function ArticleDetail() {
                 textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6,
               }}
             >
-              ← Actualités
+              {t('news.backToNews')}
             </Link>
             <span style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
             <span style={{
@@ -166,11 +167,11 @@ export default function ArticleDetail() {
           </div>
 
           <h1 className="page-hero-title" style={{ maxWidth: 800 }}>
-            {article.titre}
+            {pick(article, 'titre')}
           </h1>
 
           <p className="page-hero-sub" style={{ maxWidth: 640 }}>
-            {article.extrait}
+            {pick(article, 'extrait')}
           </p>
 
           <div style={{
@@ -184,7 +185,6 @@ export default function ArticleDetail() {
         </div>
       </div>
 
-      {/* Corps de l'article */}
       <section style={{ background: 'var(--white)' }}>
         <div style={{ maxWidth: 780, margin: '0 auto' }}>
           {article.image && (
@@ -195,7 +195,7 @@ export default function ArticleDetail() {
               }}>
                 <img
                   src={`${API_URL}${article.image}`}
-                  alt={article.titre}
+                  alt={pick(article, 'titre')}
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </div>
@@ -227,7 +227,7 @@ export default function ArticleDetail() {
                   letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none',
                 }}
               >
-                ← Toutes les actualités
+                {t('news.allNews')}
               </Link>
               <div style={{ display: 'flex', gap: 12 }}>
                 <a
@@ -241,7 +241,7 @@ export default function ArticleDetail() {
                     transition: 'all 0.2s',
                   }}
                 >
-                  Partager
+                  {t('news.share')}
                 </a>
               </div>
             </div>
@@ -249,14 +249,13 @@ export default function ArticleDetail() {
         </div>
       </section>
 
-      {/* Articles connexes */}
       {autresArticles.length > 0 && (
         <section style={{ background: 'var(--ivory)' }}>
           <ScrollReveal>
             <div style={{ marginBottom: 40 }}>
-              <span className="section-label">À lire aussi</span>
+              <span className="section-label">{t('news.relatedLabel')}</span>
               <h2 className="section-title" style={{ fontSize: 'clamp(24px,3vw,36px)' }}>
-                Autres <span>actualités</span>
+                {t('news.relatedTitle1')} <span>{t('news.relatedTitleSpan')}</span>
               </h2>
             </div>
           </ScrollReveal>
@@ -266,21 +265,21 @@ export default function ArticleDetail() {
                 <Link to={`/actualites/${a.slug}`} className="news-card">
                   <div className="news-card-img" style={{ background: a.couleur }}>
                     {a.image
-                      ? <img src={`${API_URL}${a.image}`} alt={a.titre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ? <img src={`${API_URL}${a.image}`} alt={pick(a, 'titre')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       : <span className="news-card-img-text">EIG</span>
                     }
                     <span className="news-cat">{a.categorie}</span>
                   </div>
                   <div className="news-content">
                     <div className="news-date">{a.date}</div>
-                    <h3 className="news-title">{a.titre}</h3>
-                    <p className="news-excerpt">{a.extrait}</p>
+                    <h3 className="news-title">{pick(a, 'titre')}</h3>
+                    <p className="news-excerpt">{pick(a, 'extrait')}</p>
                     <div style={{ marginTop: 16 }}>
                       <span style={{
                         fontSize: 12, fontWeight: 700, letterSpacing: '0.1em',
                         textTransform: 'uppercase', color: 'var(--teal)',
                       }}>
-                        Lire la suite →
+                        {t('news.readMore')}
                       </span>
                     </div>
                   </div>

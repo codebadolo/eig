@@ -5,13 +5,15 @@ import FilialeLogo from '../components/ui/FilialeLogo'
 import CallToAction from '../components/sections/CallToAction'
 import { useApi } from '../hooks/useApi'
 import PageHero from '../components/ui/PageHero'
+import { useLang } from '../contexts/LangContext'
 
 export default function NosFiliales() {
+  const { t, pick } = useLang()
   const { data: filiales = [], loading } = useApi('/filiales?actif=true')
   const [secteurFilter, setSecteurFilter] = useState('Tous')
   const [paysFilter, setPaysFilter] = useState('Tous')
 
-  if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>Chargement...</div>
+  if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>{t('common.loading')}</div>
 
   const secteurs = [...new Set(filiales.map(f => f.secteur))]
   const pays = [...new Set(filiales.map(f => f.pays))]
@@ -26,31 +28,24 @@ export default function NosFiliales() {
     <>
       <PageHero
         section="nos-filiales"
-        label="Nos Filiales"
-        title={<>Un portefeuille de <span>{filiales.length} entités</span> opérationnelles</>}
-        subtitle="De Ouagadougou à Abidjan, nos filiales opèrent dans 9 secteurs stratégiques pour contribuer au développement économique de l'Afrique de l'Ouest."
+        label={t('filiales.label')}
+        title={<>{t('filiales.heroTitle1')} <span>{filiales.length} {t('filiales.heroTitleSpan')}</span> {t('filiales.heroTitle2')}</>}
+        subtitle={t('filiales.heroSub')}
       />
 
       <section style={{ background: 'var(--ivory)' }}>
         <ScrollReveal>
           <div style={{ marginBottom: 12 }}>
             <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--gray-mid)' }}>
-              Filtrer par secteur
+              {t('filiales.filterSecteur')}
             </span>
           </div>
           <div className="filiale-filter-bar" style={{ marginBottom: 20 }}>
-            <button
-              className={`filter-btn${secteurFilter === 'Tous' ? ' active' : ''}`}
-              onClick={() => setSecteurFilter('Tous')}
-            >
-              Tous les secteurs
+            <button className={`filter-btn${secteurFilter === 'Tous' ? ' active' : ''}`} onClick={() => setSecteurFilter('Tous')}>
+              {t('filiales.allSecteurs')}
             </button>
             {secteurs.map(s => (
-              <button
-                key={s}
-                className={`filter-btn${secteurFilter === s ? ' active' : ''}`}
-                onClick={() => setSecteurFilter(s)}
-              >
+              <button key={s} className={`filter-btn${secteurFilter === s ? ' active' : ''}`} onClick={() => setSecteurFilter(s)}>
                 {s}
               </button>
             ))}
@@ -58,22 +53,15 @@ export default function NosFiliales() {
 
           <div style={{ marginBottom: 12 }}>
             <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--gray-mid)' }}>
-              Filtrer par pays
+              {t('filiales.filterPays')}
             </span>
           </div>
           <div className="filiale-filter-bar">
-            <button
-              className={`filter-btn${paysFilter === 'Tous' ? ' active' : ''}`}
-              onClick={() => setPaysFilter('Tous')}
-            >
-              Tous les pays
+            <button className={`filter-btn${paysFilter === 'Tous' ? ' active' : ''}`} onClick={() => setPaysFilter('Tous')}>
+              {t('filiales.allPays')}
             </button>
             {pays.map(p => (
-              <button
-                key={p}
-                className={`filter-btn${paysFilter === p ? ' active' : ''}`}
-                onClick={() => setPaysFilter(p)}
-              >
+              <button key={p} className={`filter-btn${paysFilter === p ? ' active' : ''}`} onClick={() => setPaysFilter(p)}>
                 📍 {p}
               </button>
             ))}
@@ -81,7 +69,7 @@ export default function NosFiliales() {
         </ScrollReveal>
 
         <div style={{ marginTop: 12, marginBottom: 32, fontSize: 13, color: 'var(--gray-mid)' }}>
-          {filtered.length} filiale{filtered.length > 1 ? 's' : ''} trouvée{filtered.length > 1 ? 's' : ''}
+          {filtered.length} {filtered.length > 1 ? t('filiales.foundPlural') : t('filiales.foundSingular')}
         </div>
 
         <div className="filiales-page-grid">
@@ -95,7 +83,7 @@ export default function NosFiliales() {
                     <div className="filiale-sector">{f.secteur}</div>
                   </div>
                 </div>
-                <p className="filiale-desc">{f.description}</p>
+                <p className="filiale-desc">{pick(f, 'description')}</p>
                 <div className="filiale-country">📍 {f.pays}</div>
               </Link>
             </ScrollReveal>

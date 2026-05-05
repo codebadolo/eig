@@ -3,6 +3,7 @@ import ScrollReveal from '../components/ui/ScrollReveal'
 import CallToAction from '../components/sections/CallToAction'
 import { useApi } from '../hooks/useApi'
 import PageHero from '../components/ui/PageHero'
+import { useLang } from '../contexts/LangContext'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
@@ -83,17 +84,18 @@ function DiplomaList({ text }) {
 
 export default function DirigeantDetail() {
   const { id } = useParams()
+  const { t } = useLang()
   const { data: dirigeant, loading } = useApi(`/dirigeants/${id}`)
   const { data: allDirigeants = [] } = useApi('/dirigeants')
 
-  if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>Chargement...</div>
+  if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>{t('common.loading')}</div>
 
   if (!dirigeant) {
     return (
       <div style={{ padding: '180px 5% 80px', textAlign: 'center' }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 48 }}>Profil introuvable</h1>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 48 }}>{t('common.notFound')}</h1>
         <Link to="/gouvernance" className="btn-primary" style={{ marginTop: 32, display: 'inline-flex' }}>
-          ← Retour à la gouvernance
+          {t('gouvernance.backToAll')}
         </Link>
       </div>
     )
@@ -106,7 +108,7 @@ export default function DirigeantDetail() {
     <>
       <PageHero section="governance">
         <Link to="/gouvernance" style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 20 }}>
-          ← Gouvernance
+          {t('gouvernance.backToAll')}
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 28, flexWrap: 'wrap' }}>
           <div style={{
@@ -139,7 +141,7 @@ export default function DirigeantDetail() {
         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 64, alignItems: 'start' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
             <ScrollReveal>
-              <span className="section-label">Biographie</span>
+              <span className="section-label">{t('gouvernance.bioLabel')}</span>
               <h2 className="section-title" style={{ fontSize: 'clamp(22px,2.8vw,34px)' }}>{dirigeant.nom}</h2>
               <div className="gold-rule" />
               <p style={{ fontSize: 16, color: 'var(--gray-mid)', lineHeight: 1.85 }}>{dirigeant.bio}</p>
@@ -147,7 +149,7 @@ export default function DirigeantDetail() {
 
             {dirigeant.expertise && (
               <ScrollReveal delay={0.08}>
-                <Section label="Domaines d'expertise">
+                <Section label={t('gouvernance.expertiseLabel')}>
                   <TagList text={dirigeant.expertise} />
                 </Section>
               </ScrollReveal>
@@ -155,7 +157,7 @@ export default function DirigeantDetail() {
 
             {dirigeant.experiences && (
               <ScrollReveal delay={0.12}>
-                <Section label="Parcours professionnel">
+                <Section label={t('gouvernance.experiencesLabel')}>
                   <Timeline text={dirigeant.experiences} />
                 </Section>
               </ScrollReveal>
@@ -163,7 +165,7 @@ export default function DirigeantDetail() {
 
             {dirigeant.formation && (
               <ScrollReveal delay={0.16}>
-                <Section label="Formation académique">
+                <Section label={t('gouvernance.formationLabel')}>
                   <DiplomaList text={dirigeant.formation} />
                 </Section>
               </ScrollReveal>
@@ -183,19 +185,19 @@ export default function DirigeantDetail() {
               )}
 
               <div style={{ background: 'var(--ivory)', padding: '20px 24px', borderRadius: 6, border: '1px solid var(--gray-light)' }}>
-                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 4 }}>Fonction</div>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 4 }}>{t('gouvernance.fonctionLabel')}</div>
                 <div style={{ fontWeight: 600, color: 'var(--teal)', fontSize: 14 }}>{dirigeant.role}</div>
               </div>
 
               {dirigeant.linkedin && (
                 <a href={dirigeant.linkedin} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#0a66c2', color: 'white', padding: '12px 20px', borderRadius: 6, textDecoration: 'none', fontSize: 14, fontWeight: 500, justifyContent: 'center' }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
-                  Voir le profil LinkedIn
+                  {t('gouvernance.linkedinBtn')}
                 </a>
               )}
 
               <Link to="/gouvernance" style={{ fontSize: 13, color: 'var(--teal)', textDecoration: 'none', padding: '12px 0', borderTop: '1px solid var(--gray-light)', display: 'block' }}>
-                ← Retour à l'équipe dirigeante
+                {t('gouvernance.backToTeam')}
               </Link>
             </div>
           </ScrollReveal>
@@ -204,7 +206,7 @@ export default function DirigeantDetail() {
         {autres.length > 0 && (
           <ScrollReveal>
             <div style={{ marginTop: 80, paddingTop: 60, borderTop: '1px solid var(--gray-light)' }}>
-              <span className="section-label">Équipe dirigeante</span>
+              <span className="section-label">{t('gouvernance.teamLabel')}</span>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 16, marginTop: 24 }}>
                 {autres.map(d => (
                   <Link key={d.id} to={`/gouvernance/${d.id}`} style={{ textDecoration: 'none' }}>

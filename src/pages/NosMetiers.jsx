@@ -4,19 +4,21 @@ import CallToAction from '../components/sections/CallToAction'
 import { useApi } from '../hooks/useApi'
 import FaIcon from '../components/ui/FaIcon'
 import PageHero from '../components/ui/PageHero'
+import { useLang } from '../contexts/LangContext'
 
 export default function NosMetiers() {
+  const { t, pick } = useLang()
   const { data: metiers = [], loading } = useApi('/metiers')
 
-  if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>Chargement...</div>
+  if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>{t('common.loading')}</div>
 
   return (
     <>
       <PageHero
         section="nos-metiers"
-        label="Nos Métiers"
-        title={<>{metiers.length} secteurs stratégiques,<br /><span>une logique d'investissement cohérente</span></>}
-        subtitle="Du marché financier à l'énergie, de l'assurance à la fintech, EIG intervient dans les secteurs qui structurent les économies africaines de demain."
+        label={t('metiers.label')}
+        title={<>{metiers.length} {t('metiers.heroTitle1')}<br /><span>{t('metiers.heroTitleSpan')}</span></>}
+        subtitle={t('metiers.heroSub')}
       />
 
       <section style={{ background: 'var(--ivory)' }}>
@@ -28,9 +30,9 @@ export default function NosMetiers() {
                 <Link to={`/nos-metiers/${m.slug}`} className="metier-card">
                   <div className="metier-icon" style={{ background: m.couleur }}><FaIcon name={m.icone} size={24} /></div>
                   <span className="metier-arrow">↗</span>
-                  <div className="metier-title">{m.titre}</div>
-                  <div className="metier-desc">{m.description}</div>
-                  <span className="metier-count">{count} {count > 1 ? 'filiales' : 'filiale'}</span>
+                  <div className="metier-title">{pick(m, 'titre')}</div>
+                  <div className="metier-desc">{pick(m, 'description')}</div>
+                  <span className="metier-count">{count} {count > 1 ? t('metiers.filiales') : t('metiers.filiale')}</span>
                 </Link>
               </ScrollReveal>
             )
