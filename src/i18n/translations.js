@@ -183,7 +183,8 @@ export const translations = {
       country: 'Pays',
       sector: 'Secteur',
       backToAll: '← Toutes les filiales',
-      discover: 'Découvrir la filiale →',
+      discover: 'Voir la filiale →',
+      website: 'Site web',
     },
     metiers: {
       label: 'Nos Métiers',
@@ -511,7 +512,8 @@ export const translations = {
       country: 'Country',
       sector: 'Sector',
       backToAll: '← All subsidiaries',
-      discover: 'Explore subsidiary →',
+      discover: 'View subsidiary →',
+      website: 'Website',
     },
     metiers: {
       label: 'Our Businesses',

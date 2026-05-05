@@ -122,8 +122,25 @@ export default function FilialeForm() {
         </div>
 
         <div>
-          <label className="label">Description *</label>
-          <textarea className="input min-h-[80px]" rows={3} {...register('description', { required: true })} />
+          <label className="label">Site web / Plateforme</label>
+          <input
+            className="input"
+            type="url"
+            placeholder="https://www.exemple.com"
+            {...register('website')}
+          />
+          <p className="text-xs text-gray-400 mt-1">Lien vers le site officiel ou la plateforme en ligne de la filiale</p>
+        </div>
+
+        <div>
+          <label className="label">Description (Français) *</label>
+          <textarea className="input min-h-[100px]" rows={4} {...register('description', { required: true })} />
+        </div>
+
+        <div>
+          <label className="label">Description (English)</label>
+          <textarea className="input min-h-[100px]" rows={4} {...register('description_en')}
+            placeholder="English description of the subsidiary..." />
         </div>
 
         <ImageUpload value={logo} onChange={setLogo} label="Logo" />

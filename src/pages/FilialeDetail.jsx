@@ -110,6 +110,24 @@ export default function FilialeDetail() {
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 8 }}>{t('filiales.groupLabel')}</div>
                 <div style={{ fontWeight: 600, color: 'var(--black)' }}>Excellis Invest Group</div>
               </div>
+              {filiale.website && (
+                <a
+                  href={filiale.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    background: 'var(--teal-dark)', color: 'white',
+                    padding: '14px 20px', borderRadius: 6, textDecoration: 'none',
+                    fontSize: 13, fontWeight: 600, transition: 'opacity 0.2s',
+                  }}
+                  onMouseOver={e => e.currentTarget.style.opacity = '0.85'}
+                  onMouseOut={e => e.currentTarget.style.opacity = '1'}
+                >
+                  <span style={{ fontSize: 16 }}>🌐</span>
+                  {t('filiales.website') || 'Visiter le site web'} →
+                </a>
+              )}
             </div>
           </ScrollReveal>
         </div>

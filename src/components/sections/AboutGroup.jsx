@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
-import ScrollReveal from '../ui/ScrollReveal'
-import { useApi } from '../../hooks/useApi'
 import { useLang } from '../../contexts/LangContext'
+import { useApi } from '../../hooks/useApi'
+import ScrollReveal from '../ui/ScrollReveal'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
@@ -38,6 +38,7 @@ export default function AboutGroup({ company }) {
             ))}
           </div>
         )}
+
         <div className="groupe-img-accent">
           <span className="groupe-img-accent-num">20</span>
           <span className="groupe-img-accent-label">Milliards FCFA<br />Capital Social</span>
