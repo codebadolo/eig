@@ -25,6 +25,9 @@ export default function Sectors({ metiers = [] }) {
           return (
             <ScrollReveal key={m.slug} delay={(i % 3) * 0.08}>
               <Link to={`/nos-metiers/${m.slug}`} className="metier-card">
+                {m.image && (
+                  <div className="metier-card-bg" style={{ backgroundImage: `url(${m.image})` }} />
+                )}
                 <div className="metier-icon" style={{ background: m.couleur }}>
                   <FaIcon name={m.icone} size={24} />
                 </div>

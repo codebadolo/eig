@@ -191,6 +191,17 @@ function CandidatureForm({ offre, t }) {
         }}>
           {sending ? t('common.sending') : t('careers.applyBtn')}
         </button>
+
+        <div style={{
+          marginTop: 8, paddingTop: 20, borderTop: '1px solid var(--gray-light)',
+          fontSize: 13, color: 'var(--gray-mid)', lineHeight: 1.6,
+        }}>
+          Vous pouvez également envoyer votre candidature directement par e-mail à{' '}
+          <a href="mailto:carrieres@excellis-invest-group.com" style={{ color: 'var(--teal)', fontWeight: 600 }}>
+            carrieres@excellis-invest-group.com
+          </a>
+          {' '}en précisant le poste visé.
+        </div>
       </form>
     </div>
   )

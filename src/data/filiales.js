@@ -108,9 +108,9 @@ export const filiales = [
     secteurSlug: 'immobilier-capital',
   },
   {
-    id: 'Excellis',
+    id: 'excelis',
     sigle: 'EX',
-    nom: 'Excellis',
+    nom: 'Excelis',
     secteur: 'Technologies & Fintech',
     pays: 'Burkina Faso',
     description: 'Fintech spécialisée dans la conception, le déploiement et la sécurisation de solutions numériques, au service de la digitalisation, du développement logiciel, de la monétique, du paiement digital et des services financiers digitaux.',

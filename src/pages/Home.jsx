@@ -1,5 +1,4 @@
 import Hero from '../components/sections/Hero'
-import BloomfieldBand from '../components/sections/BloomfieldBand'
 import LogoMarquee from '../components/sections/LogoMarquee'
 import AboutGroup from '../components/sections/AboutGroup'
 import KPIs from '../components/sections/KPIs'
@@ -19,7 +18,6 @@ export default function Home() {
   return (
     <>
       <Hero company={company} />
-      <BloomfieldBand />
       <LogoMarquee filiales={filiales} />
       <AboutGroup company={company} />
       <KPIs company={company} />

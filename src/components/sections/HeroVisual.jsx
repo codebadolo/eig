@@ -61,8 +61,8 @@ export default function HeroVisual() {
         <circle cx={CI.cx} cy={CI.cy} r={CI.r} fill={CI.color} className="hv-dot-pulse" style={{ animationDelay: '0.8s' }} />
 
         {/* Country labels */}
-        <text x={BF.cx + 10} y={BF.cy + 1} fill="rgba(212,170,74,0.9)" fontSize="8" fontFamily="'Jost', sans-serif" fontWeight="600" letterSpacing="0.05em">BF</text>
-        <text x={CI.cx + 9}  y={CI.cy + 1}  fill="rgba(45,138,158,0.9)"  fontSize="8" fontFamily="'Jost', sans-serif" fontWeight="600" letterSpacing="0.05em">CI</text>
+        <text x={BF.cx + 10} y={BF.cy + 1} fill="rgba(212,170,74,0.9)" fontSize="8" fontFamily="'Futura LT', 'Century Gothic', 'Trebuchet MS', sans-serif" fontWeight="600" letterSpacing="0.05em">BF</text>
+        <text x={CI.cx + 9}  y={CI.cy + 1}  fill="rgba(45,138,158,0.9)"  fontSize="8" fontFamily="'Futura LT', 'Century Gothic', 'Trebuchet MS', sans-serif" fontWeight="600" letterSpacing="0.05em">CI</text>
       </svg>
 
       {/* EIG logo card */}
@@ -72,16 +72,16 @@ export default function HeroVisual() {
 
       {/* Floating stat badges */}
       <div className="hv-badge hv-badge-1">
-        <span className="hv-badge-num">20<span style={{ fontSize: 11 }}>Mds</span></span>
-        <span className="hv-badge-label">FCFA Capital</span>
+        <span className="hv-badge-num">+700</span>
+        <span className="hv-badge-label">Collaborateurs</span>
       </div>
       <div className="hv-badge hv-badge-2">
         <span className="hv-badge-num">17</span>
         <span className="hv-badge-label">Filiales</span>
       </div>
       <div className="hv-badge hv-badge-3">
-        <span className="hv-badge-num">BBB</span>
-        <span className="hv-badge-label">Bloomfield</span>
+        <span className="hv-badge-num">9</span>
+        <span className="hv-badge-label">Secteurs</span>
       </div>
 
     </div>

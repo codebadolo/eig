@@ -10,10 +10,10 @@ export default function Hero({ company }) {
   const heroImg = heroImgs[0]
 
   const kpis = company?.kpis ?? [
-    { num: '20', unite: 'Mds', label: 'FCFA Capital Social' },
-    { num: '17', unite: '', label: 'Filiales opérationnelles' },
-    { num: '9',  unite: '', label: 'Secteurs stratégiques' },
-    { num: '2',  unite: '', label: 'Pays (BF+CI)' },
+    { num: '+700', unite: '', label: 'Collaborateurs' },
+    { num: '17',   unite: '', label: 'Filiales opérationnelles' },
+    { num: '9',    unite: '', label: 'Secteurs stratégiques' },
+    { num: '2',    unite: '', label: 'Pays (BF + CI)' },
   ]
 
   return (
@@ -41,8 +41,8 @@ export default function Hero({ company }) {
         </h1>
 
         <p className="hero-subtitle">
-          {pick(company, 'description') ||
-            "Excellis Invest Group mobilise des expertises, des capitaux et des mécanismes d'intervention à forte valeur ajoutée pour accompagner les institutions et entreprises africaines dans leur transformation durable."}
+          {pick(company, 'descriptionCourte') || pick(company, 'description') ||
+            "Excellis Invest Group est une holding multisectorielle basée au Burkina Faso, avec des filiales sur le périmètre africain."}
         </p>
 
         <div className="hero-stats">

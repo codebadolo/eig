@@ -10,7 +10,7 @@ export const translations = {
       contact: 'Nous Contacter',
     },
     hero: {
-      badge: "Holding d'investissement multisectorielle · Burkina Faso",
+      badge: "Holding multisectorielle panafricaine",
       title1: 'Catalyseur de croissance,',
       title2: 'architecte de valeur durable',
       title3: 'en Afrique.',
@@ -20,13 +20,13 @@ export const translations = {
     },
     cta: {
       title: 'Construisons ensemble.',
-      sub: "Investisseur, partenaire institutionnel ou client d'une filiale — prenons le temps d'un échange pour explorer les opportunités.",
+      sub: "Investisseur, partenaire institutionnel ou client d'une filiale, prenons le temps d'un échange pour explorer les opportunités.",
       contact: 'Nous contacter',
       investors: 'Espace Investisseurs',
     },
     footer: {
       tagline: 'Investir autrement',
-      desc: "Holding d'investissement multisectorielle basée au Burkina Faso. 20 milliards FCFA de capital social. 17 filiales. 9 secteurs stratégiques. Noté Bloomfield.",
+      desc: "Holding multisectorielle basée au Burkina Faso, avec des filiales sur le périmètre africain. +700 collaborateurs. 9 secteurs stratégiques.",
       col1: 'Le Groupe',
       col2: 'Nos Activités',
       col3: 'EIG & Vous',
@@ -143,9 +143,9 @@ export const translations = {
       whoTitle: 'Une holding de',
       whoSpan: 'référence',
       whoEnd: "au cœur de l'Afrique",
-      whoText: "La solidité de sa gouvernance et la qualité de sa structure financière sont reconnues par la notation attribuée par Bloomfield Investment Corporation, lui conférant l'avantage d'une bonne signature, gage de crédibilité auprès des investisseurs, partenaires et institutions.",
-      constituted: 'Constitué en SA de droit burkinabè',
-      rating: 'Notation Bloomfield Investment Corporation',
+      whoText: "Fondée en 2019 et basée au Burkina Faso, Excellis Invest Group déploie un portefeuille de filiales sur le périmètre africain, avec +700 collaborateurs engagés dans 9 secteurs stratégiques.",
+      constituted: 'Fondée en 2019 — SA de droit burkinabè',
+      rating: '+700 Collaborateurs',
       purposeLabel: "Raison d'être",
       purposeTitle: 'Mission, Vision & Valeurs',
       mission: 'Mission',
@@ -279,7 +279,7 @@ export const translations = {
     sections: {
       about: {
         label: 'Le Groupe',
-        title1: 'Un acteur structurant de la',
+        title1: 'Une holding au cœur de la',
         titleSpan: 'transformation économique',
         title2: 'africaine',
         mission: 'Notre Mission',
@@ -339,7 +339,7 @@ export const translations = {
       contact: 'Contact Us',
     },
     hero: {
-      badge: 'Multi-sector investment holding · Burkina Faso',
+      badge: 'Pan-African multisectoral holding',
       title1: 'A catalyst for growth,',
       title2: 'an architect of lasting value',
       title3: 'in Africa.',
@@ -349,13 +349,13 @@ export const translations = {
     },
     cta: {
       title: "Let's build together.",
-      sub: "Investor, institutional partner or subsidiary client — let's take the time to explore opportunities together.",
+      sub: "Investor, institutional partner or subsidiary client, let's take the time to explore opportunities together.",
       contact: 'Contact us',
       investors: 'Investor Relations',
     },
     footer: {
       tagline: 'Investing differently',
-      desc: 'Multi-sector investment holding based in Burkina Faso. FCFA 20 billion share capital. 17 subsidiaries. 9 strategic sectors. Bloomfield-rated.',
+      desc: 'Multisectoral holding based in Burkina Faso, with subsidiaries across the African continent. +700 employees. 9 strategic sectors.',
       col1: 'The Group',
       col2: 'Our Activities',
       col3: 'EIG & You',
@@ -472,9 +472,9 @@ export const translations = {
       whoTitle: 'A leading',
       whoSpan: 'investment holding',
       whoEnd: 'at the heart of Africa',
-      whoText: "The solidity of its governance and the quality of its financial structure are recognised by Bloomfield Investment Corporation's rating, giving it the advantage of a strong signature, a mark of credibility with investors, partners and institutions.",
-      constituted: 'Incorporated as a Burkinabè public limited company',
-      rating: 'Bloomfield Investment Corporation rating',
+      whoText: "Founded in 2019 and based in Burkina Faso, Excellis Invest Group deploys a portfolio of subsidiaries across the African continent, with +700 employees committed to 9 strategic sectors.",
+      constituted: 'Founded in 2019 — Burkinabè public limited company',
+      rating: '+700 Employees',
       purposeLabel: 'Our purpose',
       purposeTitle: 'Mission, Vision & Values',
       mission: 'Mission',
@@ -608,7 +608,7 @@ export const translations = {
     sections: {
       about: {
         label: 'The Group',
-        title1: 'A key player in',
+        title1: 'A holding at the heart of',
         titleSpan: 'African economic transformation',
         title2: '',
         mission: 'Our Mission',

@@ -38,7 +38,7 @@ export default function Unsubscribe() {
         {state === 'success' && (
           <>
             <div style={{ fontSize: 48, marginBottom: 20 }}>✓</div>
-            <h1 style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: 28, color: '#0F1924', marginBottom: 12 }}>
+            <h1 style={{ fontFamily: '"Futura LT", "Century Gothic", "Trebuchet MS", sans-serif', fontSize: 28, color: '#0F1924', marginBottom: 12 }}>
               {t('unsubscribe.title')}
             </h1>
             <p style={{ fontSize: 15, color: '#6B7280', lineHeight: 1.7, marginBottom: 32 }}>
@@ -56,7 +56,7 @@ export default function Unsubscribe() {
         {state === 'error' && (
           <>
             <div style={{ fontSize: 48, marginBottom: 20 }}>✕</div>
-            <h1 style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: 28, color: '#0F1924', marginBottom: 12 }}>
+            <h1 style={{ fontFamily: '"Futura LT", "Century Gothic", "Trebuchet MS", sans-serif', fontSize: 28, color: '#0F1924', marginBottom: 12 }}>
               {t('unsubscribe.title')}
             </h1>
             <p style={{ fontSize: 15, color: '#6B7280', lineHeight: 1.7, marginBottom: 32 }}>

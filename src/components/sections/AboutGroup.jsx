@@ -40,8 +40,8 @@ export default function AboutGroup({ company }) {
         )}
 
         <div className="groupe-img-accent">
-          <span className="groupe-img-accent-num">20</span>
-          <span className="groupe-img-accent-label">Milliards FCFA<br />Capital Social</span>
+          <span className="groupe-img-accent-num">+700</span>
+          <span className="groupe-img-accent-label">Collaborateurs<br />sur le périmètre africain</span>
         </div>
       </div>
 

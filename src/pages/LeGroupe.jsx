@@ -34,10 +34,10 @@ export default function LeGroupe() {
               {t('groupe.whoTitle')} <span>{t('groupe.whoSpan')}</span> {t('groupe.whoEnd')}
             </h2>
             <div className="gold-rule" />
-            <p style={{ fontSize: 17, color: 'var(--gray-mid)', lineHeight: 1.8, marginBottom: 24 }}>
+            <p style={{ fontSize: 17, color: 'var(--gray-mid)', lineHeight: 1.8, marginBottom: 24, textAlign: 'justify' }}>
               {pick(company, 'description') || company?.description}
             </p>
-            <p style={{ fontSize: 15, color: 'var(--gray-mid)', lineHeight: 1.8 }}>
+            <p style={{ fontSize: 15, color: 'var(--gray-mid)', lineHeight: 1.8, textAlign: 'justify' }}>
               {t('groupe.whoText')}
             </p>
           </ScrollReveal>
@@ -45,13 +45,13 @@ export default function LeGroupe() {
           <ScrollReveal delay={0.15}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               <div style={{ background: 'linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%)', borderRadius: 6, padding: '40px 36px', color: 'white' }}>
-                <div style={{ fontFamily: 'var(--font-num)', fontSize: 52, color: 'var(--gold-light)', lineHeight: 1 }}>2025</div>
+                <div style={{ fontFamily: 'var(--font-num)', fontSize: 52, color: 'var(--gold-light)', lineHeight: 1 }}>2019</div>
                 <div style={{ fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.6, marginTop: 8 }}>
                   {t('groupe.constituted')}
                 </div>
               </div>
               <div style={{ background: 'var(--gold-pale)', borderRadius: 6, padding: '28px 36px', border: '1px solid rgba(184,146,42,0.2)' }}>
-                <div style={{ fontFamily: 'var(--font-num)', fontSize: 44, color: 'var(--gold)', lineHeight: 1 }}>BBB</div>
+                <div style={{ fontFamily: 'var(--font-num)', fontSize: 44, color: 'var(--gold)', lineHeight: 1 }}>+700</div>
                 <div style={{ fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginTop: 8 }}>
                   {t('groupe.rating')}
                 </div>
@@ -70,18 +70,20 @@ export default function LeGroupe() {
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 60 }}>
           <ScrollReveal>
-            <div style={{ background: 'var(--teal-dark)', borderRadius: 6, padding: '48px 40px', color: 'white' }}>
+            <div style={{ background: 'var(--teal-dark)', borderRadius: 6, padding: '48px 40px', color: 'white', height: '100%' }}>
               <span className="section-label" style={{ color: 'var(--gold-light)' }}>{t('groupe.mission')}</span>
-              <p style={{ fontFamily: 'var(--font-display)', fontSize: 22, lineHeight: 1.6, color: 'rgba(255,255,255,0.9)', fontStyle: 'italic' }}>
-                "{pick(company, 'mission') || company?.mission}"
+              <div style={{ width: 32, height: 2, background: 'var(--gold)', margin: '16px 0 20px' }} />
+              <p style={{ fontSize: 17, lineHeight: 1.8, color: 'rgba(255,255,255,0.88)', textAlign: 'justify' }}>
+                {pick(company, 'mission') || company?.mission}
               </p>
             </div>
           </ScrollReveal>
           <ScrollReveal delay={0.15}>
-            <div style={{ background: 'var(--white)', borderRadius: 6, padding: '48px 40px', border: '1px solid var(--gray-light)' }}>
+            <div style={{ background: 'var(--white)', borderRadius: 6, padding: '48px 40px', border: '1px solid var(--gray-light)', height: '100%' }}>
               <span className="section-label">{t('groupe.vision')}</span>
-              <p style={{ fontFamily: 'var(--font-display)', fontSize: 22, lineHeight: 1.6, color: 'var(--black)', fontStyle: 'italic' }}>
-                "{pick(company, 'vision') || company?.vision}"
+              <div style={{ width: 32, height: 2, background: 'var(--gold)', margin: '16px 0 20px' }} />
+              <p style={{ fontSize: 17, lineHeight: 1.8, color: 'var(--gray-mid)', textAlign: 'justify' }}>
+                {pick(company, 'vision') || company?.vision}
               </p>
             </div>
           </ScrollReveal>

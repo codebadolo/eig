@@ -2,6 +2,65 @@
    DESIGN SYSTEM — EXCELLIS INVEST GROUP
    Direction artistique : Premium Africain Corporate
 ═══════════════════════════════════════════════════ */
+
+/* ─── FUTURA LT — fichiers requis dans /public/fonts/ ─── */
+@font-face {
+  font-family: 'Futura LT';
+  src: url('/fonts/FuturaLT-Light.woff2') format('woff2'),
+       url('/fonts/FuturaLT-Light.woff')  format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Futura LT';
+  src: url('/fonts/FuturaLT-Book.woff2') format('woff2'),
+       url('/fonts/FuturaLT-Book.woff')  format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Futura LT';
+  src: url('/fonts/FuturaLT-BookOblique.woff2') format('woff2'),
+       url('/fonts/FuturaLT-BookOblique.woff')  format('woff');
+  font-weight: 400;
+  font-style: oblique;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Futura LT';
+  src: url('/fonts/FuturaLT-Medium.woff2') format('woff2'),
+       url('/fonts/FuturaLT-Medium.woff')  format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Futura LT';
+  src: url('/fonts/FuturaLT-Bold.woff2') format('woff2'),
+       url('/fonts/FuturaLT-Bold.woff')  format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Futura LT';
+  src: url('/fonts/FuturaLT-BoldOblique.woff2') format('woff2'),
+       url('/fonts/FuturaLT-BoldOblique.woff')  format('woff');
+  font-weight: 700;
+  font-style: oblique;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Futura LT';
+  src: url('/fonts/FuturaLT-Heavy.woff2') format('woff2'),
+       url('/fonts/FuturaLT-Heavy.woff')  format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --teal:        #1A6B7A;
   --teal-dark:   #0F4855;
@@ -17,9 +76,9 @@
   --gray-light:  #E8EBF0;
   --white:       #FFFFFF;
 
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body:    'Jost', sans-serif;
-  --font-num:     'Bebas Neue', sans-serif;
+  --font-display: 'Futura LT', 'Century Gothic', 'Trebuchet MS', sans-serif;
+  --font-body:    'Futura LT', 'Century Gothic', 'Trebuchet MS', sans-serif;
+  --font-num:     'Futura LT', 'Century Gothic', 'Trebuchet MS', sans-serif;
 
   --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   --shadow-sm: 0 2px 8px rgba(15,25,36,0.08);
@@ -94,7 +153,7 @@ nav.navbar.scrolled {
 nav.navbar.scrolled .nav-logo-name { color: var(--teal-dark); }
 .nav-logo-tagline {
   font-family: var(--font-display);
-  font-style: italic;
+  font-style: oblique;
   font-size: 11px;
   color: var(--gold-light);
   letter-spacing: 0.05em;
@@ -466,7 +525,7 @@ nav.navbar.scrolled .nav-hamburger span { background: var(--dark); }
   animation: fadeInUp 0.8s 0.15s ease both;
 }
 .hero-title em {
-  font-style: italic;
+  font-style: oblique;
   color: var(--gold-light);
   display: block;
 }
@@ -593,7 +652,7 @@ section { padding: 100px 5%; }
   margin-bottom: 20px;
 }
 .section-title span { color: var(--teal); }
-.section-title em { font-style: italic; color: var(--gold-light); }
+.section-title em { font-style: oblique; color: var(--gold-light); }
 .section-lead {
   font-size: 18px;
   color: var(--gray-mid);
@@ -712,12 +771,16 @@ section { padding: 100px 5%; }
 .kpis-label { color: var(--gold-light); }
 .kpis-title {
   font-family: var(--font-display);
-  font-size: clamp(28px, 3.5vw, 44px);
+  font-size: clamp(20px, 2.2vw, 34px);
   font-weight: 700;
   color: var(--white);
   margin-bottom: 60px;
-  max-width: 600px;
+  white-space: nowrap;
+  max-width: none;
   margin-left: auto; margin-right: auto;
+}
+@media (max-width: 768px) {
+  .kpis-title { white-space: normal; font-size: clamp(20px, 5vw, 28px); }
 }
 .kpis-grid {
   display: grid;
@@ -773,7 +836,17 @@ section { padding: 100px 5%; }
   text-decoration: none;
   display: block;
   color: inherit;
+  min-height: 260px;
 }
+.metier-card-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.08;
+  transition: opacity var(--transition);
+}
+.metier-card:hover .metier-card-bg { opacity: 0.14; }
 .metier-card::before {
   content: '';
   position: absolute;
@@ -920,7 +993,7 @@ section { padding: 100px 5%; }
 .gouv-quote-text {
   font-family: var(--font-display);
   font-size: 20px;
-  font-style: italic;
+  font-style: oblique;
   color: rgba(255,255,255,0.9);
   line-height: 1.6;
   margin-bottom: 14px;
@@ -1189,7 +1262,7 @@ footer {
 }
 .footer-brand-tagline {
   font-family: var(--font-display);
-  font-style: italic;
+  font-style: oblique;
   color: var(--gold-light);
   font-size: 14px;
   margin-bottom: 20px;
