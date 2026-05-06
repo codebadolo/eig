@@ -32,6 +32,11 @@ if [ -z "$APP_KEY" ]; then
   php artisan key:generate --force
 fi
 
+# Générer JWT_SECRET si absent
+if ! grep -q "^JWT_SECRET=.\+" /app/.env 2>/dev/null; then
+  php artisan jwt:secret --force
+fi
+
 # Attendre que MySQL soit prêt
 echo "Attente de MySQL..."
 until php artisan migrate:status > /dev/null 2>&1; do
