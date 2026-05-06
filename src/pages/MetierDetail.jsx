@@ -34,6 +34,7 @@ export default function MetierDetail() {
       <PageHero
         section={`metier-${metier.slug}`}
         fallbackStyle={{ background: metier.couleur }}
+        bgImage={metier.image || null}
         label={t('metiers.label')}
       >
         <h1 className="page-hero-title">
@@ -73,7 +74,20 @@ export default function MetierDetail() {
                   <div style={{ flex: 1 }}>
                     <div className="filiale-name">{f.nom}</div>
                     <div className="filiale-sector">{f.secteur}</div>
-                    <div className="filiale-country">📍 {f.pays}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 2 }}>
+                      <div className="filiale-country">📍 {f.pays}</div>
+                      {f.website && (
+                        <a
+                          href={f.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={e => e.stopPropagation()}
+                          style={{ fontSize: 11, color: 'var(--teal)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 3 }}
+                        >
+                          🌐 {t('filiales.website')}
+                        </a>
+                      )}
+                    </div>
                   </div>
                   <span style={{ color: 'var(--gray-light)', fontSize: 18 }}>→</span>
                 </Link>

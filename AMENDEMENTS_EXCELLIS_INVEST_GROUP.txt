@@ -1,0 +1,123 @@
+================================================================================
+        AMENDEMENTS CLIENT — EXCELLIS INVEST GROUP
+        Document de suivi des modifications demandées pour le site web
+        Date : 05 mai 2026
+================================================================================
+
+
+--------------------------------------------------------------------------------
+1. TYPOGRAPHIE GENERALE
+--------------------------------------------------------------------------------
+- Appliquer la police Futura LT sur l'ensemble du site.
+
+
+--------------------------------------------------------------------------------
+2. HERO SECTION (Page d'accueil)
+--------------------------------------------------------------------------------
+- Supprimer la mention des "20 milliards".
+- Modifier le texte de présentation de la Hero section (nouveau texte en attente
+  de validation client).
+- En attente : le client doit nous transmettre les logos des filiales pour
+  intégration.
+- Marquer clairement la différence entre les filiales qui portent le même nom
+  mais sont situées dans des pays différents.
+- Précision importante : Excellis Invest Group N'EST PAS une filiale.
+
+
+--------------------------------------------------------------------------------
+3. SECTION GROUPE
+--------------------------------------------------------------------------------
+- Supprimer la mention "un acteur structuré" et toute référence à Bloomfield.
+- Reformuler la description : Excellis Invest Group est une holding
+  multisectorielle basée au Burkina Faso, avec des filiales sur le périmètre
+  africain.
+- Supprimer toute note ou notation Bloomfield.
+- Supprimer la mention "ex Coris Invest Group".
+
+
+--------------------------------------------------------------------------------
+4. SECTION LE GROUPE (Visuel / Image)
+--------------------------------------------------------------------------------
+- Utiliser une image avec la carte de l'Afrique mentionnant explicitement
+  le Burkina Faso et la Côte d'Ivoire.
+
+
+--------------------------------------------------------------------------------
+5. SECTION CHIFFRES CLES
+--------------------------------------------------------------------------------
+- La phrase "La solidité d'un groupe construit pour durer" doit être affichée
+  sur une seule et même ligne.
+- Supprimer la notation Bloomfield ; la remplacer par : "+700 collaborateurs".
+- Indiquer : 9 secteurs stratégiques.
+- Arrière-plan des cartes secteurs : utiliser des images représentatives
+  pour chaque secteur.
+- Toutes les cartes doivent avoir la même taille et la même largeur.
+
+
+--------------------------------------------------------------------------------
+6. SECTION GOUVERNANCE
+--------------------------------------------------------------------------------
+- Aucune modification demandée.
+
+
+--------------------------------------------------------------------------------
+7. FOOTER
+--------------------------------------------------------------------------------
+- Supprimer le plugin WhatsApp / IA de discussion avec les visiteurs concernant
+  la plateforme.
+- Section "Construisons ensemble" : remplacer les tirets (—) par des virgules.
+
+
+--------------------------------------------------------------------------------
+8. PAGE GROUPE (Page dédiée)
+--------------------------------------------------------------------------------
+- Supprimer la notation "BBB" ; la remplacer par : "+700 collaborateurs".
+- Supprimer la mention "ex Coris Invest Group".
+- Description : Excellis Invest Group est une holding multisectorielle basée
+  au Burkina Faso, avec un périmètre africain.
+- Préciser la date de création : fondée en 2019, basée au Burkina Faso.
+- Tous les textes doivent être justifiés.
+- Section Mission & Vision : harmoniser les textes et les justifier.
+
+
+--------------------------------------------------------------------------------
+9. SECTION NOS METIERS
+--------------------------------------------------------------------------------
+- Chaque métier doit être accompagné d'une image de couverture.
+- Ajouter le lien vers le site web de chaque filiale (si disponible).
+
+
+--------------------------------------------------------------------------------
+10. SECTION CANDIDATURES (Recrutement)
+--------------------------------------------------------------------------------
+- Les candidatures doivent être reçues par e-mail (formulaire redirigé
+  vers une adresse mail dédiée).
+
+
+================================================================================
+STATUT D'AVANCEMENT
+================================================================================
+[OK] Typographie Futura LT appliquée (src/styles/global.css + index.html)
+[OK] Hero : "20 milliards" supprimé, texte reformulé, badge sans "Burkina Faso"
+[OK] Hero : filiale "Excelis" (1 L) corrigée ; différenciation pays déjà présente (BF/CI)
+[OK] Section Groupe accueil : BloomfieldBand supprimée, description reformulée
+[OK] Section Groupe accueil : accent "20 Mds" → "+700 Collaborateurs"
+[OK] Section Chiffres Clés : titre sur une ligne, Bloomfield → +700 collaborateurs, 9 secteurs
+[OK] Section Secteurs : image de fond représentative sur les cartes, hauteur uniforme
+[OK] Footer : WhatsApp supprimé, tirets → virgules dans "Construisons ensemble"
+[OK] Page Groupe : BBB → +700 collaborateurs, année 2025 → 2019
+[OK] Page Groupe : textes justifiés, Mission & Vision harmonisés et justifiés
+[OK] Page Groupe : "ex Coris Invest Group" supprimé, description mise à jour
+[OK] Nos Métiers : image de couverture sur les cartes secteur
+[OK] Candidatures : lien email ajouté dans le formulaire de candidature
+
+================================================================================
+ELEMENTS EN ATTENTE DU CLIENT
+================================================================================
+- Logos officiels des filiales (remplacement des placeholders)
+- Sites web de chaque filiale (pour ajout des liens)
+- Adresse mail définitive de réception des candidatures
+  (actuellement : carrieres@excellis-invest-group.com — à confirmer)
+- Fichiers Excel détails filiales et informations complémentaires
+- Images de couverture définitives pour les 9 secteurs métiers
+================================================================================

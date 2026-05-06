@@ -7,6 +7,8 @@ import ScrollReveal from '../components/ui/ScrollReveal'
 import { useLang } from '../contexts/LangContext'
 import { useApi } from '../hooks/useApi'
 
+const API = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
+
 export default function NosFiliales() {
   const { t, pick } = useLang()
   const { data: filiales = [], loading } = useApi('/filiales?actif=true')
@@ -76,6 +78,17 @@ export default function NosFiliales() {
           {filtered.map((f, i) => (
             <ScrollReveal key={f.id} delay={(i % 3) * 0.06}>
               <Link to={`/nos-filiales/${f.id}`} className="filiale-full-card">
+                {f.image && (
+                  <div style={{
+                    margin: '-32px -28px 6px -28px',
+                    height: 148,
+                    backgroundImage: `url(${API}${f.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    borderRadius: '6px 6px 0 0',
+                    flexShrink: 0,
+                  }} />
+                )}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                   <FilialeLogo id={f.id} sigle={f.sigle} size={64} />
                   <div>
@@ -84,7 +97,20 @@ export default function NosFiliales() {
                   </div>
                 </div>
                 <p className="filiale-desc">{pick(f, 'description')}</p>
-                <div className="filiale-country">📍 {f.pays}</div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
+                  <div className="filiale-country">📍 {f.pays}{f.ville ? `, ${f.ville}` : ''}</div>
+                  {f.website && (
+                    <a
+                      href={f.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={e => e.stopPropagation()}
+                      style={{ fontSize: 11, fontWeight: 600, color: 'var(--teal)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4, letterSpacing: '0.05em' }}
+                    >
+                      🌐 {t('filiales.website')}
+                    </a>
+                  )}
+                </div>
               </Link>
             </ScrollReveal>
           ))}

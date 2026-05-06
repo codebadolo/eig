@@ -5,6 +5,7 @@ import { api } from '../lib/api'
 import toast from 'react-hot-toast'
 import PageHeader from '../components/PageHeader'
 import FaIcon, { ICON_LIST } from '../components/FaIcon'
+import ImageUpload from '../components/ImageUpload'
 
 export default function MetierForm() {
   const { id } = useParams()
@@ -12,6 +13,7 @@ export default function MetierForm() {
   const isEdit = !!id
   const [saving, setSaving] = useState(false)
   const [filialesInput, setFilialesInput] = useState('')
+  const [image, setImage] = useState('')
   const { register, handleSubmit, reset, watch } = useForm()
 
   useEffect(() => {
@@ -19,6 +21,7 @@ export default function MetierForm() {
       api.get(`/metiers/${id}`).then((m) => {
         reset(m)
         setFilialesInput(Array.isArray(m.filialesIds) ? m.filialesIds.join(', ') : '')
+        setImage(m.image || '')
       }).catch(() => toast.error('Métier non trouvé'))
     }
   }, [id, isEdit, reset])
@@ -27,7 +30,7 @@ export default function MetierForm() {
     setSaving(true)
     try {
       const filialesIds = filialesInput.split(',').map(s => s.trim()).filter(Boolean)
-      const payload = { ...data, filialesIds, ordre: Number(data.ordre) || 0 }
+      const payload = { ...data, image, filialesIds, ordre: Number(data.ordre) || 0 }
       if (isEdit) {
         await api.put(`/metiers/${id}`, payload)
         toast.success('Métier mis à jour')
@@ -92,6 +95,8 @@ export default function MetierForm() {
           <label className="label">Contribution d'EIG *</label>
           <textarea className="input" rows={3} {...register('contribution', { required: true })} />
         </div>
+
+        <ImageUpload value={image} onChange={setImage} label="Image de couverture" />
 
         <div>
           <label className="label">IDs des filiales associées (séparés par des virgules)</label>

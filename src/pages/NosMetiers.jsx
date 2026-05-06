@@ -6,6 +6,8 @@ import FaIcon from '../components/ui/FaIcon'
 import PageHero from '../components/ui/PageHero'
 import { useLang } from '../contexts/LangContext'
 
+const API = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
+
 export default function NosMetiers() {
   const { t, pick } = useLang()
   const { data: metiers = [], loading } = useApi('/metiers')

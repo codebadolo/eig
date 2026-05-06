@@ -31,11 +31,24 @@ const SECTEURS_SLUGS = {
   'Transport & Logistique Minière': 'logistique-miniere',
 }
 
+function Section({ title, children }) {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-3">
+        <span className="text-xs font-bold tracking-widest uppercase text-gray-400">{title}</span>
+        <div className="flex-1 h-px bg-gray-100" />
+      </div>
+      {children}
+    </div>
+  )
+}
+
 export default function FilialeForm() {
   const { id } = useParams()
   const navigate = useNavigate()
   const isEdit = !!id
   const [logo, setLogo] = useState('')
+  const [image, setImage] = useState('')
   const [saving, setSaving] = useState(false)
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm()
@@ -52,6 +65,7 @@ export default function FilialeForm() {
       api.get(`/filiales/${id}`).then((f) => {
         reset(f)
         setLogo(f.logo || '')
+        setImage(f.image || '')
       }).catch(() => toast.error('Filiale non trouvée'))
     }
   }, [id, isEdit, reset])
@@ -59,7 +73,13 @@ export default function FilialeForm() {
   const onSubmit = async (data) => {
     setSaving(true)
     try {
-      const payload = { ...data, logo, actif: data.actif !== false && data.actif !== 'false', ordre: Number(data.ordre) || 0 }
+      const payload = {
+        ...data,
+        logo,
+        image,
+        actif: data.actif !== false && data.actif !== 'false',
+        ordre: Number(data.ordre) || 0,
+      }
       if (isEdit) {
         await api.put(`/filiales/${id}`, payload)
         toast.success('Filiale mise à jour')
@@ -81,82 +101,128 @@ export default function FilialeForm() {
         title={isEdit ? 'Modifier la filiale' : 'Nouvelle filiale'}
         backTo="/filiales"
       />
-      <form onSubmit={handleSubmit(onSubmit)} className="card p-6 space-y-5">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="label">ID (slug unique) *</label>
-            <input className="input" placeholder="ex: coris-bourse" {...register('id', { required: true })} disabled={isEdit} />
-          </div>
-          <div>
-            <label className="label">Sigle *</label>
-            <input className="input" placeholder="CB" {...register('sigle', { required: true })} />
-          </div>
-        </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="card p-6 space-y-8">
 
-        <div>
-          <label className="label">Nom complet *</label>
-          <input className="input" placeholder="Coris Bourse" {...register('nom', { required: true })} />
-        </div>
+        {/* ── Identification ── */}
+        <Section title="Identification">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="label">ID (slug unique) *</label>
+              <input className="input" placeholder="ex: coris-bourse" {...register('id', { required: true })} disabled={isEdit} />
+            </div>
+            <div>
+              <label className="label">Sigle *</label>
+              <input className="input" placeholder="CB" {...register('sigle', { required: true })} />
+            </div>
+          </div>
 
-        <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="label">Secteur *</label>
-            <select className="input" {...register('secteur', { required: true })}>
+            <label className="label">Nom complet *</label>
+            <input className="input" placeholder="Coris Bourse" {...register('nom', { required: true })} />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="label">Secteur *</label>
+              <select className="input" {...register('secteur', { required: true })}>
+                <option value="">— Choisir —</option>
+                {SECTEURS.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="label">Secteur slug *</label>
+              <input className="input" placeholder="marches-financiers" {...register('secteurSlug', { required: true })} />
+            </div>
+          </div>
+
+          <div>
+            <label className="label">Pays *</label>
+            <select className="input" {...register('pays', { required: true })}>
               <option value="">— Choisir —</option>
-              {SECTEURS.map(s => <option key={s} value={s}>{s}</option>)}
+              <option value="Burkina Faso">Burkina Faso</option>
+              <option value="Côte d'Ivoire">Côte d'Ivoire</option>
             </select>
           </div>
+        </Section>
+
+        {/* ── Description & Mission ── */}
+        <Section title="Description & Mission">
           <div>
-            <label className="label">Secteur slug *</label>
-            <input className="input" placeholder="marches-financiers" {...register('secteurSlug', { required: true })} />
+            <label className="label">Description (Français) *</label>
+            <textarea className="input min-h-[100px]" rows={4} {...register('description', { required: true })} />
           </div>
-        </div>
 
-        <div>
-          <label className="label">Pays *</label>
-          <select className="input" {...register('pays', { required: true })}>
-            <option value="">— Choisir —</option>
-            <option value="Burkina Faso">Burkina Faso</option>
-            <option value="Côte d'Ivoire">Côte d'Ivoire</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="label">Site web / Plateforme</label>
-          <input
-            className="input"
-            type="url"
-            placeholder="https://www.exemple.com"
-            {...register('website')}
-          />
-          <p className="text-xs text-gray-400 mt-1">Lien vers le site officiel ou la plateforme en ligne de la filiale</p>
-        </div>
-
-        <div>
-          <label className="label">Description (Français) *</label>
-          <textarea className="input min-h-[100px]" rows={4} {...register('description', { required: true })} />
-        </div>
-
-        <div>
-          <label className="label">Description (English)</label>
-          <textarea className="input min-h-[100px]" rows={4} {...register('description_en')}
-            placeholder="English description of the subsidiary..." />
-        </div>
-
-        <ImageUpload value={logo} onChange={setLogo} label="Logo" />
-
-        <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="label">Ordre d'affichage</label>
-            <input type="number" className="input" defaultValue={0} {...register('ordre')} />
+            <label className="label">Description (English)</label>
+            <textarea className="input min-h-[100px]" rows={4} {...register('description_en')}
+              placeholder="English description of the subsidiary..." />
           </div>
-          <div className="flex items-end pb-1">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" className="w-4 h-4 rounded accent-brand-600" defaultChecked {...register('actif')} />
-              <span className="text-sm font-medium text-gray-700">Filiale active</span>
-            </label>
+
+          <div>
+            <label className="label">Mission / Positionnement (Français)</label>
+            <textarea className="input" rows={2} placeholder="Notre mission est de…"
+              {...register('mission')} />
+            <p className="text-xs text-gray-400 mt-1">Phrase courte résumant la raison d'être de la filiale</p>
           </div>
-        </div>
+
+          <div>
+            <label className="label">Mission (English)</label>
+            <textarea className="input" rows={2} placeholder="Our mission is to…"
+              {...register('mission_en')} />
+          </div>
+        </Section>
+
+        {/* ── Contact ── */}
+        <Section title="Contact">
+          <div>
+            <label className="label">Site web / Plateforme</label>
+            <input className="input" type="url" placeholder="https://www.exemple.com" {...register('website')} />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="label">Téléphone</label>
+              <input className="input" type="tel" placeholder="+226 25 XX XX XX" {...register('telephone')} />
+            </div>
+            <div>
+              <label className="label">Email de contact</label>
+              <input className="input" type="email" placeholder="contact@filiale.com" {...register('email_contact')} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="label">Ville</label>
+              <input className="input" placeholder="Ouagadougou" {...register('ville')} />
+            </div>
+            <div>
+              <label className="label">Adresse</label>
+              <input className="input" placeholder="Avenue de la Nation, Secteur 1" {...register('adresse')} />
+            </div>
+          </div>
+        </Section>
+
+        {/* ── Médias ── */}
+        <Section title="Médias">
+          <ImageUpload value={logo} onChange={setLogo} label="Logo" />
+          <ImageUpload value={image} onChange={setImage} label="Image de couverture" />
+        </Section>
+
+        {/* ── Paramètres ── */}
+        <Section title="Paramètres">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="label">Ordre d'affichage</label>
+              <input type="number" className="input" defaultValue={0} {...register('ordre')} />
+            </div>
+            <div className="flex items-end pb-1">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="w-4 h-4 rounded accent-brand-600" defaultChecked {...register('actif')} />
+                <span className="text-sm font-medium text-gray-700">Filiale active</span>
+              </label>
+            </div>
+          </div>
+        </Section>
 
         <div className="flex gap-3 pt-2">
           <button type="submit" disabled={saving} className="btn-primary">

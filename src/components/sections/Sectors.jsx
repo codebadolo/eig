@@ -3,6 +3,8 @@ import ScrollReveal from '../ui/ScrollReveal'
 import FaIcon from '../ui/FaIcon'
 import { useLang } from '../../contexts/LangContext'
 
+const API = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
+
 export default function Sectors({ metiers = [] }) {
   const { t, pick } = useLang()
 
@@ -24,9 +26,9 @@ export default function Sectors({ metiers = [] }) {
           const count = Array.isArray(m.filialesIds) ? m.filialesIds.length : (m.filiales ?? 0)
           return (
             <ScrollReveal key={m.slug} delay={(i % 3) * 0.08}>
-              <Link to={`/nos-metiers/${m.slug}`} className="metier-card">
+              <Link to={`/nos-metiers/${m.slug}`} className={`metier-card${m.image ? ' has-image' : ''}`}>
                 {m.image && (
-                  <div className="metier-card-bg" style={{ backgroundImage: `url(${m.image})` }} />
+                  <div className="metier-card-bg" style={{ backgroundImage: `url(${API}${m.image})` }} />
                 )}
                 <div className="metier-icon" style={{ background: m.couleur }}>
                   <FaIcon name={m.icone} size={24} />

@@ -2,16 +2,20 @@ import { useApi } from '../../hooks/useApi'
 
 const API = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
-export default function PageHero({ section, label, title, subtitle, children, fallbackStyle }) {
+export default function PageHero({ section, label, title, subtitle, children, fallbackStyle, bgImage }) {
   const { data: imgs = [] } = useApi(section ? `/images?section=${section}&actif=true` : null)
   const img = imgs[0]
 
+  const makeBgStyle = (src) => ({
+    backgroundImage: `linear-gradient(135deg, rgba(15,72,85,0.88) 0%, rgba(15,25,36,0.92) 100%), url(${src})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  })
+
   const style = img
-    ? {
-        backgroundImage: `linear-gradient(135deg, rgba(15,72,85,0.88) 0%, rgba(15,25,36,0.92) 100%), url(${API}${img.url})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }
+    ? makeBgStyle(`${API}${img.url}`)
+    : bgImage
+    ? makeBgStyle(`${API}${bgImage}`)
     : (fallbackStyle || {})
 
   return (

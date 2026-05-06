@@ -7,6 +7,8 @@ import { useApi } from '../hooks/useApi'
 import PageHero from '../components/ui/PageHero'
 import { useLang } from '../contexts/LangContext'
 
+const API = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
+
 export default function FilialeDetail() {
   const { id } = useParams()
   const { t, pick } = useLang()
@@ -31,9 +33,15 @@ export default function FilialeDetail() {
   const autresFiliales = allFiliales.filter(f => f.secteurSlug === filiale.secteurSlug && f.id !== id).slice(0, 3)
   const hasLogo = Boolean(logos[id])
 
+  const hasContact = filiale.telephone || filiale.email_contact || filiale.adresse || filiale.ville
+
   return (
     <>
-      <PageHero section={`filiale-${id}`} label={t('filiales.label')}>
+      <PageHero
+        section={`filiale-${id}`}
+        bgImage={filiale.image || null}
+        label={t('filiales.label')}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginBottom: 20, flexWrap: 'wrap' }}>
           {hasLogo ? (
             <div style={{
@@ -56,7 +64,7 @@ export default function FilialeDetail() {
           <div>
             <h1 className="page-hero-title" style={{ marginBottom: 8 }}>{filiale.nom}</h1>
             <div style={{ fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--gold-light)' }}>
-              {filiale.secteur} · {filiale.pays}
+              {filiale.secteur} · {filiale.pays}{filiale.ville ? ` · ${filiale.ville}` : ''}
             </div>
           </div>
         </div>
@@ -64,21 +72,44 @@ export default function FilialeDetail() {
 
       <section style={{ background: 'var(--white)' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 60, alignItems: 'start' }}>
+
+          {/* ── Main content ── */}
           <ScrollReveal>
             <span className="section-label">{t('filiales.aboutLabel')}</span>
             <h2 className="section-title" style={{ fontSize: 'clamp(24px,3vw,38px)' }}>{filiale.nom}</h2>
             <div className="gold-rule" />
+
             <p style={{ fontSize: 17, color: 'var(--gray-mid)', lineHeight: 1.8 }}>
               {pick(filiale, 'description')}
             </p>
-            <div style={{ marginTop: 40, display: 'flex', gap: 16 }}>
+
+            {pick(filiale, 'mission') && (
+              <div style={{
+                marginTop: 32,
+                borderLeft: '3px solid var(--gold)',
+                background: 'var(--gold-pale)',
+                padding: '20px 20px 20px 24px',
+                borderRadius: '0 4px 4px 0',
+              }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 8 }}>
+                  {t('filiales.missionLabel')}
+                </div>
+                <p style={{ fontSize: 15, color: 'var(--gray)', lineHeight: 1.7, margin: 0 }}>
+                  {pick(filiale, 'mission')}
+                </p>
+              </div>
+            )}
+
+            <div style={{ marginTop: 40, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
               <Link to="/contact" className="btn-primary">{t('filiales.contactBtn')}</Link>
               <Link to="/nos-filiales" className="btn-teal">{t('filiales.allFiliales')}</Link>
             </div>
           </ScrollReveal>
 
+          {/* ── Sidebar ── */}
           <ScrollReveal delay={0.15}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+
               {hasLogo && (
                 <div style={{
                   background: 'var(--ivory)', padding: 32, borderRadius: 8,
@@ -88,28 +119,61 @@ export default function FilialeDetail() {
                   <img src={logos[id]} alt={filiale.nom} style={{ maxWidth: '100%', maxHeight: 120, objectFit: 'contain' }} />
                 </div>
               )}
+
               <div style={{ background: 'var(--ivory)', padding: 24, borderRadius: 6, border: '1px solid var(--gray-light)' }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 8 }}>{t('filiales.sectorLabel')}</div>
+                <div style={labelStyle}>{t('filiales.sectorLabel')}</div>
                 <div style={{ fontWeight: 600, color: 'var(--teal)' }}>{filiale.secteur}</div>
               </div>
+
               <div style={{ background: 'var(--ivory)', padding: 24, borderRadius: 6, border: '1px solid var(--gray-light)' }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 8 }}>{t('filiales.paysLabel')}</div>
-                <div style={{ fontWeight: 600, color: 'var(--black)' }}>📍 {filiale.pays}</div>
+                <div style={labelStyle}>{t('filiales.paysLabel')}</div>
+                <div style={{ fontWeight: 600, color: 'var(--black)' }}>
+                  📍 {filiale.pays}{filiale.ville ? `, ${filiale.ville}` : ''}
+                </div>
               </div>
+
               {metier && (
                 <div style={{ background: 'var(--gold-pale)', padding: 24, borderRadius: 6, border: '1px solid rgba(184,146,42,0.2)' }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 8 }}>
-                    {t('filiales.metierLabel')}
-                  </div>
+                  <div style={{ ...labelStyle, color: 'var(--gold)' }}>{t('filiales.metierLabel')}</div>
                   <Link to={`/nos-metiers/${metier.slug}`} style={{ fontWeight: 600, color: 'var(--teal-dark)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
                     {metier.icone} {pick(metier, 'titre')} →
                   </Link>
                 </div>
               )}
+
+              {hasContact && (
+                <div style={{ background: 'var(--white)', padding: 24, borderRadius: 6, border: '1px solid var(--gray-light)' }}>
+                  <div style={labelStyle}>{t('filiales.contactLabel')}</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    {filiale.telephone && (
+                      <a href={`tel:${filiale.telephone}`} style={contactRowStyle}>
+                        <span style={contactIconStyle}>📞</span>
+                        <span>{filiale.telephone}</span>
+                      </a>
+                    )}
+                    {filiale.email_contact && (
+                      <a href={`mailto:${filiale.email_contact}`} style={contactRowStyle}>
+                        <span style={contactIconStyle}>✉️</span>
+                        <span>{filiale.email_contact}</span>
+                      </a>
+                    )}
+                    {(filiale.adresse || filiale.ville) && (
+                      <div style={{ ...contactRowStyle, cursor: 'default' }}>
+                        <span style={contactIconStyle}>📍</span>
+                        <span style={{ color: 'var(--gray-mid)' }}>
+                          {[filiale.adresse, filiale.ville, filiale.pays].filter(Boolean).join(', ')}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               <div style={{ background: 'var(--white)', padding: 24, borderRadius: 6, border: '1px solid var(--gray-light)' }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 8 }}>{t('filiales.groupLabel')}</div>
+                <div style={labelStyle}>{t('filiales.groupLabel')}</div>
                 <div style={{ fontWeight: 600, color: 'var(--black)' }}>Excellis Invest Group</div>
               </div>
+
               {filiale.website && (
                 <a
                   href={filiale.website}
@@ -142,7 +206,7 @@ export default function FilialeDetail() {
                     <FilialeLogo id={f.id} sigle={f.sigle} size={56} />
                     <div className="filiale-name">{f.nom}</div>
                     <div className="filiale-sector">{f.secteur}</div>
-                    <div className="filiale-country">📍 {f.pays}</div>
+                    <div className="filiale-country">📍 {f.pays}{f.ville ? `, ${f.ville}` : ''}</div>
                   </Link>
                 ))}
               </div>
@@ -154,4 +218,18 @@ export default function FilialeDetail() {
       <CallToAction />
     </>
   )
+}
+
+const labelStyle = {
+  fontSize: 11, fontWeight: 700, letterSpacing: '0.15em',
+  textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 8,
+}
+
+const contactIconStyle = {
+  fontSize: 14, flexShrink: 0, width: 20,
+}
+
+const contactRowStyle = {
+  display: 'flex', alignItems: 'flex-start', gap: 8,
+  fontSize: 13, color: 'var(--gray)', textDecoration: 'none', lineHeight: 1.4,
 }
