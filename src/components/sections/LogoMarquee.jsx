@@ -41,7 +41,7 @@ export default function LogoMarquee({ filiales = [] }) {
                   )}
                   {showCountry && (
                     <span className="logo-marquee-country">
-                      {FLAG[f.pays] || ''} {SHORT[f.pays] || f.pays}
+                      {SHORT[f.pays] || f.pays}
                     </span>
                   )}
                 </div>
