@@ -4,6 +4,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void {
+        if (!Schema::hasTable('site_images')) {
         Schema::create('site_images', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('section');
@@ -15,6 +16,7 @@ return new class extends Migration {
             $table->timestamps();
             $table->index('section');
         });
+        }
     }
     public function down(): void { Schema::dropIfExists('site_images'); }
 };

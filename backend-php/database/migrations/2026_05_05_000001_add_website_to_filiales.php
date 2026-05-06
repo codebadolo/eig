@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void {
         Schema::table('filiales', function (Blueprint $table) {
-            $table->string('website')->nullable()->after('logo');
+            if (!Schema::hasColumn('filiales', 'website')) {
+                $table->string('website')->nullable()->after('logo');
+            }
         });
     }
     public function down(): void {

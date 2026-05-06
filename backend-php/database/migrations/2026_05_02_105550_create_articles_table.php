@@ -4,6 +4,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void {
+        if (!Schema::hasTable('articles')) {
         Schema::create('articles', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('slug')->unique();
@@ -18,6 +19,7 @@ return new class extends Migration {
             $table->boolean('publie')->default(true);
             $table->timestamps();
         });
+        }
     }
     public function down(): void { Schema::dropIfExists('articles'); }
 };

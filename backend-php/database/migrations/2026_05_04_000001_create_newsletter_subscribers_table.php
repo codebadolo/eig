@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up(): void {
+        if (!Schema::hasTable('newsletter_subscribers')) {
         Schema::create('newsletter_subscribers', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('email')->unique();
@@ -12,6 +13,7 @@ return new class extends Migration {
             $table->string('unsubscribe_token')->unique();
             $table->timestamps();
         });
+        }
     }
 
     public function down(): void {
