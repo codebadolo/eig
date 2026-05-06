@@ -35,9 +35,9 @@ export default function Hero({ company }) {
         </div>
 
         <h1 className="hero-title">
-          {t('hero.title1')}
+          <span>{t('hero.title1')}</span>
           <em>{t('hero.title2')}</em>
-          {t('hero.title3')}
+          <span>{t('hero.title3')}</span>
         </h1>
 
         <p className="hero-subtitle">
