@@ -79,11 +79,11 @@ export default function GouvernancePage() {
               {t('gouvernance.teamDesc')}
             </p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 20 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 20, alignItems: 'stretch' }}>
             {dirigeants.map((d, i) => (
-              <ScrollReveal key={d.id} delay={i * 0.08}>
-                <Link to={`/gouvernance/${d.id}`} style={{ textDecoration: 'none' }}>
-                  <div className="dirigeant-card" style={{ cursor: 'pointer' }}>
+              <ScrollReveal key={d.id} delay={i * 0.08} style={{ height: '100%' }}>
+                <Link to={`/gouvernance/${d.id}`} style={{ textDecoration: 'none', height: '100%', display: 'block' }}>
+                  <div className="dirigeant-card" style={{ cursor: 'pointer', height: '100%' }}>
                     <div className="dirigeant-photo">
                       {d.photo
                         ? <img src={`${API_URL}${d.photo}`} alt={d.nom} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
