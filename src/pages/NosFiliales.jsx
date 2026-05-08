@@ -6,6 +6,7 @@ import PageHero from '../components/ui/PageHero'
 import ScrollReveal from '../components/ui/ScrollReveal'
 import { useLang } from '../contexts/LangContext'
 import { useApi } from '../hooks/useApi'
+import FaIcon from '../components/ui/FaIcon'
 
 const API = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
@@ -64,7 +65,7 @@ export default function NosFiliales() {
             </button>
             {pays.map(p => (
               <button key={p} className={`filter-btn${paysFilter === p ? ' active' : ''}`} onClick={() => setPaysFilter(p)}>
-                📍 {p}
+                <FaIcon name="location-dot" size={12} /> {p}
               </button>
             ))}
           </div>
@@ -98,7 +99,7 @@ export default function NosFiliales() {
                 </div>
                 <p className="filiale-desc">{pick(f, 'description')}</p>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
-                  <div className="filiale-country">📍 {f.pays}{f.ville ? `, ${f.ville}` : ''}</div>
+                  <div className="filiale-country"><FaIcon name="location-dot" size={12} /> {f.pays}{f.ville ? `, ${f.ville}` : ''}</div>
                   {f.website && (
                     <a
                       href={f.website}
@@ -107,7 +108,7 @@ export default function NosFiliales() {
                       onClick={e => e.stopPropagation()}
                       style={{ fontSize: 11, fontWeight: 600, color: 'var(--teal)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4, letterSpacing: '0.05em' }}
                     >
-                      🌐 {t('filiales.website')}
+                      <FaIcon name="globe" size={12} /> {t('filiales.website')}
                     </a>
                   )}
                 </div>

@@ -4,6 +4,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void {
+        if (!Schema::hasTable('carrieres')) {
         Schema::create('carrieres', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('titre');
@@ -19,6 +20,7 @@ return new class extends Migration {
             $table->boolean('actif')->default(true);
             $table->timestamps();
         });
+        }
     }
     public function down(): void { Schema::dropIfExists('carrieres'); }
 };

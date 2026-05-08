@@ -6,6 +6,7 @@ import CallToAction from '../components/sections/CallToAction'
 import { useApi } from '../hooks/useApi'
 import PageHero from '../components/ui/PageHero'
 import { useLang } from '../contexts/LangContext'
+import FaIcon from '../components/ui/FaIcon'
 
 const API = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
@@ -85,7 +86,7 @@ export default function FilialeDetail() {
 
             {pick(filiale, 'mission') && (
               <div style={{
-                marginTop: 32,
+                marginTop: 28,
                 borderLeft: '3px solid var(--gold)',
                 background: 'var(--gold-pale)',
                 padding: '20px 20px 20px 24px',
@@ -96,6 +97,63 @@ export default function FilialeDetail() {
                 </div>
                 <p style={{ fontSize: 15, color: 'var(--gray)', lineHeight: 1.7, margin: 0 }}>
                   {pick(filiale, 'mission')}
+                </p>
+              </div>
+            )}
+
+            {filiale.vision && (
+              <div style={{
+                marginTop: 16,
+                borderLeft: '3px solid var(--teal)',
+                background: 'rgba(26,107,122,0.04)',
+                padding: '20px 20px 20px 24px',
+                borderRadius: '0 4px 4px 0',
+              }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--teal)', marginBottom: 8 }}>
+                  {t('filiales.visionLabel')}
+                </div>
+                <p style={{ fontSize: 15, color: 'var(--gray)', lineHeight: 1.7, margin: 0 }}>
+                  {filiale.vision}
+                </p>
+              </div>
+            )}
+
+            {filiale.valeurs && (
+              <div style={{ marginTop: 28 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 14 }}>
+                  {t('filiales.valeursLabel')}
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {filiale.valeurs.split(/[·,\n]/).map(v => v.trim()).filter(Boolean).map((v, i) => (
+                    <span key={i} style={{
+                      background: 'var(--ivory)',
+                      border: '1px solid var(--gray-light)',
+                      borderRadius: 20,
+                      padding: '5px 14px',
+                      fontSize: 13,
+                      color: 'var(--teal-dark)',
+                      fontWeight: 500,
+                    }}>
+                      {v}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {filiale.commentaires && (
+              <div style={{
+                marginTop: 28,
+                background: 'var(--ivory)',
+                border: '1px solid var(--gray-light)',
+                borderRadius: 6,
+                padding: '20px 24px',
+              }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 10 }}>
+                  {t('filiales.infoCompl')}
+                </div>
+                <p style={{ fontSize: 14, color: 'var(--gray)', lineHeight: 1.75, margin: 0, whiteSpace: 'pre-line' }}>
+                  {filiale.commentaires}
                 </p>
               </div>
             )}
@@ -128,7 +186,7 @@ export default function FilialeDetail() {
               <div style={{ background: 'var(--ivory)', padding: 24, borderRadius: 6, border: '1px solid var(--gray-light)' }}>
                 <div style={labelStyle}>{t('filiales.paysLabel')}</div>
                 <div style={{ fontWeight: 600, color: 'var(--black)' }}>
-                  📍 {filiale.pays}{filiale.ville ? `, ${filiale.ville}` : ''}
+                  <FaIcon name="location-dot" size={13} /> {filiale.pays}{filiale.ville ? `, ${filiale.ville}` : ''}
                 </div>
               </div>
 
@@ -147,19 +205,19 @@ export default function FilialeDetail() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     {filiale.telephone && (
                       <a href={`tel:${filiale.telephone}`} style={contactRowStyle}>
-                        <span style={contactIconStyle}>📞</span>
+                        <FaIcon name="phone" size={14} style={contactIconStyle} />
                         <span>{filiale.telephone}</span>
                       </a>
                     )}
                     {filiale.email_contact && (
                       <a href={`mailto:${filiale.email_contact}`} style={contactRowStyle}>
-                        <span style={contactIconStyle}>✉️</span>
+                        <FaIcon name="envelope" size={14} style={contactIconStyle} />
                         <span>{filiale.email_contact}</span>
                       </a>
                     )}
                     {(filiale.adresse || filiale.ville) && (
                       <div style={{ ...contactRowStyle, cursor: 'default' }}>
-                        <span style={contactIconStyle}>📍</span>
+                        <FaIcon name="location-dot" size={14} style={contactIconStyle} />
                         <span style={{ color: 'var(--gray-mid)' }}>
                           {[filiale.adresse, filiale.ville, filiale.pays].filter(Boolean).join(', ')}
                         </span>
@@ -188,7 +246,7 @@ export default function FilialeDetail() {
                   onMouseOver={e => e.currentTarget.style.opacity = '0.85'}
                   onMouseOut={e => e.currentTarget.style.opacity = '1'}
                 >
-                  <span style={{ fontSize: 16 }}>🌐</span>
+                  <FaIcon name="globe" size={16} />
                   {t('filiales.website') || 'Visiter le site web'} →
                 </a>
               )}
@@ -206,7 +264,7 @@ export default function FilialeDetail() {
                     <FilialeLogo id={f.id} sigle={f.sigle} size={56} />
                     <div className="filiale-name">{f.nom}</div>
                     <div className="filiale-sector">{f.secteur}</div>
-                    <div className="filiale-country">📍 {f.pays}{f.ville ? `, ${f.ville}` : ''}</div>
+                    <div className="filiale-country"><FaIcon name="location-dot" size={12} /> {f.pays}{f.ville ? `, ${f.ville}` : ''}</div>
                   </Link>
                 ))}
               </div>
@@ -226,7 +284,7 @@ const labelStyle = {
 }
 
 const contactIconStyle = {
-  fontSize: 14, flexShrink: 0, width: 20,
+  flexShrink: 0, color: 'var(--teal)', marginTop: 1,
 }
 
 const contactRowStyle = {

@@ -75,7 +75,7 @@ export default function MetierDetail() {
                     <div className="filiale-name">{f.nom}</div>
                     <div className="filiale-sector">{f.secteur}</div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 2 }}>
-                      <div className="filiale-country">📍 {f.pays}</div>
+                      <div className="filiale-country"><FaIcon name="location-dot" size={12} /> {f.pays}</div>
                       {f.website && (
                         <a
                           href={f.website}
@@ -84,7 +84,7 @@ export default function MetierDetail() {
                           onClick={e => e.stopPropagation()}
                           style={{ fontSize: 11, color: 'var(--teal)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 3 }}
                         >
-                          🌐 {t('filiales.website')}
+                          <FaIcon name="globe" size={11} /> {t('filiales.website')}
                         </a>
                       )}
                     </div>

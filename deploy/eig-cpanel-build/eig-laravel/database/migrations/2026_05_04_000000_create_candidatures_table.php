@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up(): void {
+        if (!Schema::hasTable('candidatures')) {
         Schema::create('candidatures', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('carriere_id')->nullable();
@@ -18,6 +19,7 @@ return new class extends Migration {
             $table->string('statut')->default('recue'); // recue, en_cours, acceptee, refusee
             $table->timestamps();
         });
+        }
     }
 
     public function down(): void {

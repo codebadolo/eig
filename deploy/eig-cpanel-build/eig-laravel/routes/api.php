@@ -62,6 +62,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/contact', [ContactController::class, 'index']);
     Route::put('/contact/{id}/lu', [ContactController::class, 'markRead']);
+    Route::put('/contact/{id}/traite', [ContactController::class, 'markTraite']);
+    Route::put('/contact/{id}/note', [ContactController::class, 'saveNote']);
     Route::delete('/contact/{id}', [ContactController::class, 'destroy']);
 
     Route::post('/carrieres', [CarriereController::class, 'store']);

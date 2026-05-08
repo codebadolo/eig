@@ -149,7 +149,6 @@ export default function Footer() {
     company?.twitter    && { href: company.twitter,    label: 'X / Twitter', icon: '𝕏' },
     company?.instagram  && { href: company.instagram,  label: 'Instagram',   icon: '◈' },
     company?.youtube    && { href: company.youtube,    label: 'YouTube',     icon: '▶' },
-    company?.whatsapp   && { href: `https://wa.me/${company.whatsapp.replace(/\D/g, '')}`, label: 'WhatsApp', icon: 'W' },
   ].filter(Boolean)
 
   const cols = (company?.footerCols?.length === 3) ? company.footerCols : DEFAULT_COLS

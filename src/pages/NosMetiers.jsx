@@ -19,7 +19,7 @@ export default function NosMetiers() {
       <PageHero
         section="nos-metiers"
         label={t('metiers.label')}
-        title={<>{metiers.length} {t('metiers.heroTitle1')}<br /><span>{t('metiers.heroTitleSpan')}</span></>}
+        title={<>{metiers.length} {t('metiers.heroTitle1')}<br /><span>{t('metiers.heroTitleSpan')}</span><br /><span>{t('metiers.heroTitleSpan2')}</span></>}
         subtitle={t('metiers.heroSub')}
       />
 

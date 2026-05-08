@@ -4,6 +4,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void {
+        if (!Schema::hasTable('admin_users')) {
         Schema::create('admin_users', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('email')->unique();
@@ -11,6 +12,7 @@ return new class extends Migration {
             $table->string('nom');
             $table->timestamps();
         });
+        }
     }
     public function down(): void { Schema::dropIfExists('admin_users'); }
 };

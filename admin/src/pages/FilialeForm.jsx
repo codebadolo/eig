@@ -159,16 +159,34 @@ export default function FilialeForm() {
           </div>
 
           <div>
-            <label className="label">Mission / Positionnement (Français)</label>
-            <textarea className="input" rows={2} placeholder="Notre mission est de…"
+            <label className="label">Mission (Français)</label>
+            <textarea className="input" rows={3} placeholder="Notre mission est de…"
               {...register('mission')} />
-            <p className="text-xs text-gray-400 mt-1">Phrase courte résumant la raison d'être de la filiale</p>
           </div>
 
           <div>
             <label className="label">Mission (English)</label>
-            <textarea className="input" rows={2} placeholder="Our mission is to…"
+            <textarea className="input" rows={3} placeholder="Our mission is to…"
               {...register('mission_en')} />
+          </div>
+
+          <div>
+            <label className="label">Vision</label>
+            <textarea className="input" rows={2} placeholder="Notre vision à l'horizon…"
+              {...register('vision')} />
+          </div>
+
+          <div>
+            <label className="label">Valeurs</label>
+            <textarea className="input" rows={2} placeholder="Confiance · Réactivité · Excellence"
+              {...register('valeurs')} />
+            <p className="text-xs text-gray-400 mt-1">Séparer les valeurs par · ou une virgule</p>
+          </div>
+
+          <div>
+            <label className="label">Informations complémentaires</label>
+            <textarea className="input min-h-[80px]" rows={3} placeholder="Prix, certifications, FCP disponibles…"
+              {...register('commentaires')} />
           </div>
         </Section>
 

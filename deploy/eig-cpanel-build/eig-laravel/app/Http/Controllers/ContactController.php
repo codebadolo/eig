@@ -13,12 +13,25 @@ class ContactController extends Controller {
     public function index(Request $request) {
         $q = ContactMessage::orderBy('created_at', 'desc');
         if ($request->has('lu')) $q->where('lu', $request->lu === 'true');
+        if ($request->has('traite')) $q->where('traite', $request->traite === 'true');
         return response()->json($q->get());
     }
 
     public function markRead($id) {
         $msg = ContactMessage::findOrFail($id);
         $msg->update(['lu' => true]);
+        return response()->json($msg);
+    }
+
+    public function markTraite($id) {
+        $msg = ContactMessage::findOrFail($id);
+        $msg->update(['traite' => !$msg->traite, 'lu' => true]);
+        return response()->json($msg);
+    }
+
+    public function saveNote(Request $request, $id) {
+        $msg = ContactMessage::findOrFail($id);
+        $msg->update(['note' => $request->note]);
         return response()->json($msg);
     }
 

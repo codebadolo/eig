@@ -3,6 +3,7 @@ import ScrollReveal from '../components/ui/ScrollReveal'
 import { useApi } from '../hooks/useApi'
 import PageHero from '../components/ui/PageHero'
 import { useLang } from '../contexts/LangContext'
+import FaIcon from '../components/ui/FaIcon'
 
 export default function Contact() {
   const { t } = useLang()
@@ -55,21 +56,21 @@ export default function Contact() {
             <div className="gold-rule" />
 
             <div className="contact-info-item">
-              <div className="contact-icon">📍</div>
+              <div className="contact-icon"><FaIcon name="location-dot" size={20} /></div>
               <div>
                 <div className="contact-label">{t('contact.adresse')}</div>
                 <div className="contact-value">{company?.adresse}</div>
               </div>
             </div>
             <div className="contact-info-item">
-              <div className="contact-icon">📞</div>
+              <div className="contact-icon"><FaIcon name="phone" size={20} /></div>
               <div>
                 <div className="contact-label">{t('contact.telephone')}</div>
                 <div className="contact-value">{company?.telephone}</div>
               </div>
             </div>
             <div className="contact-info-item">
-              <div className="contact-icon">✉️</div>
+              <div className="contact-icon"><FaIcon name="envelope" size={20} /></div>
               <div>
                 <div className="contact-label">{t('contact.email')}</div>
                 <div className="contact-value">{company?.email}</div>
