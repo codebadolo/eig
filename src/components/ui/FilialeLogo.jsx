@@ -1,7 +1,16 @@
 import { logos } from '../../assets/logos'
 
+const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
+
+function resolveUrl(url) {
+  if (!url) return null
+  if (url.startsWith('http')) return url
+  return `${API_URL}${url}`
+}
+
 export default function FilialeLogo({ id, sigle, size = 56, className = '', logo }) {
-  const src = logos[id] || logo
+  // DB logo has priority over bundled static logo
+  const src = resolveUrl(logo) || logos[id] || null
 
   const style = {
     width: size,

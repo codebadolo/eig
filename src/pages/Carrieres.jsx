@@ -5,11 +5,13 @@ import { useApi } from '../hooks/useApi'
 import FaIcon from '../components/ui/FaIcon'
 import PageHero from '../components/ui/PageHero'
 import { useLang } from '../contexts/LangContext'
+import { useResponsive } from '../hooks/useResponsive'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
 export default function Carrieres() {
   const { t, pick } = useLang()
+  const { isMobile } = useResponsive()
   const { data: offres = [], loading } = useApi('/carrieres?actif=true')
   const { data: ambianceImgs = [] } = useApi('/images?section=careers-ambiance&actif=true')
 
@@ -39,7 +41,7 @@ export default function Carrieres() {
       )}
 
       <section style={{ background: 'var(--white)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 40 : 80, alignItems: 'center' }}>
           <ScrollReveal>
             <span className="section-label">{t('careers.why')}</span>
             <h2 className="section-title">
@@ -47,11 +49,11 @@ export default function Carrieres() {
             </h2>
             <div className="gold-rule" />
             <p className="section-lead">{t('careers.whyText')}</p>
-            <Link to="/contact" className="btn-primary">{t('careers.spontaneous')}</Link>
+            <a href="mailto:spontanees@excellis-investgroup.com" className="btn-primary">{t('careers.spontaneous')}</a>
           </ScrollReveal>
 
           <ScrollReveal delay={0.15}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
               {atouts.map(a => (
                 <div key={a.titre} className="pillar" style={{ padding: 24 }}>
                   <div style={{ marginBottom: 12, color: 'var(--gold)' }}><FaIcon name="globe" size={28} /></div>
@@ -95,10 +97,12 @@ export default function Carrieres() {
                       <span className="offre-tag">{pick(o, 'departement')}</span>
                       <span className="offre-tag gold">{o.type}</span>
                       <span style={{ fontSize: 12, color: 'var(--gray-mid)', display: 'flex', alignItems: 'center', gap: 4 }}>
-                        📍 {o.lieu}
+                        <FaIcon name="location-dot" size={11} /> {o.lieu}
                       </span>
                       {o.dateExpiration && (
-                        <span style={{ fontSize: 12, color: 'var(--gray-mid)' }}>📅 {o.dateExpiration}</span>
+                        <span style={{ fontSize: 12, color: 'var(--gray-mid)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <FaIcon name="calendar" size={11} /> {o.dateExpiration}
+                        </span>
                       )}
                     </div>
                   </div>
@@ -119,7 +123,7 @@ export default function Carrieres() {
                 {t('careers.noPostText')}
               </p>
             </div>
-            <Link to="/contact" className="btn-primary">{t('careers.spontaneous')}</Link>
+            <a href="mailto:spontanees@excellis-investgroup.com" className="btn-primary">{t('careers.spontaneous')}</a>
           </div>
         </ScrollReveal>
       </section>

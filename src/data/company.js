@@ -1,8 +1,8 @@
 export const company = {
   nom: 'Excellis Invest Group',
   tagline: 'Investir autrement',
-  descriptionCourte: 'Excellis Invest Group est une holding multisectorielle basée au Burkina Faso, avec des filiales sur le périmètre africain.',
-  description: 'Excellis Invest Group est une holding multisectorielle fondée en 2019, basée au Burkina Faso, avec des filiales sur le périmètre africain. Elle assure le pilotage stratégique et la gouvernance d\'un portefeuille de filiales, opérant dans des secteurs structurants : services financiers, assurance, énergies, immobilier, technologies, industrie, transport-logistique, hôtellerie et commerce.',
+  descriptionCourte: 'Excellis Invest Group est une holding Multi sectoriel, capitalisé à 20 milliards FCFA, opérant dans 9 secteurs stratégiques à travers 16 filiales en Afrique.',
+  description: 'Excellis Invest Group est une holding Multi sectoriel, capitalisé à 20 milliards FCFA, opérant dans 9 secteurs stratégiques à travers 16 filiales en Afrique. Fondée en 2019 et basée au Burkina Faso, elle assure le pilotage stratégique et la gouvernance d\'un portefeuille de filiales couvrant les services financiers, l\'assurance, les énergies, l\'immobilier, les technologies, l\'industrie, le transport-logistique, l\'hôtellerie et le commerce.',
   mission: 'Mobiliser des expertises, des capitaux et des mécanismes d\'intervention à forte valeur ajoutée pour accompagner les institutions et entreprises africaines dans leur financement, leur structuration et leur développement durable.',
   vision: 'Être un investisseur panafricain de référence, catalyseur de croissance, de transformation et de création de valeur durable en Afrique.',
   valeurs: [
@@ -13,7 +13,7 @@ export const company = {
   ],
   kpis: [
     { num: '+700', unite: '', label: 'Collaborateurs' },
-    { num: '17',   unite: '', label: 'Filiales opérationnelles' },
+    { num: '16',   unite: '', label: 'Filiales opérationnelles' },
     { num: '9',    unite: '', label: 'Secteurs stratégiques' },
     { num: '2',    unite: '', label: 'Pays (BF + CI)' },
     { num: '2019', unite: '', label: 'Année de création' },

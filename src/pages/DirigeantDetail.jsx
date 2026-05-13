@@ -4,6 +4,7 @@ import CallToAction from '../components/sections/CallToAction'
 import { useApi } from '../hooks/useApi'
 import PageHero from '../components/ui/PageHero'
 import { useLang } from '../contexts/LangContext'
+import { useResponsive } from '../hooks/useResponsive'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
@@ -85,6 +86,7 @@ function DiplomaList({ text }) {
 export default function DirigeantDetail() {
   const { id } = useParams()
   const { t } = useLang()
+  const { isMobile } = useResponsive()
   const { data: dirigeant, loading } = useApi(`/dirigeants/${id}`)
   const { data: allDirigeants = [] } = useApi('/dirigeants')
 
@@ -138,7 +140,7 @@ export default function DirigeantDetail() {
       </PageHero>
 
       <section style={{ background: 'var(--white)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 64, alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '2fr 1fr', gap: isMobile ? 40 : 64, alignItems: 'start' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
             <ScrollReveal>
               <span className="section-label">{t('gouvernance.bioLabel')}</span>

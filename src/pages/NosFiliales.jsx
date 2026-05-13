@@ -1,17 +1,45 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import CallToAction from '../components/sections/CallToAction'
-import FilialeLogo from '../components/ui/FilialeLogo'
 import PageHero from '../components/ui/PageHero'
 import ScrollReveal from '../components/ui/ScrollReveal'
 import { useLang } from '../contexts/LangContext'
 import { useApi } from '../hooks/useApi'
 import FaIcon from '../components/ui/FaIcon'
+import { logos } from '../assets/logos'
 
 const API = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
+function FilialeLogoInline({ f, size = 80 }) {
+  const src = f.logo
+    ? (f.logo.startsWith('http') ? f.logo : `${API}${f.logo}`)
+    : (logos[f.id] || null)
+
+  const box = {
+    width: size, height: size, flexShrink: 0,
+    borderRadius: 10, overflow: 'hidden',
+    background: 'var(--white)',
+    border: '1px solid var(--gray-light)',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+  }
+
+  if (src) return (
+    <div style={box}>
+      <img src={src} alt={f.sigle} style={{ width: '90%', height: '90%', objectFit: 'contain' }} />
+    </div>
+  )
+
+  return (
+    <div style={{ ...box, background: 'var(--ivory)', fontFamily: 'var(--font-num)', fontSize: Math.round(size * 0.28), color: 'var(--teal)', fontWeight: 700 }}>
+      {f.sigle}
+    </div>
+  )
+}
+
 export default function NosFiliales() {
   const { t, pick } = useLang()
+  const navigate = useNavigate()
   const { data: filiales = [], loading } = useApi('/filiales?actif=true')
   const [secteurFilter, setSecteurFilter] = useState('Tous')
   const [paysFilter, setPaysFilter] = useState('Tous')
@@ -78,7 +106,14 @@ export default function NosFiliales() {
         <div className="filiales-page-grid">
           {filtered.map((f, i) => (
             <ScrollReveal key={f.id} delay={(i % 3) * 0.06}>
-              <Link to={`/nos-filiales/${f.id}`} className="filiale-full-card">
+              <div
+                className="filiale-full-card"
+                role="link"
+                tabIndex={0}
+                onClick={() => navigate(`/nos-filiales/${f.id}`)}
+                onKeyDown={e => e.key === 'Enter' && navigate(`/nos-filiales/${f.id}`)}
+                style={{ cursor: 'pointer' }}
+              >
                 {f.image && (
                   <div style={{
                     margin: '-32px -28px 6px -28px',
@@ -91,7 +126,7 @@ export default function NosFiliales() {
                   }} />
                 )}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                  <FilialeLogo id={f.id} sigle={f.sigle} size={64} />
+                  <FilialeLogoInline f={f} size={64} />
                   <div>
                     <div className="filiale-name">{f.nom}</div>
                     <div className="filiale-sector">{f.secteur}</div>
@@ -112,7 +147,7 @@ export default function NosFiliales() {
                     </a>
                   )}
                 </div>
-              </Link>
+              </div>
             </ScrollReveal>
           ))}
         </div>

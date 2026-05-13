@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Candidature;
 use App\Models\Carriere;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CandidatureController extends Controller {
 
@@ -51,6 +52,27 @@ class CandidatureController extends Controller {
             'carriere_titre' => $carriereTitre,
             'statut'         => 'recue',
         ]);
+
+        // Email de notification
+        $to      = $carriereId
+            ? 'recrutement@excellis-investgroup.com'
+            : 'spontanees@excellis-investgroup.com';
+        $subject = $carriereId
+            ? "Nouvelle candidature – {$carriereTitre}"
+            : "Candidature spontanée – {$request->prenom} {$request->nom}";
+        $body    = "Nouvelle candidature reçue\n\n"
+            . "Nom     : {$request->prenom} {$request->nom}\n"
+            . "Email   : {$request->email}\n"
+            . ($request->telephone ? "Tél.    : {$request->telephone}\n" : '')
+            . ($carriereId         ? "Poste   : {$carriereTitre}\n"      : '')
+            . ($request->lettre    ? "\nLettre :\n{$request->lettre}\n"   : '')
+            . ($cvPath             ? "\nCV joint disponible dans l'espace admin." : '');
+
+        try {
+            Mail::raw($body, fn ($m) => $m->to($to)->subject($subject));
+        } catch (\Exception $e) {
+            \Log::warning('Mail candidature: ' . $e->getMessage());
+        }
 
         return response()->json(['message' => 'Candidature envoyée', 'id' => $candidature->id], 201);
     }

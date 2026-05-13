@@ -12,7 +12,6 @@ import logoGML from './General Mining Logistics TS.png'
 import logoIAG from './Industries des Arts Graphiques.jpg'
 import logoIS from './Intermédiaire Des Services logo.png'
 import logoLRC from './Loans Recovery Company logo.jpg'
-import logoNovelus from './Novelus.png'
 import logoSopatel from './SOPATEL SILMANDE.png'
 import logoEnergytis from './energytis.png'
 
@@ -31,7 +30,6 @@ export const logos = {
   'expertis-ci': logoExpertisCI,
   'excelis': logoExcellis,
   'industries-arts-graphiques': logoIAG,
-  'novelus': logoNovelus,
   'energytis': logoEnergytis,
   'general-mining-logistics': logoGML,
 }

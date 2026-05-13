@@ -21,6 +21,7 @@ import Newsletter from './pages/Newsletter'
 import Images from './pages/Images'
 import Parametres from './pages/Parametres'
 import FooterPage from './pages/Footer'
+import MotDirection from './pages/MotDirection'
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
@@ -46,6 +47,7 @@ function AppRoutes() {
         <Route path="dirigeants" element={<Dirigeants />} />
         <Route path="dirigeants/nouveau" element={<DirigeantForm />} />
         <Route path="dirigeants/:id/modifier" element={<DirigeantForm />} />
+        <Route path="mot-direction" element={<MotDirection />} />
         <Route path="company" element={<Company />} />
         <Route path="images" element={<Images />} />
         <Route path="messages" element={<Messages />} />

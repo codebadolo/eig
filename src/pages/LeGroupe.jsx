@@ -5,11 +5,13 @@ import { useApi } from '../hooks/useApi'
 import FaIcon from '../components/ui/FaIcon'
 import PageHero from '../components/ui/PageHero'
 import { useLang } from '../contexts/LangContext'
+import { useResponsive } from '../hooks/useResponsive'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
 export default function LeGroupe() {
   const { t, pick } = useLang()
+  const { isMobile, isTablet } = useResponsive()
   const { data: company, loading } = useApi('/company')
   const { data: galleryImgs = [] } = useApi('/images?section=about-gallery&actif=true')
 
@@ -68,7 +70,7 @@ export default function LeGroupe() {
           <div className="gold-rule" style={{ margin: '24px auto' }} />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 60 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 20 : 24, marginBottom: 60 }}>
           <ScrollReveal>
             <div style={{ background: 'var(--teal-dark)', borderRadius: 6, padding: '48px 40px', color: 'white', height: '100%' }}>
               <span className="section-label" style={{ color: 'var(--gold-light)' }}>{t('groupe.mission')}</span>
@@ -91,10 +93,10 @@ export default function LeGroupe() {
 
         {valeurs.length > 0 && (
           <ScrollReveal>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 32, fontWeight: 700, textAlign: 'center', marginBottom: 36, color: 'var(--black)' }}>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 32, fontWeight: 700, textAlign: 'center', marginBottom: 36, color: 'var(--teal-dark)' }}>
               {t('groupe.valuesTitle')}
             </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 20 }}>
               {valeurs.map(v => (
                 <div key={v.titre} className="valeur-item" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
                   <div className="valeur-icon"><FaIcon name={v.icone} size={20} /></div>
@@ -113,7 +115,7 @@ export default function LeGroupe() {
         <section style={{ background: 'var(--white)', paddingTop: 0, paddingBottom: 0 }}>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: galleryImgs.length === 1 ? '1fr' : galleryImgs.length === 2 ? '1fr 1fr' : 'repeat(3, 1fr)',
+            gridTemplateColumns: isMobile ? '1fr' : galleryImgs.length === 1 ? '1fr' : galleryImgs.length === 2 ? '1fr 1fr' : 'repeat(3, 1fr)',
             gap: 4,
             maxHeight: 340,
             overflow: 'hidden',

@@ -42,20 +42,10 @@ export default function Hero({ company }) {
 
         <p className="hero-subtitle">
           {pick(company, 'descriptionCourte') || pick(company, 'description') ||
-            "Excellis Invest Group est une holding multisectorielle basée au Burkina Faso, avec des filiales sur le périmètre africain."}
+            "Excellis Invest Group est une holding Multi sectoriel, capitalisé à 20 milliards FCFA, opérant dans 9 secteurs stratégiques à travers 16 filiales en Afrique."}
         </p>
 
-        <div className="hero-stats">
-          {kpis.map((kpi) => (
-            <div key={kpi.label} className="hero-stat">
-              <span className="hero-stat-num">
-                {kpi.num}
-                {kpi.unite && <span style={{ fontSize: 22 }}>{kpi.unite}</span>}
-              </span>
-              <span className="hero-stat-label">{kpi.label}</span>
-            </div>
-          ))}
-        </div>
+      
 
         <div className="hero-actions">
           <Link to="/le-groupe" className="btn-primary">

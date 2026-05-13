@@ -6,6 +6,13 @@ import PageHeader from '../components/PageHeader'
 import ConfirmDialog from '../components/ConfirmDialog'
 import { Pencil, Trash2, Globe } from 'lucide-react'
 
+const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
+const resolveUrl = (url) => {
+  if (!url) return null
+  if (url.startsWith('http')) return url
+  return `${API_URL}${url}`
+}
+
 export default function Filiales() {
   const navigate = useNavigate()
   const [filiales, setFiliales] = useState([])
@@ -55,7 +62,7 @@ export default function Filiales() {
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
                     {f.logo
-                      ? <img src={f.logo} alt="" className="w-8 h-8 rounded object-contain border border-gray-100" />
+                      ? <img src={resolveUrl(f.logo)} alt="" className="w-8 h-8 rounded object-contain border border-gray-100" />
                       : <div className="w-8 h-8 rounded bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-xs flex-shrink-0">{f.sigle?.slice(0,2)}</div>
                     }
                     <div>

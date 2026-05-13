@@ -37,7 +37,7 @@ export const metiers = [
   },
   {
     slug: 'immobilier-capital',
-    titre: 'Immobilier & Capital-Risque',
+    titre: 'Immobilier',
     icone: '🏗️',
     couleur: 'linear-gradient(135deg, #6B4A1A, #4A3010)',
     image: '/src/assets/images/Create_a_premium_institutional_website_section_vis-1776960072527.png',
@@ -49,7 +49,7 @@ export const metiers = [
   },
   {
     slug: 'energie',
-    titre: 'Énergie',
+    titre: 'Énergies et distribution',
     icone: '⚡',
     couleur: 'linear-gradient(135deg, #1A4A6B, #102A4A)',
     image: '/src/assets/images/Create_a_premium_African_infrastructure_and_energy-1776960084836.png',
@@ -73,7 +73,7 @@ export const metiers = [
   },
   {
     slug: 'industrie',
-    titre: 'Industrie & Arts Graphiques',
+    titre: 'Industries et Agribusiness',
     icone: '🖨️',
     couleur: 'linear-gradient(135deg, #2A4A1A, #1A3010)',
     image: null,
@@ -85,7 +85,7 @@ export const metiers = [
   },
   {
     slug: 'logistique-miniere',
-    titre: 'Transport & Logistique Minière',
+    titre: 'Transport et logistiques minières et industrielles',
     icone: '🚛',
     couleur: 'linear-gradient(135deg, #4A3A1A, #3A2A10)',
     image: null,

@@ -5,6 +5,12 @@ import toast from 'react-hot-toast'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
+function resolveUrl(url) {
+  if (!url) return null
+  if (url.startsWith('http')) return url
+  return `${API_URL}${url}`
+}
+
 export default function ImageUpload({ value, onChange, label = 'Image' }) {
   const [uploading, setUploading] = useState(false)
   const ref = useRef()
@@ -29,7 +35,7 @@ export default function ImageUpload({ value, onChange, label = 'Image' }) {
       <div className="flex items-start gap-3">
         {value ? (
           <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0">
-            <img src={`${API_URL}${value}`} alt="" className="w-full h-full object-cover" />
+            <img src={resolveUrl(value)} alt="" className="w-full h-full object-cover" />
             <button
               type="button"
               onClick={() => onChange('')}

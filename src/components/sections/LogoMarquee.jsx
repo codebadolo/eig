@@ -1,6 +1,14 @@
 import { Link } from 'react-router-dom'
 import { logos } from '../../assets/logos'
 
+const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
+
+function resolveUrl(url) {
+  if (!url) return null
+  if (url.startsWith('http')) return url
+  return `${API_URL}${url}`
+}
+
 const FLAG = { 'Burkina Faso': '🇧🇫', "Côte d'Ivoire": '🇨🇮' }
 const SHORT = { 'Burkina Faso': 'BF', "Côte d'Ivoire": 'CI' }
 
@@ -24,7 +32,8 @@ export default function LogoMarquee({ filiales = [] }) {
           {doubleList.map((f, i) => {
             const base = f.nom.replace(/\s+(BF|CI)$/i, '').trim()
             const showCountry = nameCounts[base] > 1
-            const hasSrc = logos[f.id] || f.logo
+            const resolvedSrc = resolveUrl(f.logo) || logos[f.id] || null
+            const hasSrc = Boolean(resolvedSrc)
 
             return (
               <Link
@@ -35,7 +44,7 @@ export default function LogoMarquee({ filiales = [] }) {
               >
                 <div className="logo-marquee-inner">
                   {hasSrc ? (
-                    <img src={logos[f.id] || f.logo} alt={f.nom} />
+                    <img src={resolvedSrc} alt={f.nom} />
                   ) : (
                     <span className="logo-marquee-fallback">{f.sigle}</span>
                   )}

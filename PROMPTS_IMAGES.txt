@@ -1,0 +1,424 @@
+================================================================================
+  EXCELLIS INVEST GROUP — PROMPTS DE GÉNÉRATION D'IMAGES
+  Plateforme institutionnelle | Style : Premium · Pan-africain · Institutionnel
+================================================================================
+
+PALETTE DE RÉFÉRENCE :
+  Teal principal : #1A6B7A (bleu-vert profond)
+  Or/Gold : #C9A84C
+  Fond sombre : #0F1924
+  Blanc cassé : #F9F7F3
+STYLE GÉNÉRAL : Photographie professionnelle ou illustration corporate premium,
+ambiance institutionnelle africaine, lumière naturelle chaude, composition sobre
+et équilibrée, qualité magazine financier haut de gamme.
+
+================================================================================
+  A. HERO & BANDEAUX DE PAGES (arrière-plans pleine largeur)
+  Format recommandé : 1920×700 px minimum — paysage très large
+================================================================================
+
+--- A1. hero ---
+[Homepage — Hero principal]
+Wide-angle premium corporate photography of a modern African business district
+at golden hour, glass towers reflecting warm light, subtle city skyline of
+Ouagadougou or West African capital, foreground of professionals in sharp suits
+walking confidently. Cinematic depth of field. Muted teal and dark navy color
+grading overlay, 20% opacity. Ultra high resolution, editorial financial magazine
+aesthetic, no text, no logo.
+
+--- A2. about ---
+[Page "Le Groupe"]
+Aerial wide shot of Ouagadougou, Burkina Faso, at dusk — city lights beginning
+to appear, mix of modern buildings and traditional architecture. Warm amber and
+teal tones. Premium institutional feel, no people in foreground, clean horizon
+line. Suitable as a dark-overlaid hero background. No text.
+
+--- A3. nos-metiers ---
+[Page "Nos Métiers"]
+Abstract wide-angle image representing diverse economic sectors: finance, energy,
+technology, real estate — rendered as a clean geometric mosaic or layered
+translucent panels. Deep teal and gold color palette. Premium, modern, minimal.
+Corporate illustration style, no text.
+
+--- A4. nos-filiales ---
+[Page "Nos Filiales"]
+Wide establishing shot of a prosperous pan-African business hub: glass offices,
+a modern market building, and a financial institution, all in one panoramic view.
+West African urban context. Warm golden hour light. Teal color grade. Premium
+photography style, no text.
+
+--- A5. governance ---
+[Page "Gouvernance"]
+Elegant wide-angle interior of a modern boardroom with floor-to-ceiling windows
+overlooking an African city. Long polished table, high-end leather chairs, warm
+ambient lighting. Corporate governance aesthetic. Teal and dark tones. No people,
+no text.
+
+--- A6. actualites ---
+[Page "Actualités"]
+Wide editorial photography representing African economic news: newspapers, a
+tablet displaying financial charts, coffee cup on a sleek desk, blurred city view
+through glass. Warm tones, teal accent lighting. Clean and minimal. No text,
+no logos.
+
+--- A7. contact ---
+[Page "Contact"]
+Aerial or wide-angle view of Ouagadougou city center during the day, focusing on
+modern office buildings and tree-lined boulevards. Inviting, warm, professional
+atmosphere. Teal color overlay. No text.
+
+--- A8. careers ---
+[Page "Carrières"]
+Wide corporate photography: diverse team of young African professionals
+collaborating around a modern open-plan workspace, natural light, warm smiles,
+laptops and documents on desks. Inspiring and welcoming. Teal and gold accent
+tones. No text.
+
+--- A9. metier-services-financiers ---
+[Hero métier : Services Financiers & Intermédiation]
+Close-up wide shot of financial instruments: stacked coins, a contract being
+signed, and a bank facade with columns. Shallow depth of field. Deep teal and
+gold color palette. Premium editorial style. No text.
+
+--- A10. metier-assurance ---
+[Hero métier : Assurance]
+Wide-angle image symbolizing protection: a family or group of professionals
+under a large modern canopy structure, bright sky, sense of security and
+stability. Warm tones with teal accents. Clean, no text.
+
+--- A11. metier-marches-financiers ---
+[Hero métier : Marchés Financiers & Gestion d'Actifs]
+Wide shot of a financial trading floor or stock exchange building facade (BRVM
+style), screens with charts in the background, professionals studying data.
+Premium, teal and gold. No text.
+
+--- A12. metier-immobilier-capital ---
+[Hero métier : Immobilier & Capital-Risque]
+Wide-angle photograph of a modern real estate construction site in West Africa:
+a high-rise building under construction against a blue sky, cranes, scaffolding.
+Sense of growth and investment. Warm golden light. No text.
+
+--- A13. metier-energie ---
+[Hero métier : Énergie]
+Wide dramatic photograph of solar panels in an African landscape, sunset sky,
+golden light reflecting off the panels. In the background, an oil distribution
+facility. Energy and transition. No text, no logo.
+
+--- A14. metier-technologies-fintech ---
+[Hero métier : Technologies & Fintech]
+Wide abstract shot of digital connectivity: fiber optic light trails, mobile
+phone screen showing a payment app interface, and a dark background with subtle
+circuit board patterns. Teal and gold glow. No text.
+
+--- A15. metier-industrie ---
+[Hero métier : Industrie & Arts Graphiques]
+Wide-angle interior of a modern printing press facility: large industrial
+printing machines, clean workspace, stacks of freshly printed documents. West
+African context. Warm industrial lighting. No text.
+
+--- A16. metier-logistique-miniere ---
+[Hero métier : Transport & Logistique Minière]
+Wide dramatic photograph of heavy-duty mining trucks on a dusty road in
+Burkina Faso, with a mine site in the background and a vast sky. Golden hour
+lighting. Sense of power and scale. No text.
+
+--- A17. metier-hotellerie ---
+[Hero métier : Hôtellerie & Restauration]
+Wide architectural shot of a luxury hotel entrance at night: lit facade, palm
+trees, valet area, warm amber lights. Elegant, premium, African luxury hospitality.
+No text.
+
+================================================================================
+  B. IMAGES DE CONTENU — FILIALES
+  Format recommandé : 800×500 px (paysage) — image de couverture filiale
+================================================================================
+
+--- B1. Intermédiaire Des Services (IDS) ---
+Corporate photography: a professional handshake between two businesspeople
+in a modern African bank interior, glass partitions, teal and neutral decor.
+Financial intermediation concept. Premium, warm tones. No text.
+
+--- B2. Loans Recovery Company (LRC) ---
+Conceptual image: an accountant reviewing financial documents on a clean desk,
+calculator, laptop with spreadsheet visible. African business context, warm
+office lighting. Professional, no text.
+
+--- B3. Barka Energies ---
+Photograph of a fuel distribution station at sunrise in Burkina Faso, combined
+with solar panels on a nearby rooftop. Dual energy concept. Warm golden tones.
+No text.
+
+--- B4. Sopatel Silmandé ---
+Elegant exterior photograph of the Sopatel Silmandé hotel in Ouagadougou:
+modern building facade with landscaped garden, swimming pool visible in
+foreground, warm evening lighting. Luxury hospitality. No text.
+[Alt : Luxury African hotel exterior at dusk, palm trees, illuminated entrance,
+premium West African hospitality atmosphere.]
+
+--- B5. Coris Assurance IARD BF ---
+Symbolic image of protection: a protective umbrella-shaped abstract sculpture
+in front of a modern glass office building, Burkina Faso context. Deep teal and
+white tones. Clean, no text.
+
+--- B6. Coris Assurance Vie BF ---
+Warm family portrait in an African context: a father, mother, and children
+outside their modern home, sense of security and life insurance. Natural light,
+smiling, professional photography. No text.
+
+--- B7. Coris Assurance IARD CI ---
+Aerial view of a busy commercial street in Abidjan, Côte d'Ivoire: stores,
+modern buildings, cars. Business risks insurance context. Warm, colorful. No text.
+
+--- B8. Coris Assurance Vie CI ---
+Elegant African professional woman reviewing documents at a desk overlooking
+the Abidjan skyline, confident and secure expression. Life insurance context.
+Warm tones, teal accents. No text.
+
+--- B9. Coris Bourse ---
+Wide shot of a modern stock exchange trading floor or financial data screen
+showing BRVM charts and West African market data. Clean, green and teal color
+palette, premium editorial style. No text.
+
+--- B10. Coris Asset Management ---
+Abstract photography of investment growth: stacked gold coins in progressive
+heights representing fund growth, a business chart overlay, dark background
+with teal accent light. Premium, minimal. No text.
+
+--- B11. Expertis BF ---
+Architectural photograph of a high-end real estate development in Ouagadougou:
+a modern residential compound or office complex under construction or recently
+completed. Clean sky, golden hour light. No text.
+
+--- B12. Expertis CI ---
+Modern real estate photography in Abidjan, Côte d'Ivoire: a contemporary
+building development with glass facades, manicured grounds, bustling business
+district context. Warm daylight. No text.
+
+--- B13. Excelis ---
+Dark premium tech photography: African developer/engineer working on multiple
+screens with code and a mobile payment application interface. Teal and electric
+accent glow. Fintech innovation aesthetic. No text.
+
+--- B14. Industries des Arts Graphiques (IAG) ---
+Close-up photography of an offset printing press in operation: vibrant colors,
+rotating cylinders, freshly printed sheets of security documents. Industrial
+precision aesthetic. Warm tones. No text.
+
+--- B15. Novelus ---
+Commercial photography of a modern well-organized office supply showroom:
+shelves of stationery, printer cartridges, and computer equipment displayed
+neatly in a clean retail space. Bright, professional. No text.
+
+--- B16. Energytis ---
+Dramatic wide-angle shot of a solar farm or small power plant under blue sky
+in Burkina Faso: large photovoltaic arrays, transmission lines in background,
+workers in hard hats inspecting equipment. No text.
+
+--- B17. General Mining Logistics TS (GML) ---
+Powerful photograph of a convoy of heavy mining trucks on a laterite road in
+Burkina Faso, carrying aggregates, mine site visible in distance, dust clouds,
+dramatic sky. No text.
+
+================================================================================
+  C. LOGOS DE FILIALES
+  Format recommandé : 400×400 px, fond blanc ou transparent (PNG)
+  Style : Logo professionnel corporate, simple, mémorable
+================================================================================
+
+--- C1. IDS — Intermédiaire Des Services ---
+Minimalist corporate logo for "IDS": monogram letters I-D-S in a bold serif or
+geometric sans-serif font, dark teal color (#1A6B7A), with a subtle underline
+or geometric connector. Clean white background. Professional financial brand.
+
+--- C2. LRC — Loans Recovery Company ---
+Corporate logo for "LRC": three bold initials with a subtle arrow or circular
+motion element suggesting recovery and circularity. Navy blue and gold palette.
+Clean, professional, financial sector.
+
+--- C3. BE — Barka Energies ---
+Logo for "Barka Energies": stylized flame or solar ray icon combined with the
+letters "BE", in orange-gold and teal. Energy sector branding. Clean white
+background.
+
+--- C4. SS — Sopatel Silmandé ---
+Elegant hotel logo for "Sopatel Silmandé": serif typography with a subtle
+architectural arch or palm tree icon. Gold and dark navy color palette. Premium
+luxury hospitality brand.
+
+--- C5. CA — Coris Assurance IARD BF ---
+Logo for "Coris Assurance IARD BF": shield or umbrella icon combined with
+the letters, in dark teal and gold. Insurance sector brand identity. Clean,
+trustworthy.
+
+--- C6. CV — Coris Assurance Vie BF ---
+Logo for "Coris Assurance Vie BF": a protective hand or heart-and-shield symbol
+in teal and warm orange. Life insurance. Clean white background.
+
+--- C7. CI — Coris Assurance IARD CI ---
+Logo variant for Côte d'Ivoire: similar to C5 but with an orange accent and
+the country identifier "CI". Clean, professional.
+
+--- C8. CVI — Coris Assurance Vie CI ---
+Logo variant for Côte d'Ivoire life insurance: similar to C6 with a warm coral
+tone and "CI" identifier. Clean white background.
+
+--- C9. CB — Coris Bourse ---
+Logo for "Coris Bourse": upward arrow or candlestick chart icon integrated with
+letters "CB". Green and teal palette. BRVM-inspired stock market brand. Clean.
+
+--- C10. CAM — Coris Asset Management ---
+Logo for "Coris Asset Management": a growing bar chart or pie chart abstract icon
+with letters "CAM". Deep teal and gold. Asset management premium brand.
+
+--- C11. EXB — Expertis BF ---
+Logo for "Expertis BF": architectural arch or building silhouette combined with
+the initials. Warm brown-gold and dark teal palette. Real estate professional.
+
+--- C12. EXC — Expertis CI ---
+Logo for "Expertis CI": same style as EXB with a subtle Côte d'Ivoire color
+reference (orange). Clean, professional real estate brand.
+
+--- C13. EX — Excelis ---
+Logo for "Excelis": sleek modern tech logo with a stylized "X" or circuit-node
+icon, dark background or white background version. Electric teal and dark navy.
+Fintech/digital innovation brand.
+
+--- C14. IAG — Industries des Arts Graphiques ---
+Logo for "IAG": a printing press element or color ink drop combined with the
+initials. Deep red and dark navy palette. Print industry brand.
+
+--- C15. NOV — Novelus ---
+Logo for "Novelus": clean geometric sans-serif wordmark with a small star or
+spark symbol. Orange and teal. Commercial supply brand.
+
+--- C16. ET — Energytis ---
+Logo for "Energytis": a solar panel or lightning bolt integrated with a circular
+element and letters "ET". Green and electric blue palette. Renewable energy.
+
+--- C17. GML — General Mining Logistics TS ---
+Logo for "General Mining Logistics TS": a heavy truck silhouette or mountain-and-
+arrow icon with letters "GML". Earthy brown, dark gold, and teal. Mining logistics.
+
+================================================================================
+  D. PHOTOS DE DIRIGEANTS
+  Format recommandé : 600×750 px (portrait vertical)
+  Style : Headshot professionnel, fond neutre (blanc, gris ou décor sobre)
+================================================================================
+
+--- D1. Directeur Général ---
+Professional executive portrait: African male executive, 40s-50s, in a sharp
+dark suit with a gold tie, confident smile, modern office background blurred.
+Natural studio lighting. Corporate headshot. Warm skin tones, neutral background.
+
+--- D2. Directeur Administratif & Financier ---
+Professional executive portrait: African male or female executive, mid-career,
+in formal business attire, holding a document or glasses, focused expression.
+Modern blurred office background. Premium corporate headshot. Neutral tones.
+
+--- D3. Directeur Juridique & Conformité ---
+Professional executive portrait: African male or female legal executive, formal
+dark navy suit, serious and trustworthy expression, bookshelves or law office
+background blurred. Premium headshot. Clean neutral tones.
+
+--- D4. Directeur des Opérations ---
+Professional executive portrait: African male or female operations director,
+business casual smart attire, dynamic and engaged expression, modern workspace
+background slightly blurred. Premium corporate headshot. Warm neutral tones.
+
+================================================================================
+  E. IMAGES DE SECTIONS SPÉCIALES
+  (Sections dynamiques de la homepage et pages internes)
+================================================================================
+
+--- E1. home-about (Section À propos — homepage, image principale du groupe) ---
+Premium corporate photography: a wide, bright modern lobby or atrium of an
+African investment holding headquarters. Marble floors, branded wall panel, a
+few professionals walking. Warm golden ambient light. Teal and ivory tones.
+No text, no signage. Format: 800×600 px.
+
+--- E2. home-about extra 1 (Galerie homepage) ---
+Aerial photography of Ouagadougou's financial district during the day: mix of
+modern buildings and tree-lined streets. Premium editorial style. No text.
+Format: 400×300 px.
+
+--- E3. home-about extra 2 (Galerie homepage) ---
+Close-up of two African professionals reviewing printed financial reports at a
+glass conference table. Natural light, modern office setting. Premium style. No text.
+Format: 400×300 px.
+
+--- E4. home-governance (Section Gouvernance — homepage) ---
+Elegant wide interior shot of a boardroom at night: soft ceiling lights
+illuminate a long mahogany table, city lights visible through floor-to-ceiling
+windows. Empty room. Premium institutional. No text. Format: 1200×600 px.
+
+--- E5. home-cta (Section Call to Action) ---
+Motivating wide-angle image: African professionals shaking hands outside a
+glass-front headquarters building, confident postures, backlit by morning sun.
+Teal and gold color grade. Inspirational corporate feel. No text. Format: 1920×600 px.
+
+--- E6. about-gallery 1 (Galerie page Le Groupe) ---
+Corporate photography: executive team meeting around a large table, diverse
+African professionals, documents and laptops, natural light. Genuine engagement.
+No text. Format: 600×400 px.
+
+--- E7. about-gallery 2 (Galerie page Le Groupe) ---
+Exterior view of a modern African corporate headquarters: clean glass facade,
+branded entrance, manicured garden, blue sky. No text. Format: 600×400 px.
+
+--- E8. about-gallery 3 (Galerie page Le Groupe) ---
+Informal corporate moment: small group of African employees in a bright modern
+common area, laughing over coffee. Warm, authentic, inclusive. No text.
+Format: 600×400 px.
+
+--- E9. careers-ambiance 1 (Ambiance Carrières) ---
+Wide shot of a dynamic open-plan office: young African professionals at standing
+desks, whiteboards with ideas, natural light from large windows. Energetic and
+modern. No text. Format: 800×500 px.
+
+--- E10. careers-ambiance 2 (Ambiance Carrières) ---
+Team brainstorming session: four young African professionals gathered around a
+whiteboard, post-it notes, smiling and engaged. Modern meeting room. Warm tones.
+No text. Format: 800×500 px.
+
+--- E11. careers-ambiance 3 (Ambiance Carrières) ---
+Onboarding moment: a manager welcoming a new employee in a bright office hallway,
+warm handshake, welcoming smiles, natural light. Inclusive, welcoming corporate
+culture. No text. Format: 800×500 px.
+
+================================================================================
+  F. IMAGES D'ARTICLES (Actualités)
+  Format recommandé : 1200×630 px (format OG/thumbnail)
+================================================================================
+
+--- F1. Article : Lancement du site institutionnel EIG ---
+Digital launch editorial image: a laptop screen displaying a modern institutional
+website homepage (abstract, no real content visible), hands on keyboard, blurred
+office background, corporate teal and gold accents. No text. Clean editorial.
+
+--- F2. Article : Excellis fintech déploiement ---
+Tech photography: an African fintech engineer presenting a mobile payment
+interface on a large screen to colleagues, modern digital workspace, screens
+with app mockups. Teal electric glow. No text.
+
+--- F3. Article : Energytis — contrat énergie ---
+Editorial photograph: executives signing a major contract at a formal table,
+energy infrastructure blueprint visible, professional setting, handshake moment.
+African business context. No text.
+
+--- F4. Article : Notation Bloomfield BBB ---
+Financial editorial image: a printed rating certificate or analyst report on a
+polished desk, surrounded by financial charts, a Bloomfield-style official
+document aesthetic. Gold and dark tones. No text.
+
+================================================================================
+  NOTE D'UTILISATION
+================================================================================
+- Outils suggérés : Midjourney, DALL·E 3, Stable Diffusion XL, Adobe Firefly
+- Pour les logos (section C) : privilégier Adobe Illustrator ou un designer
+  après validation du concept généré
+- Formats à livrer : JPG (photos), PNG transparent (logos et icônes)
+- Tous les visuels doivent être libres de droits ou générés par IA
+- Uploader ensuite via le back-office Admin → section "Images" en sélectionnant
+  la bonne catégorie de section pour chaque image
+
+================================================================================

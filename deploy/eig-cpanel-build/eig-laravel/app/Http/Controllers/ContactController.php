@@ -2,11 +2,27 @@
 namespace App\Http\Controllers;
 use App\Models\ContactMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller {
     public function store(Request $request) {
         $request->validate(['nom' => 'required', 'email' => 'required|email', 'sujet' => 'required', 'message' => 'required']);
         $msg = ContactMessage::create($request->only('nom','email','telephone','sujet','message'));
+
+        $body = "Nouveau message de contact\n\n"
+            . "Nom     : {$request->nom}\n"
+            . "Email   : {$request->email}\n"
+            . ($request->telephone ? "Tél.    : {$request->telephone}\n" : '')
+            . "Sujet   : {$request->sujet}\n\n"
+            . "Message :\n{$request->message}";
+
+        try {
+            Mail::raw($body, fn ($m) => $m->to('excellisinvestgroup@excellis-investgroup.com')
+                ->subject("Contact EIG – {$request->sujet}"));
+        } catch (\Exception $e) {
+            \Log::warning('Mail contact: ' . $e->getMessage());
+        }
+
         return response()->json(['message' => 'Message envoyé', 'id' => $msg->id], 201);
     }
 

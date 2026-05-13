@@ -49,6 +49,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !^/admin/
 RewriteCond %{REQUEST_URI} !^/api/
+RewriteCond %{REQUEST_URI} !^/uploads/
 RewriteRule ^ index.html [L]
 EOF
 echo "  ✓ Frontend + .htaccess"
@@ -115,9 +116,35 @@ cat > "$WEB_OUT/api/.htaccess" << 'EOF'
 </IfModule>
 EOF
 
-# Nettoyage des fichiers inutiles
+# Nettoyage des fichiers inutiles dans api/ (uploads doit rester à la racine du site)
 rm -rf "$WEB_OUT/api/uploads" "$WEB_OUT/api/storage"
-echo "  ✓ API Laravel (avec correction 404)"
+
+# Dossier uploads à la racine du site (même niveau que api/)
+mkdir -p "$WEB_OUT/uploads"
+chmod 755 "$WEB_OUT/uploads"
+
+# .htaccess uploads : autoriser le service des médias sans réécriture
+cat > "$WEB_OUT/uploads/.htaccess" << 'EOF'
+Options -Indexes
+RewriteEngine Off
+
+<FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|mp4|webm|mov)$">
+    Allow from all
+</FilesMatch>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg    "access plus 1 year"
+    ExpiresByType image/jpg     "access plus 1 year"
+    ExpiresByType image/png     "access plus 1 year"
+    ExpiresByType image/gif     "access plus 1 year"
+    ExpiresByType image/webp    "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType video/mp4     "access plus 1 year"
+</IfModule>
+EOF
+
+echo "  ✓ API Laravel (avec correction 404) + dossier uploads/"
 
 # ── 4. Source Laravel → eig-laravel/ ─────────────────────────────────────────
 echo "► [4/5] Copie source Laravel..."

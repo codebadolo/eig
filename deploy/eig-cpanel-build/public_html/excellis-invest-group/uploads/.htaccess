@@ -1,0 +1,17 @@
+Options -Indexes
+RewriteEngine Off
+
+<FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|mp4|webm|mov)$">
+    Allow from all
+</FilesMatch>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg    "access plus 1 year"
+    ExpiresByType image/jpg     "access plus 1 year"
+    ExpiresByType image/png     "access plus 1 year"
+    ExpiresByType image/gif     "access plus 1 year"
+    ExpiresByType image/webp    "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType video/mp4     "access plus 1 year"
+</IfModule>

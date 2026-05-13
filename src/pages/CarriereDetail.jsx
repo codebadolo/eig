@@ -5,6 +5,7 @@ import CallToAction from '../components/sections/CallToAction'
 import { useApi } from '../hooks/useApi'
 import PageHero from '../components/ui/PageHero'
 import { useLang } from '../contexts/LangContext'
+import { useResponsive } from '../hooks/useResponsive'
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api'
 
@@ -32,6 +33,7 @@ function InfoBadge({ label, value, accent }) {
 }
 
 function CandidatureForm({ offre, t }) {
+  const { isMobile } = useResponsive()
   const [form, setForm] = useState({ nom: '', prenom: '', email: '', telephone: '', lettre: '' })
   const [cv, setCv] = useState(null)
   const [sending, setSending] = useState(false)
@@ -112,7 +114,7 @@ function CandidatureForm({ offre, t }) {
       <div style={{ width: 32, height: 2, background: 'var(--gold)', marginBottom: 28 }} />
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
           <div>
             <label style={labelStyle}>{t('contact.fname')} <span style={{ color: 'var(--gold)' }}>*</span></label>
             <input style={inputStyle} value={form.prenom} onChange={set('prenom')} placeholder={t('contact.fname')}
@@ -127,7 +129,7 @@ function CandidatureForm({ offre, t }) {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
           <div>
             <label style={labelStyle}>{t('contact.email')} <span style={{ color: 'var(--gold)' }}>*</span></label>
             <input type="email" style={inputStyle} value={form.email} onChange={set('email')} placeholder="votre@email.com"
@@ -197,8 +199,8 @@ function CandidatureForm({ offre, t }) {
           fontSize: 13, color: 'var(--gray-mid)', lineHeight: 1.6,
         }}>
           Vous pouvez également envoyer votre candidature directement par e-mail à{' '}
-          <a href="mailto:carrieres@excellis-invest-group.com" style={{ color: 'var(--teal)', fontWeight: 600 }}>
-            carrieres@excellis-invest-group.com
+          <a href="mailto:recrutement@excellis-investgroup.com" style={{ color: 'var(--teal)', fontWeight: 600 }}>
+            recrutement@excellis-investgroup.com
           </a>
           {' '}en précisant le poste visé.
         </div>
@@ -210,6 +212,7 @@ function CandidatureForm({ offre, t }) {
 export default function CarriereDetail() {
   const { id } = useParams()
   const { t } = useLang()
+  const { isMobile } = useResponsive()
   const { data: offre, loading } = useApi(`/carrieres/${id}`)
 
   if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>{t('common.loading')}</div>
@@ -244,7 +247,7 @@ export default function CarriereDetail() {
       </PageHero>
 
       <section style={{ background: 'var(--white)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 64, alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '2fr 1fr', gap: isMobile ? 40 : 64, alignItems: 'start' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
             <ScrollReveal>
               <span className="section-label">{t('careers.post')}</span>

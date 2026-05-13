@@ -75,8 +75,7 @@ export default function Navbar() {
       </nav>
 
       <div className={`nav-mobile${menuOpen ? ' open' : ''}`}>
-        <div style={{ padding: '8px 0 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <img src={logoLight} alt="Excellis Invest Group" style={{ width: 150, height: 'auto' }} />
+        <div style={{ padding: '8px 0 16px', display: 'flex', justifyContent: 'flex-end' }}>
           <LangSwitch dark />
         </div>
         {links.map(({ to, label }) => (

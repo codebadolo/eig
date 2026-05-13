@@ -80,6 +80,13 @@ export default function DirigeantForm() {
               <label className="label">Ordre d'affichage</label>
               <input type="number" className="input" defaultValue={0} {...register('ordre')} />
             </div>
+            <div>
+              <label className="label">Catégorie</label>
+              <select className="input" {...register('categorie')}>
+                <option value="conseil">Conseil d'administration</option>
+                <option value="direction">Comité de direction</option>
+              </select>
+            </div>
           </div>
 
           <ImageUpload value={photo} onChange={setPhoto} label="Photo (optionnel)" />

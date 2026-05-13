@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import ScrollReveal from '../components/ui/ScrollReveal'
 import FilialeLogo from '../components/ui/FilialeLogo'
 import CallToAction from '../components/sections/CallToAction'
@@ -6,10 +6,13 @@ import { useApi } from '../hooks/useApi'
 import FaIcon from '../components/ui/FaIcon'
 import PageHero from '../components/ui/PageHero'
 import { useLang } from '../contexts/LangContext'
+import { useResponsive } from '../hooks/useResponsive'
 
 export default function MetierDetail() {
   const { slug } = useParams()
   const { t, pick } = useLang()
+  const { isMobile } = useResponsive()
+  const navigate = useNavigate()
   const { data: metier, loading: loadingMetier } = useApi(`/metiers/${slug}`)
   const { data: allFiliales = [] } = useApi('/filiales?actif=true')
 
@@ -45,7 +48,7 @@ export default function MetierDetail() {
       </PageHero>
 
       <section style={{ background: 'var(--white)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 48 : 80, alignItems: 'start' }}>
           <ScrollReveal>
             <span className="section-label">{t('metiers.enjeuxLabel')}</span>
             <h2 className="section-title" style={{ fontSize: 'clamp(24px,3vw,38px)' }}>
@@ -69,7 +72,15 @@ export default function MetierDetail() {
             </span>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 16 }}>
               {filialesMetier.map(f => (
-                <Link key={f.id} to={`/nos-filiales/${f.id}`} className="filiale-card" style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <div
+                  key={f.id}
+                  className="filiale-card"
+                  role="link"
+                  tabIndex={0}
+                  onClick={() => navigate(`/nos-filiales/${f.id}`)}
+                  onKeyDown={e => e.key === 'Enter' && navigate(`/nos-filiales/${f.id}`)}
+                  style={{ flexDirection: 'row', alignItems: 'center', cursor: 'pointer' }}
+                >
                   <FilialeLogo id={f.id} sigle={f.sigle} size={56} logo={f.logo} />
                   <div style={{ flex: 1 }}>
                     <div className="filiale-name">{f.nom}</div>
@@ -90,7 +101,7 @@ export default function MetierDetail() {
                     </div>
                   </div>
                   <span style={{ color: 'var(--gray-light)', fontSize: 18 }}>→</span>
-                </Link>
+                </div>
               ))}
             </div>
             <Link to="/nos-filiales" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 24, color: 'var(--teal)', fontSize: 13, fontWeight: 600, letterSpacing: '0.1em', textDecoration: 'none', textTransform: 'uppercase' }}>

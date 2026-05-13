@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLang } from '../../contexts/LangContext'
 import { useApi } from '../../hooks/useApi'
+import { useResponsive } from '../../hooks/useResponsive'
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api'
 
@@ -54,6 +55,7 @@ function ColLink({ href, label }) {
 
 function NewsletterWidget() {
   const { t } = useLang()
+  const { isMobile } = useResponsive()
   const [email, setEmail] = useState('')
   const [state, setState] = useState('idle')
 
@@ -85,7 +87,7 @@ function NewsletterWidget() {
 
   return (
     <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 40, marginTop: 16 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 28 : 48, alignItems: 'center' }}>
         <div>
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 8 }}>
             Newsletter

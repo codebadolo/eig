@@ -7,28 +7,28 @@ import PageHeader from '../components/PageHeader'
 import ImageUpload from '../components/ImageUpload'
 
 const SECTEURS = [
-  'Services Financiers','Gestion de Créances','Énergie',"Production d'Énergie",
+  'Services Financiers','Gestion de Créances',
+  'Énergies et distribution',
   'Hôtellerie & Restauration','Assurance Non-Vie','Assurance Vie',
-  'Marchés Financiers',"Gestion d'Actifs",'Immobilier & Capital-Risque',
-  'Technologies & Fintech','Industrie & Arts Graphiques','Commerce & Fournitures',
-  'Transport & Logistique Minière',
+  'Marchés Financiers',"Gestion d'Actifs",'Immobilier',
+  'Technologies & Fintech','Industries et Agribusiness','Commerce & Fournitures',
+  'Transport et logistiques minières et industrielles',
 ]
 
 const SECTEURS_SLUGS = {
   'Services Financiers': 'services-financiers',
   'Gestion de Créances': 'services-financiers',
-  'Énergie': 'energie',
-  "Production d'Énergie": 'energie',
+  'Énergies et distribution': 'energie',
   'Hôtellerie & Restauration': 'hotellerie',
   'Assurance Non-Vie': 'assurance',
   'Assurance Vie': 'assurance',
   'Marchés Financiers': 'marches-financiers',
   "Gestion d'Actifs": 'marches-financiers',
-  'Immobilier & Capital-Risque': 'immobilier-capital',
+  'Immobilier': 'immobilier-capital',
   'Technologies & Fintech': 'technologies-fintech',
-  'Industrie & Arts Graphiques': 'industrie',
+  'Industries et Agribusiness': 'industrie',
   'Commerce & Fournitures': 'commerce',
-  'Transport & Logistique Minière': 'logistique-miniere',
+  'Transport et logistiques minières et industrielles': 'logistique-miniere',
 }
 
 function Section({ title, children }) {
@@ -216,6 +216,57 @@ export default function FilialeForm() {
             <div>
               <label className="label">Adresse</label>
               <input className="input" placeholder="Avenue de la Nation, Secteur 1" {...register('adresse')} />
+            </div>
+          </div>
+        </Section>
+
+        {/* ── Réseaux sociaux ── */}
+        <Section title="Réseaux sociaux">
+          <p className="text-xs text-gray-400 -mt-2">URLs complètes (https://...). Laisser vide si non applicable.</p>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="label flex items-center gap-2">
+                <span style={{ color: '#0a66c2' }}>in</span> LinkedIn
+              </label>
+              <input className="input" type="url" placeholder="https://linkedin.com/company/..." {...register('linkedin')} />
+            </div>
+            <div>
+              <label className="label flex items-center gap-2">
+                <span style={{ color: '#1877f2' }}>f</span> Facebook
+              </label>
+              <input className="input" type="url" placeholder="https://facebook.com/..." {...register('facebook')} />
+            </div>
+            <div>
+              <label className="label flex items-center gap-2">
+                <span style={{ color: '#000' }}>𝕏</span> Twitter / X
+              </label>
+              <input className="input" type="url" placeholder="https://x.com/..." {...register('twitter')} />
+            </div>
+            <div>
+              <label className="label flex items-center gap-2">
+                <span style={{ color: '#e1306c' }}>◈</span> Instagram
+              </label>
+              <input className="input" type="url" placeholder="https://instagram.com/..." {...register('instagram')} />
+            </div>
+            <div>
+              <label className="label flex items-center gap-2">
+                <span style={{ color: '#ff0000' }}>▶</span> YouTube
+              </label>
+              <input className="input" type="url" placeholder="https://youtube.com/@..." {...register('youtube')} />
+            </div>
+            <div>
+              <label className="label flex items-center gap-2">
+                <span style={{ color: '#000' }}>♪</span> TikTok
+              </label>
+              <input className="input" type="url" placeholder="https://tiktok.com/@..." {...register('tiktok')} />
+            </div>
+            <div>
+              <label className="label flex items-center gap-2">
+                <span style={{ color: '#25d366' }}>✆</span> WhatsApp
+              </label>
+              <input className="input" placeholder="+22600000000 (numéro avec +)" {...register('whatsapp')} />
+              <p className="text-xs text-gray-400 mt-0.5">Numéro avec indicatif, ex: +22601020304</p>
             </div>
           </div>
         </Section>
