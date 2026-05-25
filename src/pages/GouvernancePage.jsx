@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import ScrollReveal from '../components/ui/ScrollReveal'
 import CallToAction from '../components/sections/CallToAction'
 import { useApi } from '../hooks/useApi'
@@ -25,123 +25,223 @@ const ORGANES = [
   {
     icon: 'shield-halved',
     num: '03',
-    titre: "Comité Spécialisé",
-    desc: "Veille à la fiabilité des informations financières, au contrôle interne et à la maîtrise des risques opérationnels et financiers au niveau du groupe et de ses filiales.",
+    titre: "Comités Spécialisés",
+    desc: "Veillent à la fiabilité des informations financières, au contrôle interne et à la maîtrise des risques opérationnels et financiers au niveau du groupe et de ses filiales.",
   },
   {
     icon: 'briefcase',
     num: '04',
-    titre: 'Directeur Général',
+    titre: 'Direction Général',
     desc: "Assure la mise en œuvre de la stratégie définie par le Conseil. Il pilote les filiales, coordonne les synergies inter-sectorielles et rend compte au Conseil d'Administration.",
   },
 ]
 
-function MotSection({ photo, nom, titre, message, background, reverse = false }) {
-  if (!nom && !message) return null
+function parseJSON(str) {
+  if (!str) return []
+  try { return JSON.parse(str) } catch { return [] }
+}
 
-  const photoBlock = (
-    <div style={{ flexShrink: 0, width: 260 }}>
-      {photo ? (
-        <div style={{
-          width: '100%',
-          aspectRatio: '3/4',
-          borderRadius: 8,
-          overflow: 'hidden',
-          boxShadow: 'var(--shadow-lg)',
-          border: '3px solid var(--gold)',
-        }}>
-          <img
-            src={`${API_URL}${photo}`}
-            alt={nom}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
-        </div>
-      ) : (
-        <div style={{
-          width: '100%',
-          aspectRatio: '3/4',
-          borderRadius: 8,
-          background: 'var(--teal-dark)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 56,
-          fontFamily: 'var(--font-num)',
-          color: 'var(--gold-light)',
-          border: '3px solid var(--gold)',
-        }}>
-          {(nom || '?').split(' ').map(w => w[0]).join('').slice(0, 2)}
-        </div>
-      )}
-      <div style={{ textAlign: 'center', marginTop: 16 }}>
-        <div style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 16,
-          fontWeight: 700,
-          color: background === 'dark' ? 'var(--white)' : 'var(--dark)',
-        }}>{nom}</div>
-        <div style={{
-          fontSize: 12,
-          fontWeight: 600,
-          letterSpacing: '0.1em',
-          textTransform: 'uppercase',
-          color: 'var(--gold-light)',
-          marginTop: 4,
-        }}>{titre}</div>
-      </div>
-    </div>
-  )
+/* ─── Portrait imposant : grande photo sans bordure + citation réduite et alignée à droite (sans responsabilités) ─── */
+function LeaderFeature({ photo, nom, titre, citation, large = false, dark = false, reverse = false }) {
+  if (!nom && !citation) return null
 
-  const messageBlock = (
-    <div style={{ flex: 1, minWidth: 0 }}>
-      <div style={{
-        position: 'relative',
-        padding: '36px 40px',
-        background: background === 'dark' ? 'rgba(255,255,255,0.06)' : 'var(--ivory)',
-        border: background === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid var(--gray-light)',
-        borderLeft: '4px solid var(--gold)',
-        borderRadius: '0 8px 8px 0',
-      }}>
-        <div style={{
-          position: 'absolute', top: -16, left: 20,
-          fontFamily: 'Georgia, serif',
-          fontSize: 100,
-          color: 'var(--gold)',
-          opacity: 0.18,
-          lineHeight: 1,
-          userSelect: 'none',
-          pointerEvents: 'none',
-        }}>"</div>
-        <p style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(16px,1.6vw,20px)',
-          color: background === 'dark' ? 'rgba(255,255,255,0.85)' : 'var(--dark)',
-          lineHeight: 1.8,
-          fontStyle: 'italic',
-          margin: 0,
-          position: 'relative',
-        }}>
-          {message}
-        </p>
-      </div>
-    </div>
-  )
+  const textColor = dark ? 'white' : 'var(--dark)'
+  const photoUrl = photo
+    ? (photo.startsWith('http') ? photo : `${API_URL}${photo}`)
+    : null
+
+  // Photo encore plus grande pour le président du groupe
+  const photoWidth = large
+    ? 'clamp(480px, 60%, 800px)'   // agrandi à 800px max
+    : 'clamp(320px, 42%, 580px)'
 
   return (
     <ScrollReveal>
       <div style={{
         display: 'flex',
-        gap: 48,
-        alignItems: 'flex-start',
-        flexWrap: 'wrap',
-        maxWidth: 1000,
+        gap: 'clamp(40px, 5vw, 88px)',
+        alignItems: 'center',
+        maxWidth: large ? 1500 : 1080,  // élargi le conteneur
         margin: '0 auto',
+        flexWrap: 'wrap',
         flexDirection: reverse ? 'row-reverse' : 'row',
       }}>
-        {photoBlock}
-        {messageBlock}
+        {/* ── Grande photo sans bordure ── */}
+        <div style={{ flexShrink: 0, width: photoWidth }}>
+          {photoUrl ? (
+            <div style={{
+              aspectRatio: '3/4',
+              borderRadius: large ? 20 : 14,
+              overflow: 'hidden',
+              boxShadow: dark
+                ? '0 48px 120px rgba(0,0,0,0.6)'
+                : '0 48px 120px rgba(0,0,0,0.25)',
+            }}>
+              <img src={photoUrl} alt={nom}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            </div>
+          ) : (
+            <div style={{
+              aspectRatio: '3/4',
+              borderRadius: large ? 20 : 14,
+              background: 'linear-gradient(160deg, var(--teal) 0%, var(--teal-dark) 100%)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontFamily: 'var(--font-num)',
+              fontSize: large ? 100 : 64,
+              color: 'var(--gold-light)',
+              boxShadow: '0 48px 120px rgba(0,0,0,0.25)',
+            }}>
+              {(nom || '?').split(' ').map(w => w[0]).join('').slice(0, 2)}
+            </div>
+          )}
+        </div>
+
+        {/* ── Citation réduite + identité alignée à droite (sans responsabilités) ── */}
+        <div style={{ 
+          flex: 1, 
+          minWidth: 280,
+          textAlign: 'right'  // aligne tout le contenu à droite
+        }}>
+          {/* Guillemet décoratif plus petit */}
+          <div style={{
+            fontFamily: 'Georgia, serif',
+            fontSize: large ? 'clamp(60px, 7vw, 100px)' : 'clamp(70px, 9vw, 120px)',
+            color: 'var(--gold)',
+            opacity: 0.2,
+            lineHeight: 0.7,
+            marginBottom: large ? 12 : 16,
+            userSelect: 'none',
+            textAlign: 'right',
+          }}>"</div>
+
+          {citation && (
+            <p style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: large ? 'clamp(13px, 1.4vw, 18px)' : 'clamp(15px, 1.6vw, 20px)',
+              fontStyle: 'italic',
+              color: dark ? 'rgba(255,255,255,0.85)' : 'var(--dark)',
+              lineHeight: 1.5,
+              margin: '0 0 28px',
+              maxWidth: '85%',
+              marginLeft: 'auto',  // pousse le texte à droite
+            }}>
+              {citation}
+            </p>
+          )}
+
+          {/* Identité */}
+          <div style={{
+            paddingTop: 18,
+            borderTop: `1px solid ${dark ? 'rgba(255,255,255,0.12)' : 'var(--gray-light)'}`,
+          }}>
+            <div style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: large ? 'clamp(20px, 2.2vw, 30px)' : 'clamp(15px, 1.5vw, 20px)',
+              fontWeight: 700,
+              color: textColor,
+              marginBottom: 6,
+            }}>
+              {nom}
+            </div>
+            <div style={{
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'var(--gold)',
+            }}>
+              {titre}
+            </div>
+          </div>
+        </div>
       </div>
     </ScrollReveal>
+  )
+}
+
+/* ─── Carte comité de direction : photo agrandie, nom au hover ─── */
+function ComiteCard({ d }) {
+  const [hovered, setHovered] = useState(false)
+  const photoUrl = d.photo
+    ? (d.photo.startsWith('http') ? d.photo : `${API_URL}${d.photo}`)
+    : null
+
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        position: 'relative',
+        aspectRatio: '3/4',  // Changé de 2/3 à 3/4 pour des photos plus grandes
+        borderRadius: 12,
+        overflow: 'hidden',
+        boxShadow: hovered ? '0 28px 70px rgba(0,0,0,0.3)' : '0 6px 24px rgba(0,0,0,0.12)',
+        transition: 'box-shadow 0.35s, transform 0.35s',
+        cursor: 'default',
+        transform: hovered ? 'translateY(-8px)' : 'translateY(0)',
+      }}
+    >
+      {/* Photo */}
+      {photoUrl ? (
+        <img
+          src={photoUrl}
+          alt={d.nom}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+            transform: hovered ? 'scale(1.08)' : 'scale(1)',
+            transition: 'transform 0.45s',
+          }}
+        />
+      ) : (
+        <div style={{
+          width: '100%', height: '100%',
+          background: 'linear-gradient(160deg, var(--teal) 0%, var(--teal-dark) 100%)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontFamily: 'var(--font-num)', fontSize: 48, color: 'var(--gold-light)',
+        }}>
+          {d.nom.split(' ').map(w => w[0]).join('').slice(0, 2)}
+        </div>
+      )}
+
+      {/* Barre dorée en haut */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0,
+        height: 4, background: 'var(--gold)',
+      }} />
+
+      {/* Overlay nom/rôle — visible seulement au hover */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0,
+        background: 'linear-gradient(to top, rgba(8,22,30,0.98) 0%, rgba(8,22,30,0.7) 55%, transparent 100%)',
+        padding: '50px 16px 20px',
+        opacity: hovered ? 1 : 0,
+        transform: hovered ? 'translateY(0)' : 'translateY(12px)',
+        transition: 'opacity 0.3s, transform 0.3s',
+      }}>
+        <div style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 14,
+          fontWeight: 700,
+          color: 'white',
+          lineHeight: 1.3,
+          marginBottom: 6,
+        }}>
+          {d.nom}
+        </div>
+        <div style={{
+          fontSize: 10,
+          fontWeight: 700,
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: 'var(--gold)',
+        }}>
+          {d.role}
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -149,22 +249,29 @@ export default function GouvernancePage() {
   const { t } = useLang()
   const { data: company, loading: loadingCompany } = useApi('/company')
   const { data: dirigeants = [], loading: loadingDirigeants } = useApi('/dirigeants')
+  const { isMobile, isTablet } = useResponsive()
 
   if (loadingCompany || loadingDirigeants) return (
     <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>{t('common.loading')}</div>
   )
 
-  const { isMobile, isTablet } = useResponsive()
-
   const piliers = company?.gouvernancePiliers ?? []
 
-  const conseil = dirigeants.filter(d => !d.categorie || d.categorie === 'conseil')
+  const hasDg = company?.nom_dg || company?.photo_dg
+
+  // Président du Groupe — dirigeant avec categorie 'president'
+  const presidentGroupe = dirigeants.find(d => d.categorie === 'president')
+
+  // Président du CA
+  const presidentCA = dirigeants.find(d => d.categorie === 'conseil')
+
+  // DG depuis dirigeants
+  const dgDirigeant = dirigeants.find(d => d.categorie === 'dg')
+
+  // Comité de direction
   const comiteDirection = dirigeants.filter(d => d.categorie === 'direction')
-
-  const conseilCols = isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'
-
-  const hasPresident = company?.nom_president || company?.mot_president
-  const hasDg = company?.nom_dg || company?.mot_dg
+  // Ajustement des colonnes pour des cartes plus grandes
+  const comiteCols = isMobile ? 'repeat(1, 1fr)' : isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'
 
   return (
     <>
@@ -175,52 +282,20 @@ export default function GouvernancePage() {
         subtitle={t('gouvernance.heroSub')}
       />
 
-      {/* ── Mot du Président ── */}
-      {hasPresident && (
-        <section style={{ background: 'var(--white)' }}>
-          <ScrollReveal>
-            <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto 52px' }}>
-              <span className="section-label">Message</span>
-              <h2 className="section-title">
-                Mot du <span>Président</span>
-              </h2>
-              <div className="gold-rule" style={{ margin: '20px auto' }} />
-            </div>
-          </ScrollReveal>
-          <MotSection
-            photo={company?.photo_president}
-            nom={company?.nom_president}
-            titre={company?.titre_president || "Président du Conseil d'Administration"}
-            message={company?.mot_president}
-            background="light"
+      {/* ── 1. Président du Groupe — grand portrait sans titre de section ── */}
+      {presidentGroupe && (
+        <section style={{ background: 'var(--white)', padding: '100px 5%' }}>
+          <LeaderFeature
+            photo={presidentGroupe.photo || company?.photo_president}
+            nom={presidentGroupe.nom}
+            titre={presidentGroupe.role || 'Président du Groupe'}
+            citation={presidentGroupe.bio || company?.mot_president}
+            large
           />
         </section>
       )}
 
-      {/* ── Mot du DG ── */}
-      {hasDg && (
-        <section style={{ background: 'var(--ivory)', padding: '80px 5%' }}>
-          <ScrollReveal>
-            <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto 52px' }}>
-              <span className="section-label">Message</span>
-              <h2 className="section-title">
-                Mot du <span>Directeur Général</span>
-              </h2>
-              <div className="gold-rule" style={{ margin: '20px auto' }} />
-            </div>
-          </ScrollReveal>
-          <MotSection
-            photo={company?.photo_dg}
-            nom={company?.nom_dg}
-            titre={company?.titre_dg || 'Directeur Général'}
-            message={company?.mot_dg}
-            background="light"
-            reverse
-          />
-        </section>
-      )}
-
-      {/* ── Structure de gouvernance ── */}
+      {/* ── 2. Les organes de gouvernance ── */}
       <section style={{ background: 'var(--teal-dark)', padding: '80px 5%' }}>
         <ScrollReveal>
           <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto 60px' }}>
@@ -232,21 +307,17 @@ export default function GouvernancePage() {
           </div>
         </ScrollReveal>
 
-        {/* Hiérarchie verticale des 4 instances */}
         <div style={{ maxWidth: 860, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 0 }}>
           {ORGANES.map((o, i) => (
             <ScrollReveal key={o.titre} delay={i * 0.1}>
               <div style={{ display: 'flex', gap: 0, alignItems: 'stretch' }}>
-                {/* Colonne numéro + trait vertical */}
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 56, flexShrink: 0 }}>
                   <div style={{
                     width: 44, height: 44, borderRadius: '50%',
                     background: 'var(--gold)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontFamily: 'var(--font-num)', fontSize: 14, fontWeight: 700,
-                    color: 'var(--teal-dark)',
-                    flexShrink: 0,
-                    zIndex: 1,
+                    color: 'var(--teal-dark)', flexShrink: 0, zIndex: 1,
                   }}>
                     {o.num}
                   </div>
@@ -254,19 +325,14 @@ export default function GouvernancePage() {
                     <div style={{ width: 2, flex: 1, minHeight: 32, background: 'rgba(184,146,42,0.3)' }} />
                   )}
                 </div>
-
-                {/* Carte */}
                 <div style={{
                   flex: 1,
                   background: 'rgba(255,255,255,0.06)',
                   border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 8,
-                  padding: '24px 28px',
+                  borderRadius: 8, padding: '24px 28px',
                   marginLeft: 16,
                   marginBottom: i < ORGANES.length - 1 ? 16 : 0,
-                  display: 'flex',
-                  gap: 20,
-                  alignItems: 'flex-start',
+                  display: 'flex', gap: 20, alignItems: 'flex-start',
                   transition: 'all var(--transition)',
                 }}
                   onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.borderColor = 'rgba(184,146,42,0.4)' }}
@@ -276,8 +342,7 @@ export default function GouvernancePage() {
                     width: 44, height: 44, borderRadius: '50%',
                     background: 'rgba(255,255,255,0.1)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: 'var(--gold-light)',
-                    flexShrink: 0,
+                    color: 'var(--gold-light)', flexShrink: 0,
                   }}>
                     <FaIcon name={o.icon} size={20} />
                   </div>
@@ -296,9 +361,28 @@ export default function GouvernancePage() {
         </div>
       </section>
 
-      {/* ── Piliers ── */}
+      {/* ── 3. Mot du Président du CA ── */}
+      {presidentCA && (
+        <section style={{ background: 'var(--ivory)', padding: '100px 5%' }}>
+          <ScrollReveal>
+            <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto 64px' }}>
+              <span className="section-label">Conseil d'Administration</span>
+              <div className="gold-rule" style={{ margin: '20px auto' }} />
+            </div>
+          </ScrollReveal>
+          <LeaderFeature
+            photo={presidentCA.photo}
+            nom={presidentCA.nom}
+            titre={presidentCA.role}
+            citation={presidentCA.bio}
+            reverse
+          />
+        </section>
+      )}
+
+      {/* ── 4. Principes directeurs ── */}
       {piliers.length > 0 && (
-        <section style={{ background: 'var(--ivory)' }}>
+        <section style={{ background: 'var(--white)', padding: '80px 5%' }}>
           <div style={{ textAlign: 'center', maxWidth: 700, margin: '0 auto 60px' }}>
             <span className="section-label">{t('gouvernance.principesLabel')}</span>
             <h2 className="section-title">
@@ -306,28 +390,26 @@ export default function GouvernancePage() {
             </h2>
             <div className="gold-rule" style={{ margin: '24px auto' }} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(380px, 100%), 1fr))', gap: 16, maxWidth: 960, margin: '0 auto' }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(380px, 100%), 1fr))',
+            gap: 16, maxWidth: 960, margin: '0 auto',
+          }}>
             {piliers.map((p, i) => (
               <ScrollReveal key={p.num} delay={i * 0.07}>
                 <div style={{
                   background: 'var(--white)',
                   border: '1px solid var(--gray-light)',
-                  borderRadius: 6,
-                  padding: '24px 28px',
-                  display: 'flex',
-                  gap: 20,
-                  alignItems: 'flex-start',
-                  height: '100%',
-                  transition: 'all var(--transition)',
-                  position: 'relative',
-                  overflow: 'hidden',
+                  borderRadius: 6, padding: '24px 28px',
+                  display: 'flex', gap: 20, alignItems: 'flex-start',
+                  height: '100%', transition: 'all var(--transition)',
+                  position: 'relative', overflow: 'hidden',
                 }}
                   onMouseOver={e => { e.currentTarget.style.boxShadow = 'var(--shadow-md)'; e.currentTarget.style.borderColor = 'rgba(26,107,122,0.2)' }}
                   onMouseOut={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--gray-light)' }}
                 >
                   <div style={{
-                    width: 44, height: 44,
-                    borderRadius: '50%',
+                    width: 44, height: 44, borderRadius: '50%',
                     background: 'var(--gold-pale)',
                     border: '1px solid rgba(184,146,42,0.25)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -355,261 +437,61 @@ export default function GouvernancePage() {
         </section>
       )}
 
-      {/* ── La Direction du Groupe ── */}
-      {conseil.length > 0 && (
-        <section style={{ background: 'var(--white)' }}>
-          <div style={{ textAlign: 'center', maxWidth: 700, margin: '0 auto 60px' }}>
-            <span className="section-label">{t('gouvernance.teamLabel')}</span>
-            <h2 className="section-title">
-              {t('gouvernance.teamTitle1')} <span>{t('gouvernance.teamTitleSpan')}</span> {t('gouvernance.teamTitle2')}
-            </h2>
-            <div className="gold-rule" style={{ margin: '24px auto' }} />
-            <p style={{ fontSize: 17, color: 'var(--gray-mid)', lineHeight: 1.7 }}>
-              {t('gouvernance.teamDesc')}
-            </p>
-          </div>
-
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: conseilCols,
-            gap: 28,
-            maxWidth: 1140,
-            margin: '0 auto',
-          }}>
-            {conseil.map((d, i) => (
-              <ScrollReveal key={d.id} delay={i * 0.07}>
-                <div style={{
-                  background: 'var(--white)',
-                  border: '1px solid var(--gray-light)',
-                  borderRadius: 12,
-                  overflow: 'hidden',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: '100%',
-                  transition: 'box-shadow var(--transition), transform var(--transition)',
-                }}
-                  onMouseOver={e => { e.currentTarget.style.boxShadow = 'var(--shadow-lg)'; e.currentTarget.style.transform = 'translateY(-4px)' }}
-                  onMouseOut={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'none' }}
-                >
-                  {/* ── Photo en haut ── */}
-                  <div style={{
-                    width: '100%',
-                    paddingBottom: '75%',
-                    position: 'relative',
-                    background: 'linear-gradient(160deg, var(--teal) 0%, var(--teal-dark) 100%)',
-                    overflow: 'hidden',
-                    flexShrink: 0,
-                  }}>
-                    {d.photo ? (
-                      <img
-                        src={d.photo.startsWith('http') ? d.photo : `${API_URL}${d.photo}`}
-                        alt={d.nom}
-                        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                    ) : (
-                      <div style={{
-                        position: 'absolute', inset: 0,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontFamily: 'var(--font-num)', fontSize: 52,
-                        color: 'rgba(255,255,255,0.2)',
-                      }}>
-                        {d.nom.split(' ').map(w => w[0]).join('').slice(0, 2)}
-                      </div>
-                    )}
-                    {/* Barre dorée en bas de la photo */}
-                    <div style={{
-                      position: 'absolute', bottom: 0, left: 0, right: 0,
-                      height: 4, background: 'var(--gold)',
-                    }} />
-                  </div>
-
-                  {/* ── Contenu ── */}
-                  <div style={{
-                    flex: 1,
-                    padding: '24px 24px 28px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}>
-                    <div style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: 19,
-                      fontWeight: 700,
-                      color: 'var(--dark)',
-                      marginBottom: 6,
-                      lineHeight: 1.2,
-                    }}>
-                      {d.nom}
-                    </div>
-                    <div style={{
-                      fontSize: 11,
-                      fontWeight: 700,
-                      letterSpacing: '0.13em',
-                      textTransform: 'uppercase',
-                      color: 'var(--teal)',
-                      marginBottom: 14,
-                      paddingBottom: 14,
-                      borderBottom: '1px solid var(--gray-light)',
-                    }}>
-                      {d.role}
-                    </div>
-                    {d.bio && (
-                      <p style={{
-                        fontSize: 13.5,
-                        color: 'var(--gray-mid)',
-                        lineHeight: 1.75,
-                        margin: 0,
-                        flex: 1,
-                        display: '-webkit-box',
-                        WebkitLineClamp: 4,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
-                      }}>
-                        {d.bio}
-                      </p>
-                    )}
-                    {d.linkedin && (
-                      <a
-                        href={d.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={e => e.stopPropagation()}
-                        style={{
-                          marginTop: 16,
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: 6,
-                          fontSize: 12,
-                          color: '#0a66c2',
-                          textDecoration: 'none',
-                          fontWeight: 600,
-                          width: 'fit-content',
-                        }}
-                      >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
-                          <circle cx="4" cy="4" r="2"/>
-                        </svg>
-                        LinkedIn
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
+      {/* ── 5. Directeur Général (sans responsabilités) ── */}
+      {hasDg && (
+        <section style={{ background: 'var(--ivory)', padding: '100px 5%' }}>
+          <ScrollReveal>
+            <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto 64px' }}>
+              <span className="section-label">Direction</span>
+              <h2 className="section-title">
+                Le <span>Directeur Général</span>
+              </h2>
+              <div className="gold-rule" style={{ margin: '20px auto' }} />
+            </div>
+          </ScrollReveal>
+          <LeaderFeature
+            photo={company?.photo_dg || dgDirigeant?.photo}
+            nom={company?.nom_dg}
+            titre={company?.titre_dg || 'Directeur Général'}
+            citation={company?.mot_dg}
+          />
         </section>
       )}
 
-      {/* ── Comité de Direction ── */}
+      {/* ── 6. Comité de Direction avec photos agrandies ── */}
       {comiteDirection.length > 0 && (
-        <section style={{ background: 'var(--ivory)', padding: '80px 5%' }}>
+        <section style={{ background: 'var(--white)', padding: '80px 5%' }}>
           <ScrollReveal>
-            <div style={{ textAlign: 'center', maxWidth: 700, margin: '0 auto 60px' }}>
+            <div style={{ textAlign: 'center', maxWidth: 700, margin: '0 auto 56px' }}>
               <span className="section-label">Gouvernance opérationnelle</span>
               <h2 className="section-title">
                 Comité de <span>Direction</span>
               </h2>
-              <div className="gold-rule" style={{ margin: '24px auto' }} />
-              <p style={{ fontSize: 17, color: 'var(--gray-mid)', lineHeight: 1.7 }}>
-                Composé de {comiteDirection.length} membres, le Comité de Direction pilote au quotidien la stratégie opérationnelle du groupe et de ses filiales.
+              <div className="gold-rule" style={{ margin: '20px auto' }} />
+              <p style={{ fontSize: 16, color: 'var(--gray-mid)', lineHeight: 1.7 }}>
+                Composé de {comiteDirection.length} membres, le Comité de Direction pilote
+                au quotidien la stratégie opérationnelle du groupe et de ses filiales.
               </p>
             </div>
           </ScrollReveal>
+
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
-            gap: 20,
-            maxWidth: 1100,
+            gridTemplateColumns: comiteCols,
+            gap: 30,
+            maxWidth: 1200,
             margin: '0 auto',
           }}>
             {comiteDirection.map((d, i) => (
-              <ScrollReveal key={d.id} delay={i * 0.06}>
-                <div style={{
-                  background: 'var(--white)',
-                  border: '1px solid var(--gray-light)',
-                  borderRadius: 8,
-                  overflow: 'hidden',
-                  transition: 'all var(--transition)',
-                  height: '100%',
-                }}
-                  onMouseOver={e => { e.currentTarget.style.boxShadow = 'var(--shadow-md)'; e.currentTarget.style.borderColor = 'rgba(26,107,122,0.2)'; e.currentTarget.style.transform = 'translateY(-3px)' }}
-                  onMouseOut={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--gray-light)'; e.currentTarget.style.transform = 'none' }}
-                >
-                  {/* Photo */}
-                  <div style={{
-                    width: '100%',
-                    paddingBottom: '110%',
-                    position: 'relative',
-                    background: 'var(--teal-dark)',
-                    overflow: 'hidden',
-                  }}>
-                    {d.photo ? (
-                      <img
-                        src={`${API_URL}${d.photo}`}
-                        alt={d.nom}
-                        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                    ) : (
-                      <div style={{
-                        position: 'absolute', inset: 0,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontFamily: 'var(--font-num)', fontSize: 36, color: 'var(--gold-light)',
-                      }}>
-                        {d.nom.split(' ').map(w => w[0]).join('').slice(0, 2)}
-                      </div>
-                    )}
-                    {/* Badge doré en bas */}
-                    <div style={{
-                      position: 'absolute', bottom: 0, left: 0, right: 0,
-                      height: 3, background: 'var(--gold)',
-                    }} />
-                  </div>
-
-                  {/* Info */}
-                  <div style={{ padding: '16px 16px 20px' }}>
-                    <div style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: 14,
-                      fontWeight: 700,
-                      color: 'var(--dark)',
-                      marginBottom: 4,
-                      lineHeight: 1.3,
-                    }}>
-                      {d.nom}
-                    </div>
-                    <div style={{
-                      fontSize: 11,
-                      fontWeight: 600,
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase',
-                      color: 'var(--teal)',
-                      marginBottom: 10,
-                    }}>
-                      {d.role}
-                    </div>
-                    {d.bio && (
-                      <p style={{
-                        fontSize: 12.5,
-                        color: 'var(--gray-mid)',
-                        lineHeight: 1.6,
-                        margin: 0,
-                        display: '-webkit-box',
-                        WebkitLineClamp: 4,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
-                      }}>
-                        {d.bio}
-                      </p>
-                    )}
-                  </div>
-                </div>
+              <ScrollReveal key={d.id} delay={i * 0.05}>
+                <ComiteCard d={d} />
               </ScrollReveal>
             ))}
           </div>
         </section>
       )}
 
-      {/* ── Notation Bloomfield ── */}
+      {/* ── 7. Notation Bloomfield ── */}
       <section style={{ background: 'var(--gold-pale)', padding: '80px 5%' }}>
         <ScrollReveal>
           <div style={{ display: 'flex', alignItems: 'center', gap: 60, flexWrap: 'wrap', maxWidth: 960, margin: '0 auto' }}>
@@ -624,9 +506,9 @@ export default function GouvernancePage() {
               </p>
               <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
                 {[
-                  { label: 'Agence', value: 'Bloomfield Investment' },
-                  { label: 'Notes', value: 'A / A2' },
-                  { label: 'Périmètre', value: 'Groupe EIG' },
+                  { label: 'Agence',      value: 'Bloomfield Investment' },
+                  { label: 'Notes',       value: 'A / A2' },
+                  { label: 'Périmètre',   value: 'Groupe EIG' },
                   { label: 'Perspective', value: 'Stable' },
                 ].map(item => (
                   <div key={item.label}>

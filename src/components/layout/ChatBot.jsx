@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useApi } from '../../hooks/useApi'
 
 function normalize(str) {
@@ -239,6 +239,8 @@ export default function ChatBot() {
   const [input, setInput] = useState('')
   const [typing, setTyping] = useState(false)
   const bottomRef = useRef(null)
+  const containerRef = useRef(null)
+  const { pathname } = useLocation()
 
   const { data: company } = useApi('/company')
   const { data: filiales = [] } = useApi('/filiales?actif=true')
@@ -255,6 +257,23 @@ export default function ChatBot() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, typing])
 
+  // Fermer au changement de page
+  useEffect(() => {
+    setOpen(false)
+  }, [pathname])
+
+  // Fermer au clic en dehors du chatbot
+  useEffect(() => {
+    if (!open) return
+    const handleClickOutside = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [open])
+
   const send = () => {
     const text = input.trim()
     if (!text) return
@@ -268,7 +287,7 @@ export default function ChatBot() {
   }
 
   return (
-    <>
+    <div ref={containerRef}>
       {/* ── Floating button ── */}
       <button
         onClick={() => setOpen(o => !o)}
@@ -344,6 +363,6 @@ export default function ChatBot() {
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }
