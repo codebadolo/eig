@@ -40,7 +40,7 @@ export default function LogoMarquee({ filiales = [] }) {
                 key={`${f.id}-${i}`}
                 to={`/nos-filiales/${f.id}`}
                 className="logo-marquee-item"
-                title={`${f.nom} — ${f.pays}`}
+                title={`${f.nom}, ${f.pays}`}
               >
                 <div className="logo-marquee-inner">
                   {hasSrc ? (

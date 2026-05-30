@@ -2,6 +2,7 @@ import { Plus, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import BilingualField from '../components/BilingualField'
 import { ICON_LIST } from '../components/FaIcon'
 import ImageUpload from '../components/ImageUpload'
 import PageHeader from '../components/PageHeader'
@@ -39,38 +40,20 @@ export default function Company() {
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin w-8 h-8 border-4 border-brand-500 border-t-transparent rounded-full" /></div>
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-5xl">
       <PageHeader title="Le Groupe" subtitle="Informations institutionnelles" />
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 
         <div className="card p-6 space-y-4">
           <h2 className="font-semibold text-gray-900">Identité</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="label">Nom du Groupe</label>
-              <input className="input" {...register('nom')} />
-            </div>
-            <div>
-              <label className="label">Tagline</label>
-              <input className="input" {...register('tagline')} />
-            </div>
-          </div>
           <div>
-            <label className="label">Description courte</label>
-            <textarea className="input" rows={2} {...register('descriptionCourte')} />
+            <label className="label">Nom du Groupe</label>
+            <input className="input" {...register('nom')} />
           </div>
-          <div>
-            <label className="label">Description complète</label>
-            <textarea className="input" rows={4} {...register('description')} />
-          </div>
-          <div>
-            <label className="label">Mission</label>
-            <textarea className="input" rows={3} {...register('mission')} />
-          </div>
-          <div>
-            <label className="label">Vision</label>
-            <textarea className="input" rows={3} {...register('vision')} />
-          </div>
+          <BilingualField label="Tagline" name="tagline" register={register} placeholder="Investir autrement" placeholder_en="Investing differently" />
+          <BilingualField label="Description courte" name="descriptionCourte" register={register} type="textarea" rows={2} placeholder_en="Short description of the group..." />
+          <BilingualField label="Description complète" name="description" register={register} type="textarea" rows={4} placeholder_en="Full description of the group..." />
+          <BilingualField label="Mission" name="mission" register={register} type="textarea" rows={3} placeholder_en="Our mission is to..." />
           <ImageUpload
             value={imageGroupe}
             onChange={setImageGroupe}
@@ -138,15 +121,26 @@ export default function Company() {
               <Plus size={14} /> Ajouter
             </button>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {kpiFields.map((f, i) => (
-              <div key={f.id} className="flex items-center gap-2">
-                <input className="input w-20" placeholder="20" {...register(`kpis.${i}.num`)} />
-                <input className="input w-16" placeholder="Mds" {...register(`kpis.${i}.unite`)} />
-                <input className="input flex-1" placeholder="FCFA de capital social" {...register(`kpis.${i}.label`)} />
-                <button type="button" onClick={() => removeKpi(i)} className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg">
-                  <Trash2 size={14} />
-                </button>
+              <div key={f.id} className="border border-gray-100 rounded-lg p-3 space-y-2">
+                <div className="flex items-center gap-2">
+                  <input className="input w-20" placeholder="20" {...register(`kpis.${i}.num`)} />
+                  <input className="input w-16" placeholder="Mds" {...register(`kpis.${i}.unite`)} />
+                  <button type="button" onClick={() => removeKpi(i)} className="ml-auto p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg">
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <span className="text-[10px] font-bold tracking-widest uppercase text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full">FR</span>
+                    <input className="input mt-1" placeholder="FCFA de capital social" {...register(`kpis.${i}.label`)} />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold tracking-widest uppercase text-amber-600 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-full">EN</span>
+                    <input className="input mt-1" placeholder="FCFA in share capital" {...register(`kpis.${i}.label_en`)} />
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -161,18 +155,30 @@ export default function Company() {
           </div>
           <div className="space-y-3">
             {valeurFields.map((f, i) => (
-              <div key={f.id} className="flex items-start gap-2">
-                <select className="input w-40" {...register(`valeurs.${i}.icone`)}>
-                  <option value="">— icône —</option>
-                  {ICON_LIST.map(name => (
-                    <option key={name} value={name}>{name}</option>
-                  ))}
-                </select>
-                <input className="input w-32" placeholder="Rigueur" {...register(`valeurs.${i}.titre`)} />
-                <input className="input flex-1" placeholder="Description..." {...register(`valeurs.${i}.description`)} />
-                <button type="button" onClick={() => removeValeur(i)} className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg mt-1">
-                  <Trash2 size={14} />
-                </button>
+              <div key={f.id} className="border border-gray-100 rounded-lg p-3 space-y-2">
+                <div className="flex items-center gap-2">
+                  <select className="input flex-1" {...register(`valeurs.${i}.icone`)}>
+                    <option value="">— icône —</option>
+                    {ICON_LIST.map(name => (
+                      <option key={name} value={name}>{name}</option>
+                    ))}
+                  </select>
+                  <button type="button" onClick={() => removeValeur(i)} className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg">
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <span className="text-[10px] font-bold tracking-widest uppercase text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full">FR</span>
+                    <input className="input mt-1" placeholder="Rigueur" {...register(`valeurs.${i}.titre`)} />
+                    <textarea className="input mt-1 resize-y" rows={2} placeholder="Description..." {...register(`valeurs.${i}.description`)} />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold tracking-widest uppercase text-amber-600 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-full">EN</span>
+                    <input className="input mt-1" placeholder="Rigour" {...register(`valeurs.${i}.titre_en`)} />
+                    <textarea className="input mt-1 resize-y" rows={2} placeholder="Description in English..." {...register(`valeurs.${i}.description_en`)} />
+                  </div>
+                </div>
               </div>
             ))}
           </div>

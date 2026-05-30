@@ -14,7 +14,7 @@ const FALLBACK_PILIERS = [
 ]
 
 export default function Governance({ company }) {
-  const { t } = useLang()
+  const { t, pick } = useLang()
   const piliers = company?.gouvernancePiliers ?? FALLBACK_PILIERS
   const { data: govImgs = [] } = useApi('/images?section=home-governance&actif=true')
   const govImg = govImgs[0]
@@ -32,7 +32,7 @@ export default function Governance({ company }) {
         <div className="gouv-quote">
           <p className="gouv-quote-text">{t('sections.gouv.quote')}</p>
           <span className="gouv-quote-author">
-            {t('sections.gouv.quoteBy')} — {company?.nom ?? 'Excellis Invest Group'}
+            {t('sections.gouv.quoteBy')}, {company?.nom ?? 'Excellis Invest Group'}
           </span>
         </div>
 
@@ -56,8 +56,8 @@ export default function Governance({ company }) {
           <div key={p.num} className="gouv-pillar">
             <span className="gouv-pillar-num">{p.num}</span>
             <div>
-              <div className="gouv-pillar-title">{p.titre}</div>
-              <div className="gouv-pillar-text">{p.texte}</div>
+              <div className="gouv-pillar-title">{pick(p, 'titre')}</div>
+              <div className="gouv-pillar-text">{pick(p, 'texte')}</div>
             </div>
           </div>
         ))}

@@ -42,7 +42,7 @@ export default function Hero({ company }) {
 
         <p className="hero-subtitle">
           {pick(company, 'descriptionCourte') || pick(company, 'description') ||
-            "Excellis Invest Group est une holding Multi sectoriel, capitalisé à 20 milliards FCFA, opérant dans 9 secteurs stratégiques à travers 16 filiales en Afrique."}
+            "Excellis Invest Group est une holding multisectorielle capitalisée à 20 milliards FCFA, développant ses activités dans plusieurs secteurs stratégiques en Afrique."}
         </p>
 
       

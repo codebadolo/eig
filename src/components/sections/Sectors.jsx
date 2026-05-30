@@ -36,9 +36,6 @@ export default function Sectors({ metiers = [] }) {
                 <span className="metier-arrow">↗</span>
                 <div className="metier-title">{pick(m, 'titre')}</div>
                 <div className="metier-desc">{pick(m, 'description')}</div>
-                <span className="metier-count">
-                  {count} {count > 1 ? t('sections.sectors.filiales') : t('sections.sectors.filiale')}
-                </span>
               </Link>
             </ScrollReveal>
           )

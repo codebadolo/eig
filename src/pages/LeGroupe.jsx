@@ -24,7 +24,7 @@ export default function LeGroupe() {
       <PageHero
         section="about"
         label={t('groupe.label')}
-        title={<>{company?.nom ?? 'Excellis Invest Group'} —<br /><span>{t('groupe.heroTitleSpan')}</span></>}
+        title={<>{company?.nom ?? 'Excellis Invest Group'}<br /><span>{t('groupe.heroTitleSpan')}</span></>}
         subtitle={pick(company, 'descriptionCourte') || t('groupe.heroSub')}
       />
 
@@ -36,11 +36,8 @@ export default function LeGroupe() {
               {t('groupe.whoTitle')} <span>{t('groupe.whoSpan')}</span> {t('groupe.whoEnd')}
             </h2>
             <div className="gold-rule" />
-            <p style={{ fontSize: 17, color: 'var(--gray-mid)', lineHeight: 1.8, marginBottom: 24, textAlign: 'justify' }}>
+            <p style={{ fontSize: 17, color: 'var(--gray-mid)', lineHeight: 1.8, textAlign: 'justify' }}>
               {pick(company, 'description') || company?.description}
-            </p>
-            <p style={{ fontSize: 15, color: 'var(--gray-mid)', lineHeight: 1.8, textAlign: 'justify' }}>
-              {t('groupe.whoText')}
             </p>
           </ScrollReveal>
 
@@ -70,22 +67,23 @@ export default function LeGroupe() {
           <div className="gold-rule" style={{ margin: '24px auto' }} />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 20 : 24, marginBottom: 60 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 20, marginBottom: 60 }}>
           <ScrollReveal>
-            <div style={{ background: 'var(--teal-dark)', borderRadius: 6, padding: '48px 40px', color: 'white', height: '100%' }}>
+            <div style={{ background: 'var(--teal-dark)', borderRadius: 6, padding: '40px 36px', color: 'white', height: '100%' }}>
               <span className="section-label" style={{ color: 'var(--gold-light)' }}>{t('groupe.mission')}</span>
               <div style={{ width: 32, height: 2, background: 'var(--gold)', margin: '16px 0 20px' }} />
-              <p style={{ fontSize: 17, lineHeight: 1.8, color: 'rgba(255,255,255,0.88)', textAlign: 'justify' }}>
+              <p style={{ fontSize: 16, lineHeight: 1.8, color: 'rgba(255,255,255,0.88)', textAlign: 'justify' }}>
                 {pick(company, 'mission') || company?.mission}
               </p>
             </div>
           </ScrollReveal>
-          <ScrollReveal delay={0.15}>
-            <div style={{ background: 'var(--white)', borderRadius: 6, padding: '48px 40px', border: '1px solid var(--gray-light)', height: '100%' }}>
-              <span className="section-label">{t('groupe.vision')}</span>
+
+          <ScrollReveal delay={0.1}>
+            <div style={{ background: 'var(--white)', borderRadius: 6, padding: '40px 36px', border: '1px solid var(--gray-light)', borderLeft: '4px solid var(--gold)', height: '100%' }}>
+              <span className="section-label" style={{ color: 'var(--gold)' }}>{t('groupe.modelLabel')}</span>
               <div style={{ width: 32, height: 2, background: 'var(--gold)', margin: '16px 0 20px' }} />
-              <p style={{ fontSize: 17, lineHeight: 1.8, color: 'var(--gray-mid)', textAlign: 'justify' }}>
-                {pick(company, 'vision') || company?.vision}
+              <p style={{ fontSize: 16, lineHeight: 1.8, color: 'var(--gray-mid)', textAlign: 'justify' }}>
+                {t('groupe.modelDesc')}
               </p>
             </div>
           </ScrollReveal>
@@ -93,16 +91,27 @@ export default function LeGroupe() {
 
         {valeurs.length > 0 && (
           <ScrollReveal>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 32, fontWeight: 700, textAlign: 'center', marginBottom: 36, color: 'var(--teal-dark)' }}>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 32, fontWeight: 700, textAlign: 'center', marginBottom: 40, color: 'var(--teal-dark)' }}>
               {t('groupe.valuesTitle')}
             </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 20 }}>
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 16,
+              justifyContent: 'center',
+            }}>
               {valeurs.map(v => (
-                <div key={v.titre} className="valeur-item" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+                <div key={v.titre} className="valeur-item" style={{
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  flex: isMobile ? '1 1 calc(50% - 8px)' : '1 1 calc(20% - 13px)',
+                  minWidth: isMobile ? 'calc(50% - 8px)' : 180,
+                  maxWidth: isMobile ? 'calc(50% - 8px)' : 260,
+                }}>
                   <div className="valeur-icon"><FaIcon name={v.icone} size={20} /></div>
                   <div>
-                    <div className="valeur-title">{v.titre}</div>
-                    <div className="valeur-text">{v.description}</div>
+                    <div className="valeur-title">{pick(v, 'titre')}</div>
+                    <div className="valeur-text">{pick(v, 'description')}</div>
                   </div>
                 </div>
               ))}
@@ -137,21 +146,50 @@ export default function LeGroupe() {
       )}
 
       <section style={{ background: 'var(--white)' }}>
-        <div style={{ maxWidth: 640, marginBottom: 60 }}>
-          <span className="section-label">{t('groupe.modelLabel')}</span>
-          <h2 className="section-title">
-            <span>{t('groupe.modelTitle')}</span>
-          </h2>
-          <div className="gold-rule" />
-          <p className="section-lead">{t('groupe.modelDesc')}</p>
+        <ScrollReveal>
+          <div style={{ maxWidth: 760, marginBottom: 56 }}>
+            <span className="section-label">{t('groupe.modelLabel')}</span>
+            <h2 className="section-title"><span>{t('groupe.modelTitle')}</span></h2>
+            <div className="gold-rule" />
+            <p className="section-lead">{t('sections.about.modeleText')}</p>
+          </div>
+        </ScrollReveal>
+
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 20, marginBottom: 48 }}>
+          <ScrollReveal delay={0.05}>
+            <div style={{ background: 'var(--gold-pale)', borderRadius: 6, padding: '36px 32px', border: '1px solid rgba(184,146,42,0.2)', height: '100%' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 16 }}>
+                {t('sections.about.vision')}
+              </div>
+              <div style={{ width: 28, height: 2, background: 'var(--gold)', marginBottom: 20 }} />
+              <p style={{ fontSize: 15, lineHeight: 1.8, color: 'var(--teal-dark)', fontWeight: 500 }}>
+                {pick(company, 'vision') || company?.vision}
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.1}>
+            <div style={{ background: 'var(--ivory)', borderRadius: 6, padding: '36px 32px', border: '1px solid var(--gray-light)', height: '100%' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--teal)', marginBottom: 16 }}>
+                {t('sections.about.ambition')}
+              </div>
+              <div style={{ width: 28, height: 2, background: 'var(--teal-light)', marginBottom: 20 }} />
+              <p style={{ fontSize: 15, lineHeight: 1.75, color: 'var(--gray-mid)' }}>
+                {t('sections.about.ambitionText')}
+              </p>
+            </div>
+          </ScrollReveal>
         </div>
-        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-          <Link to="/nos-metiers" className="btn-primary">{t('groupe.btnMetiers')}</Link>
-          <Link to="/nos-filiales" className="btn-teal">{t('groupe.btnFiliales')}</Link>
-          <Link to="/gouvernance" className="btn-secondary" style={{ color: 'var(--teal-dark)', borderColor: 'var(--teal-light)' }}>
-            {t('groupe.btnGouvernance')}
-          </Link>
-        </div>
+
+        <ScrollReveal delay={0.1}>
+          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+            <Link to="/nos-metiers" className="btn-primary">{t('groupe.btnMetiers')}</Link>
+            <Link to="/nos-filiales" className="btn-teal">{t('groupe.btnFiliales')}</Link>
+            <Link to="/gouvernance" className="btn-secondary" style={{ color: 'var(--teal-dark)', borderColor: 'var(--teal-light)' }}>
+              {t('groupe.btnGouvernance')}
+            </Link>
+          </div>
+        </ScrollReveal>
       </section>
 
       <CallToAction />

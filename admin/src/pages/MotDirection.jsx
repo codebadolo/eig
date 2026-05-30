@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import BilingualField from '../components/BilingualField'
 import ImageUpload from '../components/ImageUpload'
 import PageHeader from '../components/PageHeader'
 import { api } from '../lib/api'
@@ -13,32 +14,33 @@ function MotCard({ title, subtitle, photoState, onPhotoChange, nameField, titreF
         <p className="text-xs text-gray-400 mt-0.5">{subtitle}</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="label">Nom complet</label>
-          <input className="input" placeholder="Prénom Nom" {...register(nameField)} />
-        </div>
-        <div>
-          <label className="label">Titre / Fonction</label>
-          <input className="input" placeholder="Président du Conseil d'Administration" {...register(titreField)} />
-        </div>
+      <div>
+        <label className="label">Nom complet</label>
+        <input className="input" placeholder="Prénom Nom" {...register(nameField)} />
       </div>
 
-      <div>
-        <label className="label">Message</label>
-        <textarea
-          className="input min-h-[160px]"
-          rows={7}
-          placeholder="Saisissez ici le message affiché sur la page Gouvernance..."
-          {...register(messageField)}
-        />
-        <p className="text-xs text-gray-400 mt-1">Ce texte apparaît en italique, encadré d'un trait doré, à côté de la photo.</p>
-      </div>
+      <BilingualField
+        label="Titre / Fonction"
+        name={titreField}
+        register={register}
+        placeholder="Président du Conseil d'Administration"
+        placeholder_en="Chairman of the Board of Directors"
+      />
+
+      <BilingualField
+        label="Message"
+        name={messageField}
+        register={register}
+        type="textarea" rows={7}
+        hint="Ce texte apparaît en italique, encadré d'un trait doré, à côté de la photo."
+        placeholder="Saisissez ici le message affiché sur la page Gouvernance..."
+        placeholder_en="Enter here the message displayed on the Governance page..."
+      />
 
       <ImageUpload
         value={photoState}
         onChange={onPhotoChange}
-        label="Photo (portrait recommandé — format 3:4)"
+        label="Photo (portrait recommandé, format 3:4)"
       />
     </div>
   )
@@ -82,7 +84,7 @@ export default function MotDirection() {
   )
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-5xl">
       <PageHeader
         title="Mot de la Direction"
         subtitle="Mot du Président et mot du Directeur Général — page Gouvernance"

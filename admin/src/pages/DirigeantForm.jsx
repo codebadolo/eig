@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { api } from '../lib/api'
 import toast from 'react-hot-toast'
+import BilingualField from '../components/BilingualField'
 import PageHeader from '../components/PageHeader'
 import ImageUpload from '../components/ImageUpload'
 
@@ -42,7 +43,7 @@ export default function DirigeantForm() {
   }
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-5xl">
       <PageHeader title={isEdit ? 'Modifier le dirigeant' : 'Nouveau dirigeant'} backTo="/dirigeants">
         <button form="dirigeant-form" type="submit" disabled={saving} className="btn-primary text-sm">
           {saving ? 'Enregistrement...' : isEdit ? 'Mettre à jour' : 'Créer'}
@@ -59,16 +60,12 @@ export default function DirigeantForm() {
             <p className="text-xs text-gray-400 mt-1">Identifiant unique non modifiable après création (ex: dg, daf, djuridique)</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="label">Nom complet *</label>
-              <input className="input" placeholder="Issouf Compaoré" {...register('nom', { required: true })} />
-            </div>
-            <div>
-              <label className="label">Rôle / Titre *</label>
-              <input className="input" placeholder="Directeur Général" {...register('role', { required: true })} />
-            </div>
+          <div>
+            <label className="label">Nom complet *</label>
+            <input className="input" placeholder="Issouf Compaoré" {...register('nom', { required: true })} />
           </div>
+
+          <BilingualField label="Rôle / Titre" name="role" register={register} required placeholder="Directeur Général" placeholder_en="Chief Executive Officer" />
 
           <div>
             <label className="label">Profil LinkedIn</label>
@@ -83,45 +80,15 @@ export default function DirigeantForm() {
             <div>
               <label className="label">Catégorie</label>
               <select className="input" {...register('categorie')}>
+                <option value="president">Président du Groupe</option>
                 <option value="conseil">Conseil d'administration</option>
+                <option value="dg">Directeur Général</option>
                 <option value="direction">Comité de direction</option>
               </select>
             </div>
           </div>
 
           <ImageUpload value={photo} onChange={setPhoto} label="Photo (optionnel)" />
-        </div>
-
-        <div className="card p-6 space-y-5">
-          <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-widest">Biographie & Expertise</h3>
-
-          <div>
-            <label className="label">Biographie *</label>
-            <p className="text-xs text-gray-400 mb-1">Présentation générale (paragraphe).</p>
-            <textarea className="input min-h-[120px]" rows={5} {...register('bio', { required: true })} />
-          </div>
-
-          <div>
-            <label className="label">Domaines d'expertise</label>
-            <p className="text-xs text-gray-400 mb-1">Un domaine par ligne. Apparaîtront sous forme de tags.</p>
-            <textarea className="input min-h-[100px]" rows={4} placeholder={"Stratégie d'investissement\nFinance d'entreprise\nGouvernance de holdings..."} {...register('expertise')} />
-          </div>
-        </div>
-
-        <div className="card p-6 space-y-5">
-          <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-widest">Parcours</h3>
-
-          <div>
-            <label className="label">Expériences professionnelles</label>
-            <p className="text-xs text-gray-400 mb-1">Une expérience par ligne, format : <code className="bg-gray-100 px-1 rounded">Titre – Organisation, Ville (Année – Année)</code></p>
-            <textarea className="input min-h-[120px]" rows={5} placeholder={"Directeur Général – Excellis Invest Group, Ouagadougou (2018 – présent)\nDirecteur des Investissements – Coris Bank International (2012 – 2018)..."} {...register('experiences')} />
-          </div>
-
-          <div>
-            <label className="label">Formation académique</label>
-            <p className="text-xs text-gray-400 mb-1">Un diplôme par ligne, format : <code className="bg-gray-100 px-1 rounded">Diplôme – Institution (Année)</code></p>
-            <textarea className="input min-h-[100px]" rows={4} placeholder={"MBA Finance & Stratégie – HEC Paris (2002)\nMaster 2 Économie Internationale – Université Paris I (2000)..."} {...register('formation')} />
-          </div>
         </div>
 
         <div className="flex gap-3">

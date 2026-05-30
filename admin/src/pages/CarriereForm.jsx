@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { api } from '../lib/api'
 import toast from 'react-hot-toast'
+import BilingualField from '../components/BilingualField'
 import PageHeader from '../components/PageHeader'
 
 const TYPES = ['CDI', 'CDD', 'Stage', 'Freelance', 'Alternance']
@@ -41,7 +42,7 @@ export default function CarriereForm() {
   }
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-5xl">
       <PageHeader title={isEdit ? "Modifier l'offre" : "Nouvelle offre"} backTo="/carrieres">
         <button form="carriere-form" type="submit" disabled={saving} className="btn-primary text-sm">
           {saving ? 'Enregistrement...' : isEdit ? 'Mettre à jour' : "Publier l'offre"}
@@ -52,10 +53,7 @@ export default function CarriereForm() {
         <div className="card p-6 space-y-5">
           <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-widest">Informations générales</h3>
 
-          <div>
-            <label className="label">Titre du poste *</label>
-            <input className="input" placeholder="Chargé de développement commercial" {...register('titre', { required: true })} />
-          </div>
+          <BilingualField label="Titre du poste" name="titre" register={register} required placeholder="Chargé de développement commercial" placeholder_en="Business Development Officer" />
 
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -94,29 +92,45 @@ export default function CarriereForm() {
         <div className="card p-6 space-y-5">
           <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-widest">Contenu de l'offre</h3>
 
-          <div>
-            <label className="label">Description du poste *</label>
-            <p className="text-xs text-gray-400 mb-1">Présentation générale du poste et du contexte de recrutement.</p>
-            <textarea className="input min-h-[100px]" rows={4} {...register('description', { required: true })} />
-          </div>
+          <BilingualField
+            label="Description du poste"
+            name="description"
+            register={register}
+            type="textarea" rows={4} required
+            hint="Présentation générale du poste et du contexte de recrutement."
+            placeholder="Présentation générale du poste..."
+            placeholder_en="General presentation of the position..."
+          />
 
-          <div>
-            <label className="label">Missions</label>
-            <p className="text-xs text-gray-400 mb-1">Une mission par ligne. Elles apparaîtront sous forme de liste à points.</p>
-            <textarea className="input min-h-[140px]" rows={6} placeholder={"Analyser les états financiers\nProduire les rapports mensuels\nPiloter la consolidation..."} {...register('missions')} />
-          </div>
+          <BilingualField
+            label="Missions"
+            name="missions"
+            register={register}
+            type="textarea" rows={6}
+            hint="Une mission par ligne. Elles apparaîtront sous forme de liste à points."
+            placeholder={"Analyser les états financiers\nProduire les rapports mensuels\nPiloter la consolidation..."}
+            placeholder_en={"Analyse financial statements\nProduce monthly reports\nOversee consolidation..."}
+          />
 
-          <div>
-            <label className="label">Profil recherché</label>
-            <p className="text-xs text-gray-400 mb-1">Un critère par ligne (diplôme, expérience, compétences...).</p>
-            <textarea className="input min-h-[140px]" rows={6} placeholder={"Bac+5 en Finance\nMinimum 5 ans d'expérience\nMaîtrise des normes IFRS..."} {...register('profil')} />
-          </div>
+          <BilingualField
+            label="Profil recherché"
+            name="profil"
+            register={register}
+            type="textarea" rows={6}
+            hint="Un critère par ligne (diplôme, expérience, compétences...)."
+            placeholder={"Bac+5 en Finance\nMinimum 5 ans d'expérience\nMaîtrise des normes IFRS..."}
+            placeholder_en={"Master's degree in Finance\nMinimum 5 years' experience\nIFRS knowledge..."}
+          />
 
-          <div>
-            <label className="label">Avantages</label>
-            <p className="text-xs text-gray-400 mb-1">Un avantage par ligne.</p>
-            <textarea className="input min-h-[100px]" rows={4} placeholder={"Rémunération attractive\nAssurance maladie groupe\nFormation continue..."} {...register('avantages')} />
-          </div>
+          <BilingualField
+            label="Avantages"
+            name="avantages"
+            register={register}
+            type="textarea" rows={4}
+            hint="Un avantage par ligne."
+            placeholder={"Rémunération attractive\nAssurance maladie groupe\nFormation continue..."}
+            placeholder_en={"Competitive salary\nGroup health insurance\nContinuous training..."}
+          />
         </div>
 
         <div className="card p-6">

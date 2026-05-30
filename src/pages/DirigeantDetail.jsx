@@ -36,52 +36,6 @@ function TagList({ text }) {
   )
 }
 
-function Timeline({ text }) {
-  if (!text) return null
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-      {text.split('\n').filter(Boolean).map((line, i, arr) => {
-        const parts = line.split(' – ')
-        const role = parts[0]
-        const rest = parts.slice(1).join(' – ')
-        return (
-          <div key={i} style={{ display: 'flex', gap: 16, alignItems: 'stretch' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, width: 20 }}>
-              <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--teal)', flexShrink: 0, marginTop: 6 }} />
-              {i < arr.length - 1 && <div style={{ width: 2, flex: 1, background: 'var(--gray-light)', minHeight: 20 }} />}
-            </div>
-            <div style={{ paddingBottom: i < arr.length - 1 ? 20 : 0 }}>
-              <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--dark)' }}>{role}</div>
-              {rest && <div style={{ fontSize: 13, color: 'var(--gray-mid)', marginTop: 2 }}>{rest}</div>}
-            </div>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
-function DiplomaList({ text }) {
-  if (!text) return null
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-      {text.split('\n').filter(Boolean).map((line, i) => {
-        const parts = line.split(' – ')
-        const diplome = parts[0]
-        const rest = parts.slice(1).join(' – ')
-        return (
-          <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-            <span style={{ color: 'var(--gold)', fontWeight: 700, flexShrink: 0, marginTop: 2 }}>🎓</span>
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--dark)' }}>{diplome}</div>
-              {rest && <div style={{ fontSize: 12, color: 'var(--gray-mid)', marginTop: 2 }}>{rest}</div>}
-            </div>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
 
 export default function DirigeantDetail() {
   const { id } = useParams()
@@ -142,33 +96,30 @@ export default function DirigeantDetail() {
       <section style={{ background: 'var(--white)' }}>
         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '2fr 1fr', gap: isMobile ? 40 : 64, alignItems: 'start' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
-            <ScrollReveal>
-              <span className="section-label">{t('gouvernance.bioLabel')}</span>
-              <h2 className="section-title" style={{ fontSize: 'clamp(22px,2.8vw,34px)' }}>{dirigeant.nom}</h2>
-              <div className="gold-rule" />
-              <p style={{ fontSize: 16, color: 'var(--gray-mid)', lineHeight: 1.85 }}>{dirigeant.bio}</p>
-            </ScrollReveal>
-
+            {dirigeant.bio && (
+              <ScrollReveal delay={0.1}>
+                <Section label={t('gouvernance.bioLabel')}>
+                  <p style={{ fontSize: 15, lineHeight: 1.8, color: 'var(--gray-mid)' }}>{dirigeant.bio}</p>
+                </Section>
+              </ScrollReveal>
+            )}
             {dirigeant.expertise && (
-              <ScrollReveal delay={0.08}>
+              <ScrollReveal delay={0.14}>
                 <Section label={t('gouvernance.expertiseLabel')}>
                   <TagList text={dirigeant.expertise} />
                 </Section>
               </ScrollReveal>
             )}
-
-            {dirigeant.experiences && (
-              <ScrollReveal delay={0.12}>
-                <Section label={t('gouvernance.experiencesLabel')}>
-                  <Timeline text={dirigeant.experiences} />
-                </Section>
-              </ScrollReveal>
-            )}
-
-            {dirigeant.formation && (
-              <ScrollReveal delay={0.16}>
-                <Section label={t('gouvernance.formationLabel')}>
-                  <DiplomaList text={dirigeant.formation} />
+            {dirigeant.responsabilites && (
+              <ScrollReveal delay={0.18}>
+                <Section label={t('gouvernance.responsabilitesLabel')}>
+                  <TagList text={
+                    Array.isArray(dirigeant.responsabilites)
+                      ? dirigeant.responsabilites.join('\n')
+                      : typeof dirigeant.responsabilites === 'string'
+                        ? dirigeant.responsabilites
+                        : JSON.parse(dirigeant.responsabilites || '[]').join('\n')
+                  } />
                 </Section>
               </ScrollReveal>
             )}

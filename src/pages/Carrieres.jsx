@@ -32,7 +32,7 @@ export default function Carrieres() {
             <div key={img.id} style={{ flex: 1, overflow: 'hidden', minWidth: 0 }}>
               <img
                 src={`${API_URL}${img.url}`}
-                alt={img.alt || img.titre || 'Carrières EIG'}
+                alt={img.alt || img.titre || 'Carrières Excellis Invest Group'}
                 style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
               />
             </div>

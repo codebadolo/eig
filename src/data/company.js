@@ -1,14 +1,15 @@
 export const company = {
   nom: 'Excellis Invest Group',
   tagline: 'Investir autrement',
-  descriptionCourte: 'Excellis Invest Group est une holding Multi sectoriel, capitalisé à 20 milliards FCFA, opérant dans 9 secteurs stratégiques à travers 16 filiales en Afrique.',
-  description: 'Excellis Invest Group est une holding Multi sectoriel, capitalisé à 20 milliards FCFA, opérant dans 9 secteurs stratégiques à travers 16 filiales en Afrique. Fondée en 2019 et basée au Burkina Faso, elle assure le pilotage stratégique et la gouvernance d\'un portefeuille de filiales couvrant les services financiers, l\'assurance, les énergies, l\'immobilier, les technologies, l\'industrie, le transport-logistique, l\'hôtellerie et le commerce.',
+  descriptionCourte: 'Excellis Invest Group est une holding multisectorielle capitalisée à 20 milliards FCFA, développant ses activités dans plusieurs secteurs stratégiques en Afrique.',
+  description: 'Excellis Invest Group est une holding multisectorielle capitalisée à 20 milliards FCFA, développant ses activités dans plusieurs secteurs stratégiques en Afrique. Fondée en 2019 et basée au Burkina Faso, elle assure le pilotage stratégique et la gouvernance d\'un portefeuille de filiales couvrant les services financiers, l\'assurance, les énergies, l\'immobilier, les technologies, l\'industrie, le transport-logistique, l\'hôtellerie et le commerce.',
   mission: 'Mobiliser des expertises, des capitaux et des mécanismes d\'intervention à forte valeur ajoutée pour accompagner les institutions et entreprises africaines dans leur financement, leur structuration et leur développement durable.',
-  vision: 'Être un investisseur panafricain de référence, catalyseur de croissance, de transformation et de création de valeur durable en Afrique.',
+  vision: 'Être un investisseur panafricain de référence.',
   valeurs: [
-    { titre: 'Rigueur', icone: '⚖️', description: 'Des standards élevés dans toutes nos décisions d\'investissement et dans notre gouvernance.' },
-    { titre: 'Adaptabilité', icone: '🔄', description: 'Un modèle évolutif, ancré dans les réalités économiques africaines et ouvert aux opportunités.' },
-    { titre: 'Innovation', icone: '💡', description: 'Une culture de l\'innovation au service de la modernisation des économies africaines.' },
+    { titre: 'Rigueur',        icone: '⚖️', description: 'Des standards élevés dans toutes nos décisions d\'investissement et dans notre gouvernance.' },
+    { titre: 'Innovation',     icone: '💡', description: 'Une culture de l\'innovation au service de la modernisation des économies africaines.' },
+    { titre: 'Adaptabilité',   icone: '🔄', description: 'Un modèle évolutif, ancré dans les réalités économiques africaines et ouvert aux opportunités.' },
+    { titre: 'Accessibilité',  icone: '🌍', description: 'Des services et des investissements accessibles, au service du plus grand nombre.' },
     { titre: 'Esprit d\'équipe', icone: '🤝', description: 'Une synergie des filiales et des talents pour créer une valeur collective supérieure.' },
   ],
   kpis: [

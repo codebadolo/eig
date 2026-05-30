@@ -41,16 +41,27 @@ export default function NosFiliales() {
   const { t, pick } = useLang()
   const navigate = useNavigate()
   const { data: filiales = [], loading } = useApi('/filiales?actif=true')
-  const [secteurFilter, setSecteurFilter] = useState('Tous')
+  const { data: metiers = [] } = useApi('/metiers?actif=true')
+  const [secteurFilter, setSecteurFilter] = useState('tous')
   const [paysFilter, setPaysFilter] = useState('Tous')
 
   if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>{t('common.loading')}</div>
 
-  const secteurs = [...new Set(filiales.map(f => f.secteur))]
+  // Map slug → metier object for label lookup
+  const metierMap = Object.fromEntries(metiers.map(m => [m.slug, m]))
+
+  // secteur_slug est retourné en camelCase par l'API
+  const getSlug = (f) => f.secteur_slug || f.secteurSlug || ''
+
+  // Unique slugs present in the filiales list, in metier display order
+  const secteurSlugs = metiers
+    .map(m => m.slug)
+    .filter(slug => filiales.some(f => getSlug(f) === slug))
+
   const pays = [...new Set(filiales.map(f => f.pays))]
 
   const filtered = filiales.filter(f => {
-    const matchSecteur = secteurFilter === 'Tous' || f.secteur === secteurFilter
+    const matchSecteur = secteurFilter === 'tous' || getSlug(f) === secteurFilter
     const matchPays = paysFilter === 'Tous' || f.pays === paysFilter
     return matchSecteur && matchPays
   })
@@ -72,12 +83,12 @@ export default function NosFiliales() {
             </span>
           </div>
           <div className="filiale-filter-bar" style={{ marginBottom: 20 }}>
-            <button className={`filter-btn${secteurFilter === 'Tous' ? ' active' : ''}`} onClick={() => setSecteurFilter('Tous')}>
+            <button className={`filter-btn${secteurFilter === 'tous' ? ' active' : ''}`} onClick={() => setSecteurFilter('tous')}>
               {t('filiales.allSecteurs')}
             </button>
-            {secteurs.map(s => (
-              <button key={s} className={`filter-btn${secteurFilter === s ? ' active' : ''}`} onClick={() => setSecteurFilter(s)}>
-                {s}
+            {secteurSlugs.map(slug => (
+              <button key={slug} className={`filter-btn${secteurFilter === slug ? ' active' : ''}`} onClick={() => setSecteurFilter(slug)}>
+                {pick(metierMap[slug], 'titre')}
               </button>
             ))}
           </div>
@@ -129,7 +140,7 @@ export default function NosFiliales() {
                   <FilialeLogoInline f={f} size={64} />
                   <div>
                     <div className="filiale-name">{f.nom}</div>
-                    <div className="filiale-sector">{f.secteur}</div>
+                    <div className="filiale-sector">{pick(f, 'secteur')}</div>
                   </div>
                 </div>
                 <p className="filiale-desc">{pick(f, 'description')}</p>

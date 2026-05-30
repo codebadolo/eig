@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { api } from '../lib/api'
 import toast from 'react-hot-toast'
+import BilingualField from '../components/BilingualField'
 import PageHeader from '../components/PageHeader'
 import ImageUpload from '../components/ImageUpload'
 
@@ -31,6 +32,22 @@ const SECTEURS_SLUGS = {
   'Transport et logistiques minières et industrielles': 'logistique-miniere',
 }
 
+const SECTEURS_EN = {
+  'Services Financiers':    'Financial Services',
+  'Gestion de Créances':    'Debt Management',
+  'Énergies et distribution': 'Energy & Distribution',
+  'Hôtellerie & Restauration': 'Hospitality & Catering',
+  'Assurance Non-Vie':      'Non-Life Insurance',
+  'Assurance Vie':          'Life Insurance',
+  'Marchés Financiers':     'Financial Markets',
+  "Gestion d'Actifs":       'Asset Management',
+  'Immobilier':             'Real Estate',
+  'Technologies & Fintech': 'Technology & Fintech',
+  'Industries et Agribusiness': 'Industry & Agribusiness',
+  'Commerce & Fournitures': 'Trade & Supplies',
+  'Transport et logistiques minières et industrielles': 'Mining & Industrial Logistics',
+}
+
 function Section({ title, children }) {
   return (
     <div className="space-y-4">
@@ -57,6 +74,7 @@ export default function FilialeForm() {
   useEffect(() => {
     if (secteur && SECTEURS_SLUGS[secteur]) {
       setValue('secteurSlug', SECTEURS_SLUGS[secteur])
+      if (SECTEURS_EN[secteur]) setValue('secteur_en', SECTEURS_EN[secteur])
     }
   }, [secteur, setValue])
 
@@ -96,7 +114,7 @@ export default function FilialeForm() {
   }
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-5xl">
       <PageHeader
         title={isEdit ? 'Modifier la filiale' : 'Nouvelle filiale'}
         backTo="/filiales"
@@ -121,17 +139,34 @@ export default function FilialeForm() {
             <input className="input" placeholder="Coris Bourse" {...register('nom', { required: true })} />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="label">Secteur *</label>
-              <select className="input" {...register('secteur', { required: true })}>
-                <option value="">— Choisir —</option>
-                {SECTEURS.map(s => <option key={s} value={s}>{s}</option>)}
-              </select>
+          <div>
+            <label className="label">Secteur slug *</label>
+            <input className="input font-mono text-xs" placeholder="marches-financiers" {...register('secteurSlug', { required: true })} />
+          </div>
+
+          <div>
+            <div className="flex items-baseline gap-1.5 mb-2">
+              <span className="label mb-0">Nom du secteur</span>
+              <span className="text-red-400 text-xs">*</span>
             </div>
-            <div>
-              <label className="label">Secteur slug *</label>
-              <input className="input" placeholder="marches-financiers" {...register('secteurSlug', { required: true })} />
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <span className="text-[10px] font-bold tracking-widest uppercase text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full">FR</span>
+                  <span className="text-[10px] text-gray-400">Français</span>
+                </div>
+                <select className="input" {...register('secteur', { required: true })}>
+                  <option value="">— Choisir —</option>
+                  {SECTEURS.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <span className="text-[10px] font-bold tracking-widest uppercase text-amber-600 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-full">EN</span>
+                  <span className="text-[10px] text-gray-400">English — auto-rempli, modifiable</span>
+                </div>
+                <input className="input" placeholder="Financial Services" {...register('secteur_en')} />
+              </div>
             </div>
           </div>
 
@@ -147,47 +182,12 @@ export default function FilialeForm() {
 
         {/* ── Description & Mission ── */}
         <Section title="Description & Mission">
-          <div>
-            <label className="label">Description (Français) *</label>
-            <textarea className="input min-h-[100px]" rows={4} {...register('description', { required: true })} />
-          </div>
+          <BilingualField label="Description" name="description" register={register} type="textarea" rows={4} required placeholder="Description de la filiale…" placeholder_en="Description of the subsidiary…" />
+          <BilingualField label="Mission" name="mission" register={register} type="textarea" rows={3} placeholder="Notre mission est de…" placeholder_en="Our mission is to…" />
 
-          <div>
-            <label className="label">Description (English)</label>
-            <textarea className="input min-h-[100px]" rows={4} {...register('description_en')}
-              placeholder="English description of the subsidiary..." />
-          </div>
-
-          <div>
-            <label className="label">Mission (Français)</label>
-            <textarea className="input" rows={3} placeholder="Notre mission est de…"
-              {...register('mission')} />
-          </div>
-
-          <div>
-            <label className="label">Mission (English)</label>
-            <textarea className="input" rows={3} placeholder="Our mission is to…"
-              {...register('mission_en')} />
-          </div>
-
-          <div>
-            <label className="label">Vision</label>
-            <textarea className="input" rows={2} placeholder="Notre vision à l'horizon…"
-              {...register('vision')} />
-          </div>
-
-          <div>
-            <label className="label">Valeurs</label>
-            <textarea className="input" rows={2} placeholder="Confiance · Réactivité · Excellence"
-              {...register('valeurs')} />
-            <p className="text-xs text-gray-400 mt-1">Séparer les valeurs par · ou une virgule</p>
-          </div>
-
-          <div>
-            <label className="label">Informations complémentaires</label>
-            <textarea className="input min-h-[80px]" rows={3} placeholder="Prix, certifications, FCP disponibles…"
-              {...register('commentaires')} />
-          </div>
+          <BilingualField label="Vision" name="vision" register={register} type="textarea" rows={2} placeholder="Notre vision à l'horizon…" placeholder_en="Our vision for the future…" />
+          <BilingualField label="Valeurs" name="valeurs" register={register} type="textarea" rows={2} placeholder="Confiance · Réactivité · Excellence" placeholder_en="Trust · Responsiveness · Excellence" hint="Séparer les valeurs par · ou une virgule" />
+          <BilingualField label="Informations complémentaires" name="commentaires" register={register} type="textarea" rows={3} placeholder="Prix, certifications, FCP disponibles…" placeholder_en="Awards, certifications, available products…" />
         </Section>
 
         {/* ── Contact ── */}

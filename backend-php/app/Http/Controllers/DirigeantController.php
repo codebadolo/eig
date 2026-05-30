@@ -4,8 +4,11 @@ use App\Models\Dirigeant;
 use Illuminate\Http\Request;
 
 class DirigeantController extends Controller {
-    public function index() {
-        return response()->json(Dirigeant::orderBy('ordre')->get());
+    public function index(Request $request) {
+        $q = Dirigeant::orderBy('ordre')
+            ->where('actif', true)
+            ->select(['id', 'nom', 'role', 'role_en', 'bio', 'bio_en', 'mot', 'mot_en', 'photo', 'categorie', 'ordre', 'actif']);
+        return response()->json($q->get());
     }
 
     public function show($id) {

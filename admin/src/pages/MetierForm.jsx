@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { api } from '../lib/api'
 import toast from 'react-hot-toast'
+import BilingualField from '../components/BilingualField'
 import PageHeader from '../components/PageHeader'
 import FaIcon, { ICON_LIST } from '../components/FaIcon'
 import ImageUpload from '../components/ImageUpload'
@@ -47,7 +48,7 @@ export default function MetierForm() {
   }
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-5xl">
       <PageHeader title={isEdit ? 'Modifier le métier' : 'Nouveau métier'} backTo="/metiers" />
       <form onSubmit={handleSubmit(onSubmit)} className="card p-6 space-y-5">
         <div className="grid grid-cols-2 gap-4">
@@ -71,30 +72,18 @@ export default function MetierForm() {
           </div>
         </div>
 
-        <div>
-          <label className="label">Titre *</label>
-          <input className="input" {...register('titre', { required: true })} />
-        </div>
+        <BilingualField label="Titre" name="titre" register={register} required placeholder="Services Financiers" placeholder_en="Financial Services" />
 
         <div>
           <label className="label">Couleur CSS (gradient) *</label>
           <input className="input font-mono text-xs" placeholder="linear-gradient(135deg, #1A6B7A, #0F4855)" {...register('couleur', { required: true })} />
         </div>
 
-        <div>
-          <label className="label">Description *</label>
-          <textarea className="input" rows={2} {...register('description', { required: true })} />
-        </div>
+        <BilingualField label="Description" name="description" register={register} type="textarea" rows={2} required placeholder="Intermédiation bancaire, structuration financière…" placeholder_en="Banking intermediation, financial structuring…" />
 
-        <div>
-          <label className="label">Enjeux *</label>
-          <textarea className="input" rows={3} {...register('enjeux', { required: true })} />
-        </div>
+        <BilingualField label="Enjeux" name="enjeux" register={register} type="textarea" rows={3} required placeholder="Dans une économie africaine en forte croissance…" placeholder_en="In a fast-growing African economy…" />
 
-        <div>
-          <label className="label">Contribution d'EIG *</label>
-          <textarea className="input" rows={3} {...register('contribution', { required: true })} />
-        </div>
+        <BilingualField label="Contribution Excellis Invest Group" name="contribution" register={register} type="textarea" rows={3} required placeholder="Excellis Invest Group positionne ses filiales…" placeholder_en="Excellis Invest Group positions its subsidiaries…" />
 
         <ImageUpload value={image} onChange={setImage} label="Image de couverture" />
 

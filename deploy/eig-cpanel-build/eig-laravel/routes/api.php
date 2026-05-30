@@ -12,6 +12,7 @@ use App\Http\Controllers\UploadController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CandidatureController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\TranslationController;
 
 Route::get('/health', fn() => response()->json(['status' => 'ok', 'version' => '2.0.0']));
 
@@ -32,6 +33,7 @@ Route::get('/articles/{slug}', [ArticleController::class, 'show']);
 Route::get('/dirigeants', [DirigeantController::class, 'index']);
 Route::get('/dirigeants/{id}', [DirigeantController::class, 'show']);
 Route::get('/company', [CompanyController::class, 'show']);
+Route::get('/translations', [TranslationController::class, 'show']);
 Route::get('/carrieres', [CarriereController::class, 'index']);
 Route::get('/carrieres/{id}', [CarriereController::class, 'show']);
 Route::get('/images', [ImageController::class, 'index']);
@@ -59,6 +61,7 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/dirigeants/{id}', [DirigeantController::class, 'destroy']);
 
     Route::put('/company', [CompanyController::class, 'update']);
+    Route::put('/translations', [TranslationController::class, 'update']);
 
     Route::get('/contact', [ContactController::class, 'index']);
     Route::put('/contact/{id}/lu', [ContactController::class, 'markRead']);

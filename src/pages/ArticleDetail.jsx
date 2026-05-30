@@ -79,7 +79,7 @@ function ArticleBlock({ block }) {
       </p>
       {block.author && (
         <cite style={{ fontSize: 13, color: 'var(--gold)', fontWeight: 700, fontStyle: 'normal', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-          — {block.author}
+          {block.author}
         </cite>
       )}
     </blockquote>
@@ -266,7 +266,7 @@ export default function ArticleDetail() {
                   <div className="news-card-img" style={{ background: a.couleur }}>
                     {a.image
                       ? <img src={`${API_URL}${a.image}`} alt={pick(a, 'titre')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      : <span className="news-card-img-text">EIG</span>
+                      : <span className="news-card-img-text">Excellis Invest Group</span>
                     }
                     <span className="news-cat">{a.categorie}</span>
                   </div>

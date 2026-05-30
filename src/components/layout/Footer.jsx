@@ -112,7 +112,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} {copyrightText} — {t('footer.rights')}</span>
+        <span>© {new Date().getFullYear()} {copyrightText}. {t('footer.rights')}</span>
         <div className="footer-legal">
           <ColLink href={mentionsHref} label={t('footer.legal')} />
           <ColLink href={privacyHref}  label={t('footer.privacy')} />

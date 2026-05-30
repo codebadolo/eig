@@ -4,8 +4,10 @@ use App\Models\Metier;
 use Illuminate\Http\Request;
 
 class MetierController extends Controller {
-    public function index() {
-        return response()->json(Metier::orderBy('ordre')->get());
+    public function index(Request $request) {
+        $q = Metier::orderBy('ordre');
+        if ($request->has('actif')) $q->where('actif', $request->actif === 'true');
+        return response()->json($q->get());
     }
 
     public function show($slug) {

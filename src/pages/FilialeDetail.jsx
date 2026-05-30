@@ -71,7 +71,7 @@ export default function FilialeDetail() {
           <div>
             <h1 className="page-hero-title" style={{ marginBottom: 8 }}>{filiale.nom}</h1>
             <div style={{ fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--gold-light)' }}>
-              {filiale.secteur} · {filiale.pays}{filiale.ville ? ` · ${filiale.ville}` : ''}
+              {pick(filiale, 'secteur')} · {filiale.pays}{filiale.ville ? ` · ${filiale.ville}` : ''}
             </div>
           </div>
         </div>
@@ -189,7 +189,7 @@ export default function FilialeDetail() {
 
               <div style={{ background: 'var(--ivory)', padding: 24, borderRadius: 6, border: '1px solid var(--gray-light)' }}>
                 <div style={labelStyle}>{t('filiales.sectorLabel')}</div>
-                <div style={{ fontWeight: 600, color: 'var(--teal)' }}>{filiale.secteur}</div>
+                <div style={{ fontWeight: 600, color: 'var(--teal)' }}>{pick(filiale, 'secteur')}</div>
               </div>
 
               <div style={{ background: 'var(--ivory)', padding: 24, borderRadius: 6, border: '1px solid var(--gray-light)' }}>
@@ -266,7 +266,7 @@ export default function FilialeDetail() {
                   <Link key={f.id} to={`/nos-filiales/${f.id}`} className="filiale-card" style={{ flex: '1 1 200px', maxWidth: 280 }}>
                     <FilialeLogo id={f.id} sigle={f.sigle} size={56} logo={f.logo} />
                     <div className="filiale-name">{f.nom}</div>
-                    <div className="filiale-sector">{f.secteur}</div>
+                    <div className="filiale-sector">{pick(f, 'secteur')}</div>
                     <div className="filiale-country"><FaIcon name="location-dot" size={12} /> {f.pays}{f.ville ? `, ${f.ville}` : ''}</div>
                   </Link>
                 ))}

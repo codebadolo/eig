@@ -26,7 +26,7 @@ export default function AboutGroup({ company }) {
           {mainImg ? (
             <img src={mainImg} alt="Excellis Invest Group" className="groupe-img-main-photo" />
           ) : (
-            <span className="groupe-img-main-text">EIG</span>
+            <span className="groupe-img-main-text">Excellis Invest Group</span>
           )}
         </div>
         {extraImgs.length > 0 && (

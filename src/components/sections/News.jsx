@@ -29,7 +29,7 @@ export default function News({ articles = [] }) {
             <div className="news-card-img" style={{ background: article.couleur }}>
               {article.image
                 ? <img src={`${API_URL}${article.image}`} alt={pick(article, 'titre')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                : <span className="news-card-img-text">EIG</span>
+                : <span className="news-card-img-text">Excellis Invest Group</span>
               }
               <span className="news-cat">{article.categorie}</span>
             </div>

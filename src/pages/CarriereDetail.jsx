@@ -156,7 +156,7 @@ function CandidatureForm({ offre, t }) {
                 <span style={{ fontSize: 13, color: 'var(--teal)', fontWeight: 600 }}>
                   📎 {cv.name}
                   <span style={{ color: 'var(--gray-mid)', fontWeight: 400, marginLeft: 8 }}>
-                    ({(cv.size / 1024 / 1024).toFixed(1)} Mo) — cliquer pour changer
+                    ({(cv.size / 1024 / 1024).toFixed(1)} Mo), cliquer pour changer
                   </span>
                 </span>
               ) : (

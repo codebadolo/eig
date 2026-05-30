@@ -9,37 +9,7 @@ import { useResponsive } from '../hooks/useResponsive'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
-const ORGANES = [
-  {
-    icon: 'users',
-    num: '01',
-    titre: "Assemblée Générale",
-    desc: "Organe souverain réunissant l'ensemble des actionnaires. Elle adopte les grands axes stratégiques, approuve les comptes annuels et nomme les membres du Conseil d'Administration.",
-  },
-  {
-    icon: 'university',
-    num: '02',
-    titre: "Conseil d'Administration",
-    desc: "Définit les orientations stratégiques du groupe, approuve les grandes décisions et contrôle la gestion de la Direction Générale. Il rend compte à l'Assemblée Générale.",
-  },
-  {
-    icon: 'shield-halved',
-    num: '03',
-    titre: "Comités Spécialisés",
-    desc: "Veillent à la fiabilité des informations financières, au contrôle interne et à la maîtrise des risques opérationnels et financiers au niveau du groupe et de ses filiales.",
-  },
-  {
-    icon: 'briefcase',
-    num: '04',
-    titre: 'Direction Général',
-    desc: "Assure la mise en œuvre de la stratégie définie par le Conseil. Il pilote les filiales, coordonne les synergies inter-sectorielles et rend compte au Conseil d'Administration.",
-  },
-]
-
-function parseJSON(str) {
-  if (!str) return []
-  try { return JSON.parse(str) } catch { return [] }
-}
+const ORGANES_ICONS = ['users', 'university', 'shield-halved', 'briefcase']
 
 /* ─── Portrait imposant : grande photo sans bordure + citation réduite et alignée à droite (sans responsabilités) ─── */
 function LeaderFeature({ photo, nom, titre, citation, large = false, dark = false, reverse = false }) {
@@ -52,8 +22,8 @@ function LeaderFeature({ photo, nom, titre, citation, large = false, dark = fals
 
   // Photo encore plus grande pour le président du groupe
   const photoWidth = large
-    ? 'clamp(480px, 60%, 800px)'   // agrandi à 800px max
-    : 'clamp(320px, 42%, 580px)'
+    ? 'clamp(300px, 38%, 520px)'
+    : 'clamp(260px, 35%, 460px)'
 
   return (
     <ScrollReveal>
@@ -159,86 +129,68 @@ function LeaderFeature({ photo, nom, titre, citation, large = false, dark = fals
   )
 }
 
-/* ─── Carte comité de direction : photo agrandie, nom au hover ─── */
+/* ─── Carte comité de direction : photo + identité toujours visible ─── */
 function ComiteCard({ d }) {
   const [hovered, setHovered] = useState(false)
+  const { pick } = useLang()
   const photoUrl = d.photo
     ? (d.photo.startsWith('http') ? d.photo : `${API_URL}${d.photo}`)
     : null
+  const initials = d.nom.split(' ').map(w => w[0]).join('').slice(0, 2)
 
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        position: 'relative',
-        aspectRatio: '3/4',  // Changé de 2/3 à 3/4 pour des photos plus grandes
-        borderRadius: 12,
+        borderRadius: 10,
         overflow: 'hidden',
-        boxShadow: hovered ? '0 28px 70px rgba(0,0,0,0.3)' : '0 6px 24px rgba(0,0,0,0.12)',
-        transition: 'box-shadow 0.35s, transform 0.35s',
-        cursor: 'default',
-        transform: hovered ? 'translateY(-8px)' : 'translateY(0)',
+        background: 'var(--white)',
+        border: '1px solid var(--gray-light)',
+        boxShadow: hovered ? '0 16px 48px rgba(0,0,0,0.14)' : '0 2px 12px rgba(0,0,0,0.06)',
+        transition: 'box-shadow 0.3s, transform 0.3s',
+        transform: hovered ? 'translateY(-6px)' : 'translateY(0)',
       }}
     >
       {/* Photo */}
-      {photoUrl ? (
-        <img
-          src={photoUrl}
-          alt={d.nom}
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            display: 'block',
-            transform: hovered ? 'scale(1.08)' : 'scale(1)',
-            transition: 'transform 0.45s',
-          }}
-        />
-      ) : (
-        <div style={{
-          width: '100%', height: '100%',
-          background: 'linear-gradient(160deg, var(--teal) 0%, var(--teal-dark) 100%)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontFamily: 'var(--font-num)', fontSize: 48, color: 'var(--gold-light)',
-        }}>
-          {d.nom.split(' ').map(w => w[0]).join('').slice(0, 2)}
-        </div>
-      )}
+      <div style={{ position: 'relative', aspectRatio: '4/3', overflow: 'hidden', background: 'var(--ivory)' }}>
+        {photoUrl ? (
+          <img
+            src={photoUrl}
+            alt={d.nom}
+            style={{
+              width: '100%', height: '100%', objectFit: 'cover', display: 'block',
+              transform: hovered ? 'scale(1.05)' : 'scale(1)',
+              transition: 'transform 0.4s',
+            }}
+          />
+        ) : (
+          <div style={{
+            width: '100%', height: '100%',
+            background: 'linear-gradient(160deg, var(--teal) 0%, var(--teal-dark) 100%)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontFamily: 'var(--font-num)', fontSize: 36, color: 'var(--gold-light)',
+          }}>
+            {initials}
+          </div>
+        )}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'var(--gold)' }} />
+      </div>
 
-      {/* Barre dorée en haut */}
-      <div style={{
-        position: 'absolute', top: 0, left: 0, right: 0,
-        height: 4, background: 'var(--gold)',
-      }} />
-
-      {/* Overlay nom/rôle — visible seulement au hover */}
-      <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0,
-        background: 'linear-gradient(to top, rgba(8,22,30,0.98) 0%, rgba(8,22,30,0.7) 55%, transparent 100%)',
-        padding: '50px 16px 20px',
-        opacity: hovered ? 1 : 0,
-        transform: hovered ? 'translateY(0)' : 'translateY(12px)',
-        transition: 'opacity 0.3s, transform 0.3s',
-      }}>
+      {/* Identité toujours visible */}
+      <div style={{ padding: '14px 16px 16px' }}>
         <div style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 14,
-          fontWeight: 700,
-          color: 'white',
-          lineHeight: 1.3,
-          marginBottom: 6,
+          fontFamily: 'var(--font-display)', fontSize: 13.5, fontWeight: 700,
+          color: 'var(--dark)', lineHeight: 1.3, marginBottom: 5,
         }}>
           {d.nom}
         </div>
         <div style={{
-          fontSize: 10,
-          fontWeight: 700,
-          letterSpacing: '0.15em',
-          textTransform: 'uppercase',
-          color: 'var(--gold)',
+          fontSize: 10.5, fontWeight: 600, letterSpacing: '0.1em',
+          textTransform: 'uppercase', color: 'var(--teal)',
+          lineHeight: 1.4,
         }}>
-          {d.role}
+          {pick(d, 'role')}
         </div>
       </div>
     </div>
@@ -246,7 +198,7 @@ function ComiteCard({ d }) {
 }
 
 export default function GouvernancePage() {
-  const { t } = useLang()
+  const { t, pick } = useLang()
   const { data: company, loading: loadingCompany } = useApi('/company')
   const { data: dirigeants = [], loading: loadingDirigeants } = useApi('/dirigeants')
   const { isMobile, isTablet } = useResponsive()
@@ -270,8 +222,7 @@ export default function GouvernancePage() {
 
   // Comité de direction
   const comiteDirection = dirigeants.filter(d => d.categorie === 'direction')
-  // Ajustement des colonnes pour des cartes plus grandes
-  const comiteCols = isMobile ? 'repeat(1, 1fr)' : isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'
+  const comiteCols = isMobile ? 'repeat(2, 1fr)' : isTablet ? 'repeat(3, 1fr)' : 'repeat(5, 1fr)'
 
   return (
     <>
@@ -288,8 +239,8 @@ export default function GouvernancePage() {
           <LeaderFeature
             photo={presidentGroupe.photo || company?.photo_president}
             nom={presidentGroupe.nom}
-            titre={presidentGroupe.role || 'Président du Groupe'}
-            citation={presidentGroupe.bio || company?.mot_president}
+            titre={pick(company, 'titre_president') || pick(presidentGroupe, 'role') || t('gouvernance.presidentLabel')}
+            citation={pick(presidentGroupe, 'mot') || presidentGroupe.bio}
             large
           />
         </section>
@@ -307,53 +258,46 @@ export default function GouvernancePage() {
           </div>
         </ScrollReveal>
 
-        <div style={{ maxWidth: 860, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 0 }}>
-          {ORGANES.map((o, i) => (
-            <ScrollReveal key={o.titre} delay={i * 0.1}>
-              <div style={{ display: 'flex', gap: 0, alignItems: 'stretch' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 56, flexShrink: 0 }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+          gap: 12,
+        }}>
+          {t('gouvernance.organes').map((o, i) => (
+            <ScrollReveal key={o.titre} delay={i * 0.08}>
+              <div style={{
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderTop: '3px solid var(--gold)',
+                borderRadius: 8, padding: '24px 20px',
+                display: 'flex', flexDirection: 'column', gap: 14,
+                height: '100%', transition: 'background 0.2s, border-color 0.2s',
+              }}
+                onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
+                onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <div style={{
-                    width: 44, height: 44, borderRadius: '50%',
-                    background: 'var(--gold)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontFamily: 'var(--font-num)', fontSize: 14, fontWeight: 700,
-                    color: 'var(--teal-dark)', flexShrink: 0, zIndex: 1,
-                  }}>
-                    {o.num}
-                  </div>
-                  {i < ORGANES.length - 1 && (
-                    <div style={{ width: 2, flex: 1, minHeight: 32, background: 'rgba(184,146,42,0.3)' }} />
-                  )}
-                </div>
-                <div style={{
-                  flex: 1,
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 8, padding: '24px 28px',
-                  marginLeft: 16,
-                  marginBottom: i < ORGANES.length - 1 ? 16 : 0,
-                  display: 'flex', gap: 20, alignItems: 'flex-start',
-                  transition: 'all var(--transition)',
-                }}
-                  onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.borderColor = 'rgba(184,146,42,0.4)' }}
-                  onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)' }}
-                >
-                  <div style={{
-                    width: 44, height: 44, borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.1)',
+                    width: 36, height: 36, borderRadius: '50%',
+                    background: 'rgba(184,146,42,0.15)',
+                    border: '1px solid rgba(184,146,42,0.3)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     color: 'var(--gold-light)', flexShrink: 0,
                   }}>
-                    <FaIcon name={o.icon} size={20} />
+                    <FaIcon name={ORGANES_ICONS[i]} size={16} />
                   </div>
-                  <div>
-                    <div style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 700, color: 'white', marginBottom: 8 }}>
-                      {o.titre}
-                    </div>
-                    <p style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, margin: 0 }}>
-                      {o.desc}
-                    </p>
+                  <span style={{
+                    fontFamily: 'var(--font-num)', fontSize: 11, fontWeight: 700,
+                    letterSpacing: '0.1em', color: 'var(--gold)', opacity: 0.7,
+                  }}>0{i + 1}</span>
+                </div>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 14, fontWeight: 700, color: 'white', marginBottom: 8, lineHeight: 1.3 }}>
+                    {o.titre}
                   </div>
+                  <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, margin: 0 }}>
+                    {o.desc}
+                  </p>
                 </div>
               </div>
             </ScrollReveal>
@@ -366,15 +310,15 @@ export default function GouvernancePage() {
         <section style={{ background: 'var(--ivory)', padding: '100px 5%' }}>
           <ScrollReveal>
             <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto 64px' }}>
-              <span className="section-label">Conseil d'Administration</span>
+              <span className="section-label">{t('gouvernance.caLabel')}</span>
               <div className="gold-rule" style={{ margin: '20px auto' }} />
             </div>
           </ScrollReveal>
           <LeaderFeature
             photo={presidentCA.photo}
             nom={presidentCA.nom}
-            titre={presidentCA.role}
-            citation={presidentCA.bio}
+            titre={pick(presidentCA, 'role')}
+            citation={pick(presidentCA, 'bio')}
             reverse
           />
         </section>
@@ -391,9 +335,8 @@ export default function GouvernancePage() {
             <div className="gold-rule" style={{ margin: '24px auto' }} />
           </div>
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(380px, 100%), 1fr))',
-            gap: 16, maxWidth: 960, margin: '0 auto',
+            display: 'flex', flexDirection: 'column',
+            gap: 12, maxWidth: 800, margin: '0 auto',
           }}>
             {piliers.map((p, i) => (
               <ScrollReveal key={p.num} delay={i * 0.07}>
@@ -420,10 +363,10 @@ export default function GouvernancePage() {
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 700, color: 'var(--dark)', marginBottom: 6 }}>
-                      {p.titre}
+                      {pick(p, 'titre')}
                     </div>
                     <div style={{ fontSize: 13.5, color: 'var(--gray-mid)', lineHeight: 1.65 }}>
-                      {p.texte}
+                      {pick(p, 'texte')}
                     </div>
                   </div>
                   <div style={{ position: 'absolute', bottom: 0, left: 0, height: 3, width: 0, background: 'var(--gold)', transition: 'width var(--transition)' }}
@@ -442,18 +385,16 @@ export default function GouvernancePage() {
         <section style={{ background: 'var(--ivory)', padding: '100px 5%' }}>
           <ScrollReveal>
             <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto 64px' }}>
-              <span className="section-label">Direction</span>
-              <h2 className="section-title">
-                Le <span>Directeur Général</span>
-              </h2>
+              <span className="section-label">{t('gouvernance.dgLabel')}</span>
+              <h2 className="section-title">{t('gouvernance.dgTitle')}</h2>
               <div className="gold-rule" style={{ margin: '20px auto' }} />
             </div>
           </ScrollReveal>
           <LeaderFeature
             photo={company?.photo_dg || dgDirigeant?.photo}
             nom={company?.nom_dg}
-            titre={company?.titre_dg || 'Directeur Général'}
-            citation={company?.mot_dg}
+            titre={pick(company, 'titre_dg') || t('gouvernance.dgTitle')}
+            citation={pick(company, 'mot_dg')}
           />
         </section>
       )}
@@ -463,14 +404,11 @@ export default function GouvernancePage() {
         <section style={{ background: 'var(--white)', padding: '80px 5%' }}>
           <ScrollReveal>
             <div style={{ textAlign: 'center', maxWidth: 700, margin: '0 auto 56px' }}>
-              <span className="section-label">Gouvernance opérationnelle</span>
-              <h2 className="section-title">
-                Comité de <span>Direction</span>
-              </h2>
+              <span className="section-label">{t('gouvernance.comiteLabel')}</span>
+              <h2 className="section-title">{t('gouvernance.comiteTitle')}</h2>
               <div className="gold-rule" style={{ margin: '20px auto' }} />
               <p style={{ fontSize: 16, color: 'var(--gray-mid)', lineHeight: 1.7 }}>
-                Composé de {comiteDirection.length} membres, le Comité de Direction pilote
-                au quotidien la stratégie opérationnelle du groupe et de ses filiales.
+                {t('gouvernance.comiteDesc').replace('{n}', comiteDirection.length)}
               </p>
             </div>
           </ScrollReveal>
@@ -478,9 +416,7 @@ export default function GouvernancePage() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: comiteCols,
-            gap: 30,
-            maxWidth: 1200,
-            margin: '0 auto',
+            gap: 20,
           }}>
             {comiteDirection.map((d, i) => (
               <ScrollReveal key={d.id} delay={i * 0.05}>
@@ -506,10 +442,10 @@ export default function GouvernancePage() {
               </p>
               <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
                 {[
-                  { label: 'Agence',      value: 'Bloomfield Investment' },
-                  { label: 'Notes',       value: 'A / A2' },
-                  { label: 'Périmètre',   value: 'Groupe EIG' },
-                  { label: 'Perspective', value: 'Stable' },
+                  { label: t('gouvernance.ratingAgence'),      value: 'Bloomfield Investment' },
+                  { label: t('gouvernance.ratingNotes'),       value: 'A / A2' },
+                  { label: t('gouvernance.ratingPerimetre'),   value: 'Excellis Invest Group' },
+                  { label: t('gouvernance.ratingPerspective'), value: 'Stable' },
                 ].map(item => (
                   <div key={item.label}>
                     <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 4 }}>{item.label}</div>
@@ -527,10 +463,11 @@ export default function GouvernancePage() {
                 gap: 8, boxShadow: 'var(--shadow-lg)',
                 border: '1px solid rgba(184,146,42,0.2)',
               }}>
-                <div style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>Notes de crédit</div>
-                <div style={{ display: 'flex', gap: 12, alignItems: 'baseline' }}>
-                  <div style={{ fontFamily: 'var(--font-num)', fontSize: 56, color: 'var(--gold-light)', lineHeight: 1 }}>A</div>
-                  <div style={{ fontFamily: 'var(--font-num)', fontSize: 36, color: 'rgba(184,146,42,0.7)', lineHeight: 1 }}>A2</div>
+                <div style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>{t('gouvernance.ratingCredit')}</div>
+                <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+                  <div style={{ fontFamily: 'var(--font-num)', fontSize: 48, color: 'var(--gold-light)', lineHeight: 1 }}>A</div>
+                  <div style={{ fontFamily: 'var(--font-num)', fontSize: 24, color: 'rgba(255,255,255,0.4)', lineHeight: 1 }}>/</div>
+                  <div style={{ fontFamily: 'var(--font-num)', fontSize: 48, color: 'var(--gold-light)', lineHeight: 1 }}>A2</div>
                 </div>
                 <div style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>Bloomfield Rating</div>
               </div>

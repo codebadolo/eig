@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { api } from '../lib/api'
 import toast from 'react-hot-toast'
+import BilingualField from '../components/BilingualField'
 import PageHeader from '../components/PageHeader'
 import ImageUpload from '../components/ImageUpload'
 import BlockEditor from '../components/BlockEditor'
@@ -96,7 +97,7 @@ export default function ArticleForm() {
   const couleur = watch('couleur')
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-5xl">
       <PageHeader
         title={isEdit ? "Modifier l'article" : 'Nouvel article'}
         backTo="/articles"
@@ -113,11 +114,7 @@ export default function ArticleForm() {
         <div className="card p-5 space-y-4">
           <h2 className="text-sm font-semibold text-gray-700 pb-1 border-b border-gray-100">Informations</h2>
 
-          <div>
-            <label className="label">Titre *</label>
-            <input className="input text-base font-medium" placeholder="Titre de l'article"
-              {...register('titre', { required: true })} />
-          </div>
+          <BilingualField label="Titre" name="titre" register={register} required placeholder="Titre de l'article" placeholder_en="Article title" />
 
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -159,12 +156,7 @@ export default function ArticleForm() {
             </div>
           </div>
 
-          <div>
-            <label className="label">Extrait *</label>
-            <textarea className="input" rows={2}
-              placeholder="Résumé court affiché dans les listes..."
-              {...register('extrait', { required: true })} />
-          </div>
+          <BilingualField label="Extrait" name="extrait" register={register} type="textarea" rows={2} required placeholder="Résumé court affiché dans les listes..." placeholder_en="Short summary shown in listings..." />
 
           <div className="flex gap-6 pt-1">
             <label className="flex items-center gap-2 cursor-pointer">

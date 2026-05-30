@@ -11,7 +11,10 @@ class CompanyController extends Controller {
     }
 
     public function update(Request $request) {
-        $r = CompanyInfo::updateOrCreate(['id' => 'main'], ['data' => $request->all()]);
+        $r = CompanyInfo::firstOrCreate(['id' => 'main'], ['data' => []]);
+        $existing = is_array($r->data) ? $r->data : [];
+        $merged = array_merge($existing, $request->all());
+        $r->update(['data' => $merged]);
         return response()->json($r->data);
     }
 }

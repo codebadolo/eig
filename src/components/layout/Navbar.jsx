@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useLang } from '../../contexts/LangContext'
 import logoLight from '../../assets/excellis-invest-group-font-blanc.png'
-import logoDark from '../../assets/Logo EXCELLIS SUR FOND SOMBRE.png'
+import logoDark from '../../assets/LOGOsombrenew.png'
 
 export default function Navbar() {
   const { lang, setLang, t } = useLang()
