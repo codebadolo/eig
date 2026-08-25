@@ -44,7 +44,7 @@ export default function LogoMarquee({ filiales = [] }) {
               >
                 <div className="logo-marquee-inner">
                   {hasSrc ? (
-                    <img src={resolvedSrc} alt={f.nom} />
+                    <img src={resolvedSrc} alt={f.nom} loading="lazy" />
                   ) : (
                     <span className="logo-marquee-fallback">{f.sigle}</span>
                   )}

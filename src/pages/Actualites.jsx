@@ -2,9 +2,13 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ScrollReveal from '../components/ui/ScrollReveal'
 import CallToAction from '../components/sections/CallToAction'
+import Seo from '../components/Seo'
+import PageSkeleton from '../components/ui/PageSkeleton'
 import { useApi } from '../hooks/useApi'
 import PageHero from '../components/ui/PageHero'
+import FaIcon from '../components/ui/FaIcon'
 import { useLang } from '../contexts/LangContext'
+import { formatFrenchDate, parseFrenchDate } from '../lib/offreStatus'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
@@ -17,20 +21,27 @@ function readingTime(text = '', lang = 'fr') {
 export default function Actualites() {
   const { t, pick, lang } = useLang()
   const { data: articles = [], loading } = useApi('/articles?publie=true')
-  const [catActive, setCatActive] = useState(t('news.all'))
+  const [catActive, setCatActive] = useState(null)
 
-  if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>{t('common.loading')}</div>
+  if (loading) return <PageSkeleton />
 
   const allLabel = t('news.all')
-  const categories = [allLabel, ...new Set(articles.map(a => a.categorie))]
-  const filtered = catActive === allLabel ? articles : articles.filter(a => a.categorie === catActive)
+  const tCat = (cat) => t(`news.categories.${cat}`) !== `news.categories.${cat}` ? t(`news.categories.${cat}`) : cat
+  const categories = [...new Set(articles.map(a => a.categorie))]
+  const filtered = catActive === null ? articles : articles.filter(a => a.categorie === catActive)
 
-  const featured = filtered.filter(a => a.featured)
-  const rest = filtered.filter(a => !a.featured)
+  const byRecentDate = (a, b) => (parseFrenchDate(b.date)?.getTime() ?? 0) - (parseFrenchDate(a.date)?.getTime() ?? 0)
+  const featured = filtered.filter(a => a.featured).sort(byRecentDate)
+  const rest = filtered.filter(a => !a.featured).sort(byRecentDate)
   const displayOrder = [...featured, ...rest]
 
   return (
     <>
+      <Seo
+        title="Actualités & Médias"
+        description="Suivez les actualités du groupe Excellis Invest Group : expansion, notation financière, événements et vie de ses filiales en Afrique de l'Ouest."
+        path="/actualites"
+      />
       <PageHero
         section="actualites"
         label={t('news.label')}
@@ -41,13 +52,20 @@ export default function Actualites() {
       <section style={{ background: 'var(--ivory)' }}>
         {/* Filtres */}
         <div className="filiale-filter-bar" style={{ marginBottom: 40 }}>
+          <button
+            key="__all__"
+            className={`filter-btn${catActive === null ? ' active' : ''}`}
+            onClick={() => setCatActive(null)}
+          >
+            {allLabel}
+          </button>
           {categories.map(cat => (
             <button
               key={cat}
               className={`filter-btn${catActive === cat ? ' active' : ''}`}
               onClick={() => setCatActive(cat)}
             >
-              {cat}
+              {tCat(cat)}
             </button>
           ))}
         </div>
@@ -66,10 +84,10 @@ export default function Actualites() {
               <Link to={`/actualites/${article.slug}`} className="news-card">
                 <div className="news-card-img" style={{ background: article.couleur || 'linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%)' }}>
                   {article.image
-                    ? <img src={`${API_URL}${article.image}`} alt={pick(article, 'titre')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ? <img src={`${API_URL}${article.image}`} alt={pick(article, 'titre')} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     : <span className="news-card-img-text">Excellis Invest Group</span>
                   }
-                  <span className="news-cat">{article.categorie}</span>
+                  <span className="news-cat">{tCat(article.categorie)}</span>
                   {article.featured && (
                     <span style={{
                       position: 'absolute', top: 12, right: 12,
@@ -82,7 +100,7 @@ export default function Actualites() {
 
                 <div className="news-content">
                   <div className="news-meta">
-                    <span className="news-date">{article.date}</span>
+                    <span className="news-date">{formatFrenchDate(article.date, lang)}</span>
                     {(pick(article, 'extrait') || article.extrait) && (
                       <span className="news-read-time">
                         ⏱ {readingTime(pick(article, 'contenu') || article.contenu || pick(article, 'extrait') || '', lang)}
@@ -97,8 +115,9 @@ export default function Actualites() {
                     <span style={{ fontSize: 11, color: 'var(--gray-mid)' }}>
                       Excellis Invest Group
                     </span>
-                    <span className="news-read-link">
-                      {t('news.readMore')} <span>→</span>
+                    <span className="news-read-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                      {t('news.readMore')}
+                      <FaIcon name="arrow-right" size={11} />
                     </span>
                   </div>
                 </div>

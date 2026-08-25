@@ -1,8 +1,12 @@
 import { useParams, Link } from 'react-router-dom'
 import ScrollReveal from '../components/ui/ScrollReveal'
 import CallToAction from '../components/sections/CallToAction'
+import Seo from '../components/Seo'
+import PageSkeleton from '../components/ui/PageSkeleton'
 import { useApi } from '../hooks/useApi'
 import { useLang } from '../contexts/LangContext'
+import FaIcon from '../components/ui/FaIcon'
+import { formatFrenchDate } from '../lib/offreStatus'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
@@ -25,7 +29,7 @@ function ArticleBlock({ block }) {
   }
   if (block.type === 'image') return (
     <figure style={{ margin: '32px 0' }}>
-      <img src={`${API_URL}${block.url}`} alt={block.caption || ''}
+      <img src={`${API_URL}${block.url}`} alt={block.caption || ''} loading="lazy"
         style={{ width: '100%', borderRadius: 8, display: 'block' }} />
       {block.caption && (
         <figcaption style={{ textAlign: 'center', fontSize: 13, color: 'var(--gray-mid)', marginTop: 10, fontStyle: 'italic' }}>
@@ -89,15 +93,12 @@ function ArticleBlock({ block }) {
 
 export default function ArticleDetail() {
   const { slug } = useParams()
-  const { t, pick } = useLang()
+  const { t, pick, lang } = useLang()
+  const tCat = (cat) => t(`news.categories.${cat}`) !== `news.categories.${cat}` ? t(`news.categories.${cat}`) : cat
   const { data: article, loading, error } = useApi(`/articles/${slug}`)
   const { data: allArticles = [] } = useApi('/articles?publie=true')
 
-  if (loading) return (
-    <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>
-      {t('common.loading')}
-    </div>
-  )
+  if (loading) return <PageSkeleton />
 
   if (error || !article) return (
     <div style={{ padding: '180px 5% 80px', textAlign: 'center' }}>
@@ -114,19 +115,26 @@ export default function ArticleDetail() {
     .filter(a => a.slug !== slug && a.id !== article.id)
     .slice(0, 3)
 
+  const rawContenu = pick(article, 'contenu') || article.contenu || ''
   let blocks = null
-  if (article.contenu) {
+  if (rawContenu) {
     try {
-      const parsed = JSON.parse(article.contenu)
+      const parsed = JSON.parse(rawContenu)
       if (Array.isArray(parsed)) blocks = parsed
     } catch {}
   }
-  const legacyParagraphs = !blocks && article.contenu
-    ? article.contenu.split('\n').filter(p => p.trim())
+  const legacyParagraphs = !blocks && rawContenu
+    ? rawContenu.split('\n').filter(p => p.trim())
     : []
 
   return (
     <>
+      <Seo
+        title={pick(article, 'titre') || article.titre}
+        description={pick(article, 'extrait') || article.extrait}
+        path={`/actualites/${slug}`}
+        image={article.image ? `${API_URL}${article.image}` : undefined}
+      />
       <div className="page-hero" style={{ minHeight: '50vh' }}>
         {article.image && (
           <div style={{
@@ -162,7 +170,7 @@ export default function ArticleDetail() {
               borderRadius: 20, fontSize: 11, fontWeight: 700,
               letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold-light)',
             }}>
-              {article.categorie}
+              {tCat(article.categorie)}
             </span>
           </div>
 
@@ -178,7 +186,7 @@ export default function ArticleDetail() {
             display: 'flex', alignItems: 'center', gap: 20, marginTop: 28,
             fontSize: 13, color: 'rgba(255,255,255,0.5)',
           }}>
-            <span>📅 {article.date}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><FaIcon name="calendar" size={13} /> {formatFrenchDate(article.date, lang)}</span>
             <span style={{ color: 'rgba(255,255,255,0.2)' }}>·</span>
             <span>Excellis Invest Group</span>
           </div>
@@ -196,6 +204,7 @@ export default function ArticleDetail() {
                 <img
                   src={`${API_URL}${article.image}`}
                   alt={pick(article, 'titre')}
+                  loading="lazy"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </div>
@@ -265,21 +274,23 @@ export default function ArticleDetail() {
                 <Link to={`/actualites/${a.slug}`} className="news-card">
                   <div className="news-card-img" style={{ background: a.couleur }}>
                     {a.image
-                      ? <img src={`${API_URL}${a.image}`} alt={pick(a, 'titre')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ? <img src={`${API_URL}${a.image}`} alt={pick(a, 'titre')} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       : <span className="news-card-img-text">Excellis Invest Group</span>
                     }
-                    <span className="news-cat">{a.categorie}</span>
+                    <span className="news-cat">{tCat(a.categorie)}</span>
                   </div>
                   <div className="news-content">
-                    <div className="news-date">{a.date}</div>
+                    <div className="news-date">{formatFrenchDate(a.date, lang)}</div>
                     <h3 className="news-title">{pick(a, 'titre')}</h3>
                     <p className="news-excerpt">{pick(a, 'extrait')}</p>
                     <div style={{ marginTop: 16 }}>
                       <span style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 6,
                         fontSize: 12, fontWeight: 700, letterSpacing: '0.1em',
                         textTransform: 'uppercase', color: 'var(--teal)',
                       }}>
                         {t('news.readMore')}
+                        <FaIcon name="arrow-right" size={12} />
                       </span>
                     </div>
                   </div>

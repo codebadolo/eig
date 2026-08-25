@@ -1,3 +1,4 @@
+import Seo from '../components/Seo'
 import Hero from '../components/sections/Hero'
 import AboutGroup from '../components/sections/AboutGroup'
 import KPIs from '../components/sections/KPIs'
@@ -14,6 +15,11 @@ export default function Home() {
 
   return (
     <>
+      <Seo
+        title="Holding d'investissement multisectorielle panafricaine"
+        description="Excellis Invest Group est une holding d'investissement multisectorielle basée au Burkina Faso, présente dans l'assurance, l'énergie, la logistique, l'industrie et la fintech en Afrique de l'Ouest."
+        path="/"
+      />
       <Hero company={company} />
       <AboutGroup company={company} />
       <KPIs company={company} />

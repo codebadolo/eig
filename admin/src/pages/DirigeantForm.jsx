@@ -67,6 +67,17 @@ export default function DirigeantForm() {
 
           <BilingualField label="Rôle / Titre" name="role" register={register} required placeholder="Directeur Général" placeholder_en="Chief Executive Officer" />
 
+          <BilingualField
+            label="Mot / Citation"
+            name="mot"
+            register={register}
+            type="textarea"
+            rows={5}
+            placeholder="Message affiché en citation sur la page Gouvernance…"
+            placeholder_en="Message displayed as a quote on the Governance page..."
+            hint="Pour le Président du Groupe : ce texte est affiché en grand format à côté de sa photo."
+          />
+
           <div>
             <label className="label">Profil LinkedIn</label>
             <input className="input" placeholder="https://linkedin.com/in/..." {...register('linkedin')} />

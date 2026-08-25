@@ -34,6 +34,7 @@ export default function ArticleForm() {
   const isEdit = !!id
   const [image, setImage] = useState('')
   const [blocks, setBlocks] = useState([])
+  const [blocksEn, setBlocksEn] = useState([])
   const [saving, setSaving] = useState(false)
   const [slugEdited, setSlugEdited] = useState(false)
 
@@ -57,13 +58,15 @@ export default function ArticleForm() {
         setSlugEdited(true)
         try {
           const parsed = JSON.parse(a.contenu)
-          if (Array.isArray(parsed)) {
-            setBlocks(parsed)
-            return
-          }
-        } catch {}
-        if (a.contenu) {
-          setBlocks([{ id: 'legacy', type: 'paragraph', content: a.contenu }])
+          if (Array.isArray(parsed)) setBlocks(parsed)
+        } catch {
+          if (a.contenu) setBlocks([{ id: 'legacy', type: 'paragraph', content: a.contenu }])
+        }
+        try {
+          const parsedEn = JSON.parse(a.contenu_en)
+          if (Array.isArray(parsedEn)) setBlocksEn(parsedEn)
+        } catch {
+          if (a.contenu_en) setBlocksEn([{ id: 'legacy-en', type: 'paragraph', content: a.contenu_en }])
         }
       }).catch(() => toast.error('Article non trouvé'))
     }
@@ -76,6 +79,7 @@ export default function ArticleForm() {
         ...data,
         image: image || null,
         contenu: JSON.stringify(blocks),
+        contenu_en: JSON.stringify(blocksEn),
         featured: data.featured === true || data.featured === 'true',
         publie: data.publie !== false && data.publie !== 'false',
       }
@@ -178,13 +182,28 @@ export default function ArticleForm() {
           <ImageUpload value={image} onChange={setImage} label="" />
         </div>
 
-        {/* Contenu */}
+        {/* Contenu FR */}
         <div className="card p-5">
           <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-4">
-            <h2 className="text-sm font-semibold text-gray-700">Contenu de l'article</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-sm font-semibold text-gray-700">Contenu de l'article</h2>
+              <span className="text-[10px] font-bold tracking-widest uppercase text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full">FR</span>
+            </div>
             <span className="text-xs text-gray-400">{blocks.length} bloc{blocks.length > 1 ? 's' : ''}</span>
           </div>
           <BlockEditor value={blocks} onChange={setBlocks} />
+        </div>
+
+        {/* Contenu EN */}
+        <div className="card p-5">
+          <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-4">
+            <div className="flex items-center gap-2">
+              <h2 className="text-sm font-semibold text-gray-700">Article content</h2>
+              <span className="text-[10px] font-bold tracking-widest uppercase text-amber-600 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-full">EN</span>
+            </div>
+            <span className="text-xs text-gray-400">{blocksEn.length} block{blocksEn.length > 1 ? 's' : ''}</span>
+          </div>
+          <BlockEditor value={blocksEn} onChange={setBlocksEn} />
         </div>
 
         <div className="flex gap-3 pb-8">

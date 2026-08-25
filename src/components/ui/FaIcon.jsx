@@ -4,7 +4,7 @@ import {
   Mountain, Ship, Gavel, Landmark, Scale, RefreshCw, Lightbulb,
   HeartHandshake, Globe, GraduationCap, Coins, MapPin, Mail,
   Phone, Users, Star, Newspaper, Rocket, Leaf, BarChart3,
-  Award, Trophy, Home, Package,
+  Award, Trophy, Home, Package, Calendar, Paperclip, CircleCheck, ArrowRight,
 } from 'lucide-react'
 
 const ICON_MAP = {
@@ -45,6 +45,10 @@ const ICON_MAP = {
   trophy:           Trophy,
   house:            Home,
   'box-open':       Package,
+  calendar:         Calendar,
+  paperclip:        Paperclip,
+  'check-circle':   CircleCheck,
+  'arrow-right':    ArrowRight,
 }
 
 export const ICON_LIST = Object.keys(ICON_MAP)

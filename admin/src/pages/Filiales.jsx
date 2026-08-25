@@ -62,9 +62,19 @@ export default function Filiales() {
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
                     {f.logo
-                      ? <img src={resolveUrl(f.logo)} alt="" className="w-8 h-8 rounded object-contain border border-gray-100" />
-                      : <div className="w-8 h-8 rounded bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-xs flex-shrink-0">{f.sigle?.slice(0,2)}</div>
-                    }
+                      ? <img
+                          src={resolveUrl(f.logo)}
+                          alt=""
+                          className="w-8 h-8 rounded object-contain border border-gray-100"
+                          onError={e => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'flex' }}
+                        />
+                      : null}
+                    <div
+                      className="w-8 h-8 rounded bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-xs flex-shrink-0"
+                      style={{ display: f.logo ? 'none' : 'flex' }}
+                    >
+                      {f.sigle?.slice(0,2)}
+                    </div>
                     <div>
                       <div className="font-medium text-gray-900">{f.nom}</div>
                       <div className="text-xs text-gray-400">{f.sigle}</div>

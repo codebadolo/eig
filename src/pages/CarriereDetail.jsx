@@ -2,10 +2,14 @@ import { useParams, Link } from 'react-router-dom'
 import { useState } from 'react'
 import ScrollReveal from '../components/ui/ScrollReveal'
 import CallToAction from '../components/sections/CallToAction'
+import Seo from '../components/Seo'
+import PageSkeleton from '../components/ui/PageSkeleton'
 import { useApi } from '../hooks/useApi'
 import PageHero from '../components/ui/PageHero'
 import { useLang } from '../contexts/LangContext'
 import { useResponsive } from '../hooks/useResponsive'
+import { isOffreClosed, formatDeadline } from '../lib/offreStatus'
+import FaIcon from '../components/ui/FaIcon'
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api'
 
@@ -15,7 +19,7 @@ function BulletList({ text, color = 'var(--teal)' }) {
     <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
       {text.split('\n').filter(Boolean).map((line, i) => (
         <li key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', fontSize: 15, color: 'var(--gray-mid)', lineHeight: 1.6 }}>
-          <span style={{ color, fontWeight: 700, flexShrink: 0, marginTop: 2 }}>→</span>
+          <FaIcon name="arrow-right" size={15} style={{ color, flexShrink: 0, marginTop: 3 }} />
           {line}
         </li>
       ))}
@@ -23,16 +27,19 @@ function BulletList({ text, color = 'var(--teal)' }) {
   )
 }
 
-function InfoBadge({ label, value, accent }) {
+function InfoBadge({ label, value, icon, accent }) {
   return (
     <div style={{ background: accent ? 'var(--gold-pale)' : 'var(--ivory)', padding: '16px 20px', borderRadius: 6, border: `1px solid ${accent ? 'rgba(184,146,42,0.25)' : 'var(--gray-light)'}` }}>
       <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: accent ? 'var(--gold)' : 'var(--gray-mid)', marginBottom: 4 }}>{label}</div>
-      <div style={{ fontWeight: 600, color: accent ? 'var(--teal-dark)' : 'var(--black)', fontSize: 14 }}>{value}</div>
+      <div style={{ fontWeight: 600, color: accent ? 'var(--teal-dark)' : 'var(--black)', fontSize: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
+        {icon && <FaIcon name={icon} size={14} />}
+        {value}
+      </div>
     </div>
   )
 }
 
-function CandidatureForm({ offre, t }) {
+function CandidatureForm({ offre, t, pick }) {
   const { isMobile } = useResponsive()
   const [form, setForm] = useState({ nom: '', prenom: '', email: '', telephone: '', lettre: '' })
   const [cv, setCv] = useState(null)
@@ -97,12 +104,14 @@ function CandidatureForm({ offre, t }) {
 
   if (sent) return (
     <div style={{ background: 'var(--ivory)', border: '1px solid rgba(16,185,129,0.3)', borderRadius: 8, padding: '40px 32px', textAlign: 'center' }}>
-      <div style={{ fontSize: 48, marginBottom: 16 }}>✓</div>
+      <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'center' }}>
+        <FaIcon name="check-circle" size={48} style={{ color: '#10B981' }} />
+      </div>
       <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, color: 'var(--teal-dark)', marginBottom: 10 }}>
         {t('careers.sentTitle')}
       </div>
       <p style={{ fontSize: 15, color: 'var(--gray-mid)', lineHeight: 1.7 }}>
-        {t('careers.sentText').replace('{name}', form.prenom).replace('{poste}', offre.titre)}
+        {t('careers.sentText').replace('{name}', form.prenom).replace('{poste}', pick(offre, 'titre'))}
       </p>
     </div>
   )
@@ -153,9 +162,10 @@ function CandidatureForm({ offre, t }) {
               background: cv ? 'rgba(26,107,122,0.04)' : 'white', transition: 'all 0.2s',
             }}>
               {cv ? (
-                <span style={{ fontSize: 13, color: 'var(--teal)', fontWeight: 600 }}>
-                  📎 {cv.name}
-                  <span style={{ color: 'var(--gray-mid)', fontWeight: 400, marginLeft: 8 }}>
+                <span style={{ fontSize: 13, color: 'var(--teal)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  <FaIcon name="paperclip" size={14} />
+                  {cv.name}
+                  <span style={{ color: 'var(--gray-mid)', fontWeight: 400, marginLeft: 2 }}>
                     ({(cv.size / 1024 / 1024).toFixed(1)} Mo), cliquer pour changer
                   </span>
                 </span>
@@ -178,11 +188,20 @@ function CandidatureForm({ offre, t }) {
             onBlur={e => e.target.style.borderColor = 'var(--gray-light)'} />
         </div>
 
+
+
         {error && (
           <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: 6, padding: '12px 16px', fontSize: 14, color: '#DC2626' }}>
             {error}
           </div>
         )}
+
+        <p style={{ fontSize: 12.5, color: 'var(--gray-mid)', lineHeight: 1.6 }}>
+          Les données transmises via ce formulaire (identité, coordonnées, CV, lettre de motivation) sont utilisées exclusivement pour le traitement de votre candidature par Excellis Invest Group et ses filiales, et conservées le temps du processus de recrutement. Conformément à la réglementation applicable, vous disposez d'un droit d'accès, de rectification et de suppression de vos données — voir notre{' '}
+          <Link to="/confidentialite" style={{ color: 'var(--teal)', fontWeight: 600, textDecoration: 'underline' }}>
+            politique de confidentialité
+          </Link>.
+        </p>
 
         <button type="submit" disabled={sending} style={{
           background: sending ? '#9CA3AF' : 'var(--teal-dark)', color: 'white',
@@ -190,8 +209,10 @@ function CandidatureForm({ offre, t }) {
           fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase',
           cursor: sending ? 'not-allowed' : 'pointer', alignSelf: 'flex-start',
           transition: 'opacity 0.2s',
+          display: 'inline-flex', alignItems: 'center', gap: 8,
         }}>
           {sending ? t('common.sending') : t('careers.applyBtn')}
+          {!sending && <FaIcon name="arrow-right" size={14} />}
         </button>
 
         <div style={{
@@ -211,11 +232,12 @@ function CandidatureForm({ offre, t }) {
 
 export default function CarriereDetail() {
   const { id } = useParams()
-  const { t } = useLang()
+  const { t, pick, lang } = useLang()
   const { isMobile } = useResponsive()
   const { data: offre, loading } = useApi(`/carrieres/${id}`)
+  const closed = offre ? isOffreClosed(offre.dateExpiration) : false
 
-  if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>{t('common.loading')}</div>
+  if (loading) return <PageSkeleton />
 
   if (!offre) {
     return (
@@ -230,19 +252,27 @@ export default function CarriereDetail() {
 
   return (
     <>
+      <Seo
+        title={`${pick(offre, 'titre')} — ${offre.lieu}`}
+        description={`Offre d'emploi ${pick(offre, 'titre')} (${offre.type}) chez Excellis Invest Group, ${offre.lieu}.`}
+        path={`/carrieres/${id}`}
+      />
       <PageHero section="careers">
         <Link to="/carrieres" style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 20 }}>
           {t('careers.allOffers')}
         </Link>
         <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
+          {closed && (
+            <span style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.75)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '4px 12px', borderRadius: 3 }}>{t('careers.closedBadge')}</span>
+          )}
           <span style={{ background: 'var(--gold)', color: 'var(--teal-dark)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '4px 12px', borderRadius: 3 }}>{offre.type}</span>
-          <span style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.8)', fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 12px', borderRadius: 3 }}>{offre.departement}</span>
+          <span style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.8)', fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 12px', borderRadius: 3 }}>{pick(offre, 'departement')}</span>
         </div>
-        <h1 className="page-hero-title">{offre.titre}</h1>
-        <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', marginTop: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span>📍 {offre.lieu}</span>
-          {offre.salaire && <><span style={{ opacity: 0.3 }}>·</span><span>💼 {offre.salaire}</span></>}
-          {offre.dateExpiration && <><span style={{ opacity: 0.3 }}>·</span><span>📅 {t('careers.expires')} {offre.dateExpiration}</span></>}
+        <h1 className="page-hero-title">{pick(offre, 'titre')}</h1>
+        <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', marginTop: 8, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><FaIcon name="location-dot" size={13} /> {offre.lieu}</span>
+          {offre.salaire && <><span style={{ opacity: 0.3 }}>·</span><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><FaIcon name="briefcase" size={13} /> {offre.salaire}</span></>}
+          {offre.dateExpiration && <><span style={{ opacity: 0.3 }}>·</span><span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><FaIcon name="calendar" size={13} /> {t('careers.expires')} {formatDeadline(offre.dateExpiration, lang)}</span></>}
         </p>
       </PageHero>
 
@@ -253,32 +283,32 @@ export default function CarriereDetail() {
               <span className="section-label">{t('careers.post')}</span>
               <h2 className="section-title" style={{ fontSize: 'clamp(22px,2.8vw,34px)' }}>{t('careers.descTitle')}</h2>
               <div className="gold-rule" />
-              <p style={{ fontSize: 16, color: 'var(--gray-mid)', lineHeight: 1.85 }}>{offre.description}</p>
+              <p style={{ fontSize: 16, color: 'var(--gray-mid)', lineHeight: 1.85, textAlign: 'justify' }}>{pick(offre, 'description')}</p>
             </ScrollReveal>
 
-            {offre.missions && (
+            {pick(offre, 'missions') && (
               <ScrollReveal delay={0.08}>
                 <div style={{ borderLeft: '3px solid var(--teal)', paddingLeft: 24 }}>
                   <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, color: 'var(--dark)', marginBottom: 20 }}>{t('careers.missions')}</h3>
-                  <BulletList text={offre.missions} color="var(--teal)" />
+                  <BulletList text={pick(offre, 'missions')} color="var(--teal)" />
                 </div>
               </ScrollReveal>
             )}
 
-            {offre.profil && (
+            {pick(offre, 'profil') && (
               <ScrollReveal delay={0.12}>
                 <div style={{ borderLeft: '3px solid var(--gold)', paddingLeft: 24 }}>
                   <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, color: 'var(--dark)', marginBottom: 20 }}>{t('careers.profile')}</h3>
-                  <BulletList text={offre.profil} color="var(--gold)" />
+                  <BulletList text={pick(offre, 'profil')} color="var(--gold)" />
                 </div>
               </ScrollReveal>
             )}
 
-            {offre.avantages && (
+            {pick(offre, 'avantages') && (
               <ScrollReveal delay={0.16}>
                 <div style={{ background: 'var(--ivory)', borderRadius: 8, padding: '28px 32px', border: '1px solid var(--gray-light)' }}>
                   <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, color: 'var(--dark)', marginBottom: 20 }}>{t('careers.benefits')}</h3>
-                  <BulletList text={offre.avantages} color="var(--teal)" />
+                  <BulletList text={pick(offre, 'avantages')} color="var(--teal)" />
                 </div>
               </ScrollReveal>
             )}
@@ -287,10 +317,10 @@ export default function CarriereDetail() {
           <ScrollReveal delay={0.1}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, position: 'sticky', top: 100 }}>
               <InfoBadge label={t('careers.contract')} value={offre.type} />
-              <InfoBadge label={t('careers.department')} value={offre.departement} />
-              <InfoBadge label={t('careers.location')} value={`📍 ${offre.lieu}`} />
+              <InfoBadge label={t('careers.department')} value={pick(offre, 'departement')} />
+              <InfoBadge label={t('careers.location')} value={offre.lieu} icon="location-dot" />
               {offre.salaire && <InfoBadge label={t('careers.salary')} value={offre.salaire} accent />}
-              {offre.dateExpiration && <InfoBadge label={t('careers.deadline')} value={`📅 ${offre.dateExpiration}`} />}
+              {offre.dateExpiration && <InfoBadge label={t('careers.deadline')} value={formatDeadline(offre.dateExpiration, lang)} icon="calendar" />}
 
               <div style={{ marginTop: 8, padding: '16px 0', borderTop: '1px solid var(--gray-light)' }}>
                 <Link to="/carrieres" style={{ fontSize: 13, color: 'var(--teal)', textDecoration: 'none' }}>
@@ -305,7 +335,22 @@ export default function CarriereDetail() {
       <section style={{ background: 'var(--white)' }}>
         <div style={{ maxWidth: 820, margin: '0 auto' }}>
           <ScrollReveal>
-            <CandidatureForm offre={offre} t={t} />
+            {closed ? (
+              <div style={{ background: 'var(--ivory)', borderRadius: 8, padding: '40px 32px', border: '1px solid var(--gray-light)', textAlign: 'center' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, color: 'var(--dark)', marginBottom: 12 }}>
+                  {t('careers.closedBadge')}
+                </div>
+                <p style={{ fontSize: 15, color: 'var(--gray-mid)', lineHeight: 1.7, maxWidth: 480, margin: '0 auto 24px' }}>
+                  {t('careers.closedNotice')}
+                </p>
+                <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <Link to="/carrieres" className="btn-primary">{t('careers.allOffers')}</Link>
+                  <a href="mailto:spontanees@excellis-investgroup.com" className="btn-teal">{t('careers.spontaneous')} <FaIcon name="arrow-right" size={16} /></a>
+                </div>
+              </div>
+            ) : (
+              <CandidatureForm offre={offre} t={t} pick={pick} />
+            )}
           </ScrollReveal>
         </div>
       </section>

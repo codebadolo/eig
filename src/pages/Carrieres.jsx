@@ -1,17 +1,20 @@
 import { Link } from 'react-router-dom'
 import ScrollReveal from '../components/ui/ScrollReveal'
 import CallToAction from '../components/sections/CallToAction'
+import Seo from '../components/Seo'
 import { useApi } from '../hooks/useApi'
 import FaIcon from '../components/ui/FaIcon'
 import PageHero from '../components/ui/PageHero'
 import { useLang } from '../contexts/LangContext'
 import { useResponsive } from '../hooks/useResponsive'
+import { isOffreClosed, formatDeadline } from '../lib/offreStatus'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
 export default function Carrieres() {
-  const { t, pick } = useLang()
+  const { t, pick, lang } = useLang()
   const { isMobile } = useResponsive()
+  const { data: company } = useApi('/company')
   const { data: offres = [], loading } = useApi('/carrieres?actif=true')
   const { data: ambianceImgs = [] } = useApi('/images?section=careers-ambiance&actif=true')
 
@@ -19,11 +22,16 @@ export default function Carrieres() {
 
   return (
     <>
+      <Seo
+        title="Carrières — Rejoignez Excellis Invest Group"
+        description="Découvrez les offres d'emploi et de stage du groupe Excellis Invest Group et de ses filiales au Burkina Faso et en Côte d'Ivoire."
+        path="/carrieres"
+      />
       <PageHero
         section="careers"
         label={t('careers.label')}
         title={<>{t('careers.title1')}<br /><span>{t('careers.title2')}</span></>}
-        subtitle={t('careers.sub')}
+        subtitle={pick(company, 'sousTitreCarrieres') || t('careers.sub')}
       />
 
       {ambianceImgs.length > 0 && (
@@ -33,6 +41,7 @@ export default function Carrieres() {
               <img
                 src={`${API_URL}${img.url}`}
                 alt={img.alt || img.titre || 'Carrières Excellis Invest Group'}
+                loading="lazy"
                 style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
               />
             </div>
@@ -49,7 +58,7 @@ export default function Carrieres() {
             </h2>
             <div className="gold-rule" />
             <p className="section-lead">{t('careers.whyText')}</p>
-            <a href="mailto:spontanees@excellis-investgroup.com" className="btn-primary">{t('careers.spontaneous')}</a>
+            <a href="mailto:spontanees@excellis-investgroup.com" className="btn-primary">{t('careers.spontaneous')} <FaIcon name="arrow-right" size={16} /></a>
           </ScrollReveal>
 
           <ScrollReveal delay={0.15}>
@@ -87,30 +96,34 @@ export default function Carrieres() {
         )}
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {offres.map((o, i) => (
-            <ScrollReveal key={o.id} delay={i * 0.06}>
-              <Link to={`/carrieres/${o.id}`} style={{ textDecoration: 'none' }}>
-                <div className="offre-card">
-                  <div>
-                    <div className="offre-title">{pick(o, 'titre')}</div>
-                    <div className="offre-meta">
-                      <span className="offre-tag">{pick(o, 'departement')}</span>
-                      <span className="offre-tag gold">{o.type}</span>
-                      <span style={{ fontSize: 12, color: 'var(--gray-mid)', display: 'flex', alignItems: 'center', gap: 4 }}>
-                        <FaIcon name="location-dot" size={11} /> {o.lieu}
-                      </span>
-                      {o.dateExpiration && (
+          {offres.map((o, i) => {
+            const closed = isOffreClosed(o.dateExpiration)
+            return (
+              <ScrollReveal key={o.id} delay={i * 0.06}>
+                <Link to={`/carrieres/${o.id}`} style={{ textDecoration: 'none' }}>
+                  <div className={`offre-card${closed ? ' closed' : ''}`}>
+                    <div>
+                      <div className="offre-title">{pick(o, 'titre')}</div>
+                      <div className="offre-meta">
+                        {closed && <span className="offre-tag closed">{t('careers.closedBadge')}</span>}
+                        <span className="offre-tag">{pick(o, 'departement')}</span>
+                        <span className="offre-tag gold">{o.type}</span>
                         <span style={{ fontSize: 12, color: 'var(--gray-mid)', display: 'flex', alignItems: 'center', gap: 4 }}>
-                          <FaIcon name="calendar" size={11} /> {o.dateExpiration}
+                          <FaIcon name="location-dot" size={11} /> {o.lieu}
                         </span>
-                      )}
+                        {o.dateExpiration && (
+                          <span style={{ fontSize: 12, color: 'var(--gray-mid)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                            <FaIcon name="calendar" size={11} /> {formatDeadline(o.dateExpiration, lang)}
+                          </span>
+                        )}
+                      </div>
                     </div>
+                    <FaIcon name="arrow-right" size={22} style={{ color: 'var(--gray-light)', flexShrink: 0 }} />
                   </div>
-                  <span style={{ fontSize: 22, color: 'var(--gray-light)', flexShrink: 0 }}>→</span>
-                </div>
-              </Link>
-            </ScrollReveal>
-          ))}
+                </Link>
+              </ScrollReveal>
+            )
+          })}
         </div>
 
         <ScrollReveal>
@@ -123,7 +136,7 @@ export default function Carrieres() {
                 {t('careers.noPostText')}
               </p>
             </div>
-            <a href="mailto:spontanees@excellis-investgroup.com" className="btn-primary">{t('careers.spontaneous')}</a>
+            <a href="mailto:spontanees@excellis-investgroup.com" className="btn-primary">{t('careers.spontaneous')} <FaIcon name="arrow-right" size={16} /></a>
           </div>
         </ScrollReveal>
       </section>

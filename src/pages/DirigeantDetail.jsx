@@ -1,10 +1,12 @@
 import { useParams, Link } from 'react-router-dom'
 import ScrollReveal from '../components/ui/ScrollReveal'
 import CallToAction from '../components/sections/CallToAction'
+import PageSkeleton from '../components/ui/PageSkeleton'
 import { useApi } from '../hooks/useApi'
 import PageHero from '../components/ui/PageHero'
 import { useLang } from '../contexts/LangContext'
 import { useResponsive } from '../hooks/useResponsive'
+import SocialIcon from '../components/ui/SocialIcon'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
@@ -44,7 +46,7 @@ export default function DirigeantDetail() {
   const { data: dirigeant, loading } = useApi(`/dirigeants/${id}`)
   const { data: allDirigeants = [] } = useApi('/dirigeants')
 
-  if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>{t('common.loading')}</div>
+  if (loading) return <PageSkeleton />
 
   if (!dirigeant) {
     return (
@@ -76,7 +78,7 @@ export default function DirigeantDetail() {
             fontFamily: 'var(--font-num)', fontSize: 28, color: 'var(--gold-light)',
           }}>
             {dirigeant.photo
-              ? <img src={`${API_URL}${dirigeant.photo}`} alt={dirigeant.nom} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              ? <img src={`${API_URL}${dirigeant.photo}`} alt={dirigeant.nom} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               : initials
             }
           </div>
@@ -85,7 +87,7 @@ export default function DirigeantDetail() {
             <span style={{ fontSize: 13, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold-light)' }}>{dirigeant.role}</span>
             {dirigeant.linkedin && (
               <a href={dirigeant.linkedin} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10, color: 'rgba(255,255,255,0.55)', fontSize: 13, textDecoration: 'none' }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+                <SocialIcon network="linkedin" size={14} />
                 LinkedIn
               </a>
             )}
@@ -129,7 +131,7 @@ export default function DirigeantDetail() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, position: 'sticky', top: 100 }}>
               {dirigeant.photo ? (
                 <div style={{ borderRadius: 8, overflow: 'hidden', aspectRatio: '3/4', background: 'var(--ivory)' }}>
-                  <img src={`${API_URL}${dirigeant.photo}`} alt={dirigeant.nom} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={`${API_URL}${dirigeant.photo}`} alt={dirigeant.nom} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
               ) : (
                 <div style={{ borderRadius: 8, background: 'var(--teal-dark)', aspectRatio: '3/4', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-num)', fontSize: 64, color: 'var(--gold-light)' }}>
@@ -144,7 +146,7 @@ export default function DirigeantDetail() {
 
               {dirigeant.linkedin && (
                 <a href={dirigeant.linkedin} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#0a66c2', color: 'white', padding: '12px 20px', borderRadius: 6, textDecoration: 'none', fontSize: 14, fontWeight: 500, justifyContent: 'center' }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+                  <SocialIcon network="linkedin" size={16} />
                   {t('gouvernance.linkedinBtn')}
                 </a>
               )}
@@ -171,7 +173,7 @@ export default function DirigeantDetail() {
                         fontFamily: 'var(--font-num)', fontSize: 18, color: 'var(--gold-light)',
                       }}>
                         {d.photo
-                          ? <img src={`${API_URL}${d.photo}`} alt={d.nom} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          ? <img src={`${API_URL}${d.photo}`} alt={d.nom} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                           : d.nom.split(' ').map(w => w[0]).join('').slice(0, 2)
                         }
                       </div>

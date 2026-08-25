@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useLang } from '../../contexts/LangContext'
 import { useApi } from '../../hooks/useApi'
 import ScrollReveal from '../ui/ScrollReveal'
+import FaIcon from '../ui/FaIcon'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
@@ -9,6 +10,8 @@ export default function AboutGroup({ company }) {
   const { t, pick } = useLang()
   const mission = pick(company, 'mission') || company?.mission || t('sections.about.mission')
   const vision = pick(company, 'vision') || company?.vision || t('sections.about.vision')
+  const modele = pick(company, 'modele') || company?.modele || t('sections.about.modeleText')
+  const ambition = pick(company, 'ambition') || t('sections.about.ambitionText')
   const description = pick(company, 'descriptionCourte') || company?.descriptionCourte || ''
 
   const { data: sectionImgs = [] } = useApi('/images?section=home-about&actif=true')
@@ -24,7 +27,7 @@ export default function AboutGroup({ company }) {
       <div className="groupe-visual" aria-hidden="true">
         <div className="groupe-img-main">
           {mainImg ? (
-            <img src={mainImg} alt="Excellis Invest Group" className="groupe-img-main-photo" />
+            <img src={mainImg} alt="Excellis Invest Group" loading="lazy" className="groupe-img-main-photo" />
           ) : (
             <span className="groupe-img-main-text">Excellis Invest Group</span>
           )}
@@ -33,7 +36,7 @@ export default function AboutGroup({ company }) {
           <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
             {extraImgs.map(img => (
               <div key={img.id} style={{ flex: 1, aspectRatio: '4/3', borderRadius: 4, overflow: 'hidden' }}>
-                <img src={`${API_URL}${img.url}`} alt={img.alt || img.titre || ''} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src={`${API_URL}${img.url}`} alt={img.alt || img.titre || ''} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
             ))}
           </div>
@@ -41,7 +44,7 @@ export default function AboutGroup({ company }) {
 
         <div className="groupe-img-accent">
           <span className="groupe-img-accent-num">+700</span>
-          <span className="groupe-img-accent-label">Collaborateurs<br />sur le périmètre africain</span>
+          <span className="groupe-img-accent-label">{t('groupe.collaborateursLabel')}<br />{t('groupe.collaborateursScope')}</span>
         </div>
       </div>
 
@@ -64,17 +67,17 @@ export default function AboutGroup({ company }) {
           </div>
           <div className="pillar">
             <div className="pillar-title">{t('sections.about.modele')}</div>
-            <div className="pillar-text">{t('sections.about.modeleText')}</div>
+            <div className="pillar-text">{modele}</div>
           </div>
           <div className="pillar">
             <div className="pillar-title">{t('sections.about.ambition')}</div>
-            <div className="pillar-text">{t('sections.about.ambitionText')}</div>
+            <div className="pillar-text">{ambition}</div>
           </div>
         </div>
 
         <Link to="/le-groupe" className="btn-primary">
           {t('sections.about.link')}
-          <span className="btn-arrow">→</span>
+          <FaIcon name="arrow-right" size={16} className="btn-arrow" />
         </Link>
       </ScrollReveal>
     </section>

@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom'
 import ScrollReveal from '../ui/ScrollReveal'
 import { useLang } from '../../contexts/LangContext'
+import { formatFrenchDate, parseFrenchDate } from '../../lib/offreStatus'
+import FaIcon from '../ui/FaIcon'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
 export default function News({ articles = [] }) {
-  const { t, pick } = useLang()
-  const topArticles = articles.slice(0, 3)
+  const { t, pick, lang } = useLang()
+  const topArticles = [...articles]
+    .sort((a, b) => (parseFrenchDate(b.date)?.getTime() ?? 0) - (parseFrenchDate(a.date)?.getTime() ?? 0))
+    .slice(0, 3)
 
   if (!topArticles.length) return null
 
@@ -19,7 +23,7 @@ export default function News({ articles = [] }) {
         </div>
         <Link to="/actualites" className="btn-primary" style={{ flexShrink: 0 }}>
           {t('sections.news.all')}
-          <span className="btn-arrow">→</span>
+          <FaIcon name="arrow-right" size={16} className="btn-arrow" />
         </Link>
       </div>
 
@@ -28,13 +32,13 @@ export default function News({ articles = [] }) {
           <Link key={article.slug || article.id} to={`/actualites/${article.slug}`} className="news-card">
             <div className="news-card-img" style={{ background: article.couleur }}>
               {article.image
-                ? <img src={`${API_URL}${article.image}`} alt={pick(article, 'titre')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ? <img src={`${API_URL}${article.image}`} alt={pick(article, 'titre')} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 : <span className="news-card-img-text">Excellis Invest Group</span>
               }
               <span className="news-cat">{article.categorie}</span>
             </div>
             <div className="news-content">
-              <div className="news-date">{article.date}</div>
+              <div className="news-date">{formatFrenchDate(article.date, lang)}</div>
               <h3 className="news-title">{pick(article, 'titre')}</h3>
               {article.featured && (
                 <p className="news-excerpt">{pick(article, 'extrait')}</p>

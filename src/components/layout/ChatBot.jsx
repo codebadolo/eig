@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useApi } from '../../hooks/useApi'
 import { useLang } from '../../contexts/LangContext'
+import FaIcon from '../ui/FaIcon'
 
 function normalize(str) {
   return str.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
@@ -117,7 +118,7 @@ const RULES_FR = [
   {
     test: /bloomfield|notation|rating|note|evaluation|credit.rating/,
     reply: () => ({
-      text: `Excellis Invest Group a obtenu une notation A / A2 de Bloomfield Investment Corporation. Cette notation traduit la solidité financière et la bonne gouvernance du groupe.`,
+      text: `Excellis Invest Group a obtenu une notation A− (long terme) / A2 (court terme) de Bloomfield Investment Corporation. Cette notation traduit la solidité financière et la bonne gouvernance du groupe.`,
       links: [{ label: 'Gouvernance', to: '/gouvernance' }],
     }),
   },
@@ -290,7 +291,7 @@ const RULES_EN = [
   {
     test: /bloomfield|rating|note|evaluat|credit/,
     reply: () => ({
-      text: `Excellis Invest Group has received an A / A2 rating from Bloomfield Investment Corporation, reflecting its financial strength and sound governance.`,
+      text: `Excellis Invest Group has received an A− long-term / A2 short-term rating from Bloomfield Investment Corporation, reflecting its financial strength and sound governance.`,
       links: [{ label: 'Governance', to: '/gouvernance' }],
     }),
   },
@@ -465,8 +466,9 @@ export default function ChatBot() {
                     to={l.to}
                     onClick={() => setOpen(false)}
                     className="chatbot-link"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}
                   >
-                    → {l.label}
+                    <FaIcon name="arrow-right" size={12} /> {l.label}
                   </Link>
                 ))}
               </div>

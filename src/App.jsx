@@ -1,4 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { loadApi } from './hooks/useApi'
+import AppShellLoader from './components/AppShellLoader'
+import ComingSoon from './pages/ComingSoon'
 import Layout from './components/layout/Layout'
 import Home from './pages/Home'
 import LeGroupe from './pages/LeGroupe'
@@ -12,10 +16,42 @@ import ArticleDetail from './pages/ArticleDetail'
 import Carrieres from './pages/Carrieres'
 import CarriereDetail from './pages/CarriereDetail'
 import Contact from './pages/Contact'
+import MentionsLegales from './pages/MentionsLegales'
+import Confidentialite from './pages/Confidentialite'
+import Cookies from './pages/Cookies'
 import NotFound from './pages/NotFound'
 import Unsubscribe from './pages/Unsubscribe'
 
 function App() {
+  const [comingSoon, setComingSoon] = useState(null) // null = not loaded yet
+
+  useEffect(() => {
+    loadApi('/company')
+      .then((data) => {
+        const launchAt = data.comingSoonEnabled && data.comingSoonLaunchAt
+          ? new Date(data.comingSoonLaunchAt)
+          : null
+        setComingSoon(
+          launchAt && launchAt.getTime() > Date.now()
+            ? { launchAt, contactEmail: data.email }
+            : false
+        )
+      })
+      // Fail open: if the API is unreachable, show the real site rather than block it.
+      .catch(() => setComingSoon(false))
+  }, [])
+
+  if (comingSoon === null) return <AppShellLoader />
+  if (comingSoon) {
+    return (
+      <ComingSoon
+        launchAt={comingSoon.launchAt}
+        contactEmail={comingSoon.contactEmail}
+        onDone={() => setComingSoon(false)}
+      />
+    )
+  }
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
@@ -31,6 +67,9 @@ function App() {
         <Route path="carrieres" element={<Carrieres />} />
         <Route path="carrieres/:id" element={<CarriereDetail />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="mentions-legales" element={<MentionsLegales />} />
+        <Route path="confidentialite" element={<Confidentialite />} />
+        <Route path="cookies" element={<Cookies />} />
         <Route path="*" element={<NotFound />} />
       </Route>
       <Route path="/unsubscribe" element={<Unsubscribe />} />

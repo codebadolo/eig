@@ -19,7 +19,13 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    // Restreint aux origines légitimes : empêche un déploiement mal configuré
+    // sur un autre domaine (ex. jofedigital.com) d'appeler cette API en direct
+    // depuis un navigateur, même si son build embarque cette URL par erreur.
+    'allowed_origins' => [
+        'https://excellis-investgroup.com',
+        'https://www.excellis-investgroup.com',
+    ],
 
     'allowed_origins_patterns' => [],
 

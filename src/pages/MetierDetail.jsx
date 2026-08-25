@@ -2,6 +2,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import ScrollReveal from '../components/ui/ScrollReveal'
 import FilialeLogo from '../components/ui/FilialeLogo'
 import CallToAction from '../components/sections/CallToAction'
+import Seo from '../components/Seo'
+import PageSkeleton from '../components/ui/PageSkeleton'
 import { useApi } from '../hooks/useApi'
 import FaIcon from '../components/ui/FaIcon'
 import PageHero from '../components/ui/PageHero'
@@ -10,13 +12,21 @@ import { useResponsive } from '../hooks/useResponsive'
 
 export default function MetierDetail() {
   const { slug } = useParams()
-  const { t, pick } = useLang()
+  const { t, pick, lang } = useLang()
   const { isMobile } = useResponsive()
   const navigate = useNavigate()
   const { data: metier, loading: loadingMetier } = useApi(`/metiers/${slug}`)
+  const { data: allMetiers = [] } = useApi('/metiers?actif=true')
+  const metierMap = Object.fromEntries(allMetiers.map(m => [m.slug, m]))
+  const tSecteur = (f) => {
+    const fSlug = f?.secteur_slug || f?.secteurSlug || ''
+    if (fSlug && metierMap[fSlug]) return pick(metierMap[fSlug], 'titre')
+    if (lang === 'en' && f?.secteur_en) return f.secteur_en
+    return f?.secteur || ''
+  }
   const { data: allFiliales = [] } = useApi('/filiales?actif=true')
 
-  if (loadingMetier) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>{t('common.loading')}</div>
+  if (loadingMetier) return <PageSkeleton />
 
   if (!metier) {
     return (
@@ -34,6 +44,11 @@ export default function MetierDetail() {
 
   return (
     <>
+      <Seo
+        title={pick(metier, 'titre')}
+        description={pick(metier, 'description') || `Découvrez ${pick(metier, 'titre')}, secteur stratégique d'investissement d'Excellis Invest Group.`}
+        path={`/nos-metiers/${metier.slug}`}
+      />
       <PageHero
         section={`metier-${metier.slug}`}
         fallbackStyle={{ background: metier.couleur }}
@@ -84,7 +99,7 @@ export default function MetierDetail() {
                   <FilialeLogo id={f.id} sigle={f.sigle} size={56} logo={f.logo} />
                   <div style={{ flex: 1 }}>
                     <div className="filiale-name">{f.nom}</div>
-                    <div className="filiale-sector">{f.secteur}</div>
+                    <div className="filiale-sector">{tSecteur(f)}</div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 2 }}>
                       <div className="filiale-country"><FaIcon name="location-dot" size={12} /> {f.pays}</div>
                       {f.website && (
@@ -100,12 +115,13 @@ export default function MetierDetail() {
                       )}
                     </div>
                   </div>
-                  <span style={{ color: 'var(--gray-light)', fontSize: 18 }}>→</span>
+                  <FaIcon name="arrow-right" size={18} style={{ color: 'var(--gray-light)' }} />
                 </div>
               ))}
             </div>
             <Link to="/nos-filiales" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 24, color: 'var(--teal)', fontSize: 13, fontWeight: 600, letterSpacing: '0.1em', textDecoration: 'none', textTransform: 'uppercase' }}>
               {t('metiers.seeAllFiliales')}
+              <FaIcon name="arrow-right" size={13} />
             </Link>
           </ScrollReveal>
         </div>

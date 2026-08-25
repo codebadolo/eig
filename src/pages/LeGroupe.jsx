@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import ScrollReveal from '../components/ui/ScrollReveal'
 import CallToAction from '../components/sections/CallToAction'
+import PageSkeleton from '../components/ui/PageSkeleton'
+import Seo from '../components/Seo'
 import { useApi } from '../hooks/useApi'
 import FaIcon from '../components/ui/FaIcon'
 import PageHero from '../components/ui/PageHero'
@@ -10,22 +12,28 @@ import { useResponsive } from '../hooks/useResponsive'
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
 export default function LeGroupe() {
-  const { t, pick } = useLang()
+  const { t, pick, lang } = useLang()
   const { isMobile, isTablet } = useResponsive()
   const { data: company, loading } = useApi('/company')
+  const modele = (lang === 'en' ? company?.modele_en : company?.modele) || company?.modele || t('groupe.modelDesc')
   const { data: galleryImgs = [] } = useApi('/images?section=about-gallery&actif=true')
 
-  if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>{t('common.loading')}</div>
+  if (loading) return <PageSkeleton />
 
   const valeurs = company?.valeurs ?? []
 
   return (
     <>
+      <Seo
+        title="Le Groupe — Notre vision, notre modèle, nos valeurs"
+        description="Découvrez Excellis Invest Group : société anonyme de droit burkinabè fondée en 2019, sa mission, sa vision et son modèle de création de valeur en Afrique."
+        path="/le-groupe"
+      />
       <PageHero
         section="about"
         label={t('groupe.label')}
         title={<>{company?.nom ?? 'Excellis Invest Group'}<br /><span>{t('groupe.heroTitleSpan')}</span></>}
-        subtitle={pick(company, 'descriptionCourte') || t('groupe.heroSub')}
+        subtitle={pick(company, 'sousTitreGroupe') || pick(company, 'descriptionCourte') || t('groupe.heroSub')}
       />
 
       <section style={{ background: 'var(--white)' }}>
@@ -83,7 +91,7 @@ export default function LeGroupe() {
               <span className="section-label" style={{ color: 'var(--gold)' }}>{t('groupe.modelLabel')}</span>
               <div style={{ width: 32, height: 2, background: 'var(--gold)', margin: '16px 0 20px' }} />
               <p style={{ fontSize: 16, lineHeight: 1.8, color: 'var(--gray-mid)', textAlign: 'justify' }}>
-                {t('groupe.modelDesc')}
+                {modele}
               </p>
             </div>
           </ScrollReveal>
@@ -137,6 +145,7 @@ export default function LeGroupe() {
                 <img
                   src={`${API_URL}${img.url}`}
                   alt={img.alt || img.titre || 'Excellis Invest Group'}
+                  loading="lazy"
                   style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', minHeight: 160 }}
                 />
               </div>
@@ -151,7 +160,7 @@ export default function LeGroupe() {
             <span className="section-label">{t('groupe.modelLabel')}</span>
             <h2 className="section-title"><span>{t('groupe.modelTitle')}</span></h2>
             <div className="gold-rule" />
-            <p className="section-lead">{t('sections.about.modeleText')}</p>
+            <p className="section-lead">{modele}</p>
           </div>
         </ScrollReveal>
 
@@ -183,10 +192,10 @@ export default function LeGroupe() {
 
         <ScrollReveal delay={0.1}>
           <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-            <Link to="/nos-metiers" className="btn-primary">{t('groupe.btnMetiers')}</Link>
-            <Link to="/nos-filiales" className="btn-teal">{t('groupe.btnFiliales')}</Link>
+            <Link to="/nos-metiers" className="btn-primary">{t('groupe.btnMetiers')} <FaIcon name="arrow-right" size={16} /></Link>
+            <Link to="/nos-filiales" className="btn-teal">{t('groupe.btnFiliales')} <FaIcon name="arrow-right" size={16} /></Link>
             <Link to="/gouvernance" className="btn-secondary" style={{ color: 'var(--teal-dark)', borderColor: 'var(--teal-light)' }}>
-              {t('groupe.btnGouvernance')}
+              {t('groupe.btnGouvernance')} <FaIcon name="arrow-right" size={16} />
             </Link>
           </div>
         </ScrollReveal>

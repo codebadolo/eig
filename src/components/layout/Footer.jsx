@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useLang } from '../../contexts/LangContext'
 import { useApi } from '../../hooks/useApi'
+import SocialIcon from '../ui/SocialIcon'
 
 const DEFAULT_COLS = [
   {
     title: null,
     links: [
-      { label: null, href: '/le-groupe' },
-      { label: null, href: '/le-groupe' },
       { label: null, href: '/le-groupe' },
       { label: null, href: '/gouvernance' },
     ],
@@ -31,7 +30,7 @@ const DEFAULT_COLS = [
 
 const FALLBACK_COL_TITLES = ['footer.col1', 'footer.col2', 'footer.col3']
 const FALLBACK_LINKS = [
-  ['footer.links1.qui', 'footer.links1.vision', 'footer.links1.histoire', 'footer.links1.gouvernance'],
+  ['footer.links1.vision', 'footer.links1.gouvernance'],
   ['footer.links2.metiers', 'footer.links2.filiales'],
   ['footer.links3.actualites', 'footer.links3.carrieres', 'footer.links3.contact'],
 ]
@@ -46,25 +45,25 @@ function ColLink({ href, label }) {
 
 
 export default function Footer() {
-  const { t } = useLang()
+  const { t, pick } = useLang()
   const { data: company } = useApi('/company')
 
   const socials = [
-    company?.linkedin   && { href: company.linkedin,   label: 'LinkedIn',    icon: 'in' },
-    company?.facebook   && { href: company.facebook,   label: 'Facebook',    icon: 'f' },
-    company?.twitter    && { href: company.twitter,    label: 'X / Twitter', icon: '𝕏' },
-    company?.instagram  && { href: company.instagram,  label: 'Instagram',   icon: '◈' },
-    company?.youtube    && { href: company.youtube,    label: 'YouTube',     icon: '▶' },
+    company?.linkedin   && { href: company.linkedin,   label: 'LinkedIn',    network: 'linkedin' },
+    company?.facebook   && { href: company.facebook,   label: 'Facebook',    network: 'facebook' },
+    company?.twitter    && { href: company.twitter,    label: 'X / Twitter', network: 'twitter' },
+    company?.instagram  && { href: company.instagram,  label: 'Instagram',   network: 'instagram' },
+    company?.youtube    && { href: company.youtube,    label: 'YouTube',     network: 'youtube' },
   ].filter(Boolean)
 
   const cols = (company?.footerCols?.length === 3) ? company.footerCols : DEFAULT_COLS
 
-  const mentionsHref   = company?.footerMentions        || '/contact'
-  const privacyHref    = company?.footerConfidentialite || '/contact'
-  const cookiesHref    = company?.footerCookies         || '/contact'
-  const copyrightText  = company?.footerCopyright       || company?.nom || 'Excellis Invest Group'
-  const tagline        = company?.footerTagline         || company?.tagline || t('footer.tagline')
-  const desc           = company?.footerDesc            || t('footer.desc')
+  const mentionsHref = company?.footerMentions        || '/contact'
+  const privacyHref  = company?.footerConfidentialite || '/contact'
+  const cookiesHref  = company?.footerCookies         || '/contact'
+  const companyName  = pick(company, 'footerCopyright') || `${company?.nom || 'Excellis Invest Group'}. ${t('footer.rights')}`
+  const tagline      = pick(company, 'footerTagline') || pick(company, 'tagline') || t('footer.tagline')
+  const desc         = pick(company, 'footerDesc')    || t('footer.desc')
 
   return (
     <footer>
@@ -74,19 +73,14 @@ export default function Footer() {
           <div className="footer-brand-name">{company?.nom || 'Excellis Invest Group'}</div>
           <span className="footer-brand-tagline">{tagline}</span>
           <p className="footer-desc">{desc}</p>
-          {socials.length > 0 ? (
+          {socials.length > 0 && (
             <div className="footer-social">
               {socials.map(s => (
                 <a key={s.label} href={s.href} className="social-btn" title={s.label} aria-label={s.label}
                   target="_blank" rel="noopener noreferrer">
-                  {s.icon}
+                  <SocialIcon network={s.network} size={15} />
                 </a>
               ))}
-            </div>
-          ) : (
-            <div className="footer-social">
-              <a href="#" className="social-btn" title="LinkedIn" aria-label="LinkedIn">in</a>
-              <a href="#" className="social-btn" title="Facebook" aria-label="Facebook">f</a>
             </div>
           )}
         </div>
@@ -95,14 +89,14 @@ export default function Footer() {
         {cols.map((col, i) => (
           <div key={i}>
             <div className="footer-col-title">
-              {col.title || t(FALLBACK_COL_TITLES[i])}
+              {pick(col, 'title') || t(FALLBACK_COL_TITLES[i])}
             </div>
             <ul className="footer-links">
               {col.links.map((link, j) => (
                 <li key={j}>
                   <ColLink
                     href={link.href}
-                    label={link.label || t(FALLBACK_LINKS[i]?.[j] || '')}
+                    label={pick(link, 'label') || t(FALLBACK_LINKS[i]?.[j] || '')}
                   />
                 </li>
               ))}
@@ -112,7 +106,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} {copyrightText}. {t('footer.rights')}</span>
+        <span>© {new Date().getFullYear()} {companyName}</span>
         <div className="footer-legal">
           <ColLink href={mentionsHref} label={t('footer.legal')} />
           <ColLink href={privacyHref}  label={t('footer.privacy')} />

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useApi } from '../../hooks/useApi'
 import { useLang } from '../../contexts/LangContext'
+import FaIcon from '../ui/FaIcon'
 
 const API = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
@@ -31,7 +32,7 @@ export default function Hero({ company }) {
       <div className="hero-content">
         <div className="hero-badge">
           <span className="hero-badge-dot" />
-          <span>{t('hero.badge')}</span>
+          <span>{pick(company, 'heroBadge') || t('hero.badge')}</span>
         </div>
 
         <h1 className="hero-title">
@@ -41,7 +42,7 @@ export default function Hero({ company }) {
         </h1>
 
         <p className="hero-subtitle">
-          {pick(company, 'descriptionCourte') || pick(company, 'description') ||
+          {pick(company, 'heroSub') || pick(company, 'descriptionCourte') || pick(company, 'description') ||
             "Excellis Invest Group est une holding multisectorielle capitalisée à 20 milliards FCFA, développant ses activités dans plusieurs secteurs stratégiques en Afrique."}
         </p>
 
@@ -50,11 +51,7 @@ export default function Hero({ company }) {
         <div className="hero-actions">
           <Link to="/le-groupe" className="btn-primary">
             {t('hero.discover')}
-            <span className="btn-arrow">→</span>
-          </Link>
-          <Link to="/contact" className="btn-secondary">
-            {t('hero.investors')}
-            <span className="btn-arrow">→</span>
+            <FaIcon name="arrow-right" size={16} className="btn-arrow" />
           </Link>
         </div>
       </div>

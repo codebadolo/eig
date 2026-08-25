@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import CallToAction from '../components/sections/CallToAction'
+import Seo from '../components/Seo'
+import PageSkeleton from '../components/ui/PageSkeleton'
 import PageHero from '../components/ui/PageHero'
 import ScrollReveal from '../components/ui/ScrollReveal'
 import { useLang } from '../contexts/LangContext'
@@ -26,7 +28,7 @@ function FilialeLogoInline({ f, size = 80 }) {
 
   if (src) return (
     <div style={box}>
-      <img src={src} alt={f.sigle} style={{ width: '90%', height: '90%', objectFit: 'contain' }} />
+      <img src={src} alt={f.sigle} loading="lazy" style={{ width: '90%', height: '90%', objectFit: 'contain' }} />
     </div>
   )
 
@@ -38,14 +40,21 @@ function FilialeLogoInline({ f, size = 80 }) {
 }
 
 export default function NosFiliales() {
-  const { t, pick } = useLang()
+  const { t, pick, lang } = useLang()
+  const tSecteur = (obj) => {
+    const slug = obj?.secteur_slug || obj?.secteurSlug || ''
+    if (slug && metierMap[slug]) return pick(metierMap[slug], 'titre')
+    if (lang === 'en' && obj?.secteur_en) return obj.secteur_en
+    return obj?.secteur || ''
+  }
   const navigate = useNavigate()
+  const { data: company } = useApi('/company')
   const { data: filiales = [], loading } = useApi('/filiales?actif=true')
   const { data: metiers = [] } = useApi('/metiers?actif=true')
   const [secteurFilter, setSecteurFilter] = useState('tous')
   const [paysFilter, setPaysFilter] = useState('Tous')
 
-  if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>{t('common.loading')}</div>
+  if (loading) return <PageSkeleton />
 
   // Map slug → metier object for label lookup
   const metierMap = Object.fromEntries(metiers.map(m => [m.slug, m]))
@@ -68,11 +77,16 @@ export default function NosFiliales() {
 
   return (
     <>
+      <Seo
+        title="Nos filiales — Portefeuille d'entités panafricain"
+        description="Découvrez les filiales d'Excellis Invest Group réparties entre le Burkina Faso et la Côte d'Ivoire, actives dans l'assurance, l'énergie, la logistique, l'industrie et les services financiers."
+        path="/nos-filiales"
+      />
       <PageHero
         section="nos-filiales"
         label={t('filiales.label')}
-        title={<>{t('filiales.heroTitle1')} <span>{filiales.length} {t('filiales.heroTitleSpan')}</span> {t('filiales.heroTitle2')}</>}
-        subtitle={t('filiales.heroSub')}
+        title={<>{t('filiales.heroTitle1')} <span>{t('filiales.heroTitleSpan')}</span> {t('filiales.heroTitle2')}</>}
+        subtitle={pick(company, 'sousTitreFiliales') || t('filiales.heroSub')}
       />
 
       <section style={{ background: 'var(--ivory)' }}>
@@ -110,9 +124,7 @@ export default function NosFiliales() {
           </div>
         </ScrollReveal>
 
-        <div style={{ marginTop: 12, marginBottom: 32, fontSize: 13, color: 'var(--gray-mid)' }}>
-          {filtered.length} {filtered.length > 1 ? t('filiales.foundPlural') : t('filiales.foundSingular')}
-        </div>
+        <div style={{ marginTop: 12, marginBottom: 32 }} />
 
         <div className="filiales-page-grid">
           {filtered.map((f, i) => (
@@ -140,7 +152,7 @@ export default function NosFiliales() {
                   <FilialeLogoInline f={f} size={64} />
                   <div>
                     <div className="filiale-name">{f.nom}</div>
-                    <div className="filiale-sector">{pick(f, 'secteur')}</div>
+                    <div className="filiale-sector">{tSecteur(f)}</div>
                   </div>
                 </div>
                 <p className="filiale-desc">{pick(f, 'description')}</p>

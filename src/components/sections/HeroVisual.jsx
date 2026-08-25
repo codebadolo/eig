@@ -1,4 +1,5 @@
 import eigLogo from '../../assets/excellis-invest-group.png'
+import { useLang } from '../../contexts/LangContext'
 
 /* Approximate SVG positions for West Africa in the 280×340 viewBox:
    Burkina Faso (landlocked, center-west Africa) → cx=92, cy=118
@@ -23,6 +24,7 @@ const nodes = [
 ]
 
 export default function HeroVisual() {
+  const { t } = useLang()
   return (
     <div className="hero-visual" aria-hidden="true">
 
@@ -73,15 +75,15 @@ export default function HeroVisual() {
       {/* Floating stat badges */}
       <div className="hv-badge hv-badge-1">
         <span className="hv-badge-num">+700</span>
-        <span className="hv-badge-label">Collaborateurs</span>
+        <span className="hv-badge-label">{t('hero.statsCollaborateurs')}</span>
       </div>
       <div className="hv-badge hv-badge-2">
         <span className="hv-badge-num">17</span>
-        <span className="hv-badge-label">Filiales</span>
+        <span className="hv-badge-label">{t('hero.statsFiliales')}</span>
       </div>
       <div className="hv-badge hv-badge-3">
         <span className="hv-badge-num">9</span>
-        <span className="hv-badge-label">Secteurs</span>
+        <span className="hv-badge-label">{t('hero.statsSecteurs')}</span>
       </div>
 
     </div>

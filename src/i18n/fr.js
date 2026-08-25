@@ -10,6 +10,19 @@
 
 export const fr = {
 
+  // ── DISPONIBLE BIENTÔT ───────────────────────────────────────────
+  comingSoon: {
+    badge:    'Nouveau site en préparation',
+    title1:   'Disponible',
+    titleSpan:'bientôt',
+    subtitle: 'Notre nouveau site est en cours de finalisation. Rendez-vous très bientôt pour le découvrir.',
+    days:     'Jours',
+    hours:    'Heures',
+    minutes:  'Minutes',
+    seconds:  'Secondes',
+    contact:  'Nous contacter',
+  },
+
   // ── NAVIGATION ────────────────────────────────────────────────────
   nav: {
     groupe:      'Le Groupe',
@@ -24,13 +37,16 @@ export const fr = {
   // ── HERO — page d'accueil ─────────────────────────────────────────
   // Titre complet : "title1 / title2 / title3"
   hero: {
-    badge:     'Holding multisectorielle panafricaine',
-    title1:    'Catalyseur de croissance,',
-    title2:    'architecte de valeur durable',
-    title3:    'en Afrique.',
-    discover:  'Découvrir le Groupe',
-    investors: 'Espace Investisseurs',
-    scroll:    'Découvrir',
+    badge:               'Holding multisectorielle panafricaine',
+    title1:              'Catalyseur de croissance,',
+    title2:              'architecte de valeur durable',
+    title3:              'en Afrique.',
+    discover:            'Découvrir le Groupe',
+    investors:           'Espace Investisseurs',
+    scroll:              'Découvrir',
+    statsCollaborateurs: 'Collaborateurs',
+    statsFiliales:       'Filiales',
+    statsSecteurs:       'Secteurs',
   },
 
   // ── CALL TO ACTION — bloc répété en bas de chaque page ───────────
@@ -48,7 +64,7 @@ export const fr = {
     col1: 'Le Groupe',
     col2: 'Nos Activités',
     col3: 'Excellis Invest Group & Vous',
-    links1: { qui: 'Qui sommes-nous ?', vision: 'Mission & Modèle', histoire: 'Notre histoire', gouvernance: 'Gouvernance' },
+    links1: { vision: 'Mission & Modèle', gouvernance: 'Gouvernance' },
     links2: { metiers: 'Nos Métiers', filiales: 'Nos Filiales', finance: 'Services Financiers', assurance: 'Assurance', fintech: 'Fintech' },
     links3: { actualites: 'Actualités', carrieres: 'Carrières', contact: 'Contact', presse: 'Relations Presse', partenariats: 'Partenariats' },
     rights:         'Tous droits réservés.',
@@ -112,6 +128,7 @@ export const fr = {
     successBtn:         'Envoyer un autre message',
     adresse:            'Adresse',
     telephone:          'Téléphone',
+    viewMap:            'Voir sur Google Maps',
   },
 
   // ── PAGE CARRIÈRES ────────────────────────────────────────────────
@@ -120,13 +137,13 @@ export const fr = {
     label:                'Carrières',
     title1:               'Construisez votre avenir',
     title2:               'avec Excellis Invest Group',
-    sub:                  "Rejoignez un groupe panafricain en pleine croissance et contribuez à la transformation économique de l'Afrique de l'Ouest.",
+    sub:                  "Rejoignez un groupe panafricain en pleine croissance et contribuez à la transformation économique de l'Afrique.",
     why:                  'Pourquoi nous rejoindre',
     whyTitle1:            'Un groupe où',
     whyTitle2:            'vos talents',
     whyTitle3:            'créent de la valeur',
     whyText:              "Excellis Invest Group réunit des professionnels engagés, animés par la conviction que l'Afrique peut créer sa propre valeur avec ses propres talents.",
-    spontaneous:          'Candidature spontanée →',
+    spontaneous:          'Candidature spontanée',
     postsLabel:           'Postes ouverts',
     postsTitle1:          'Nos',
     postsTitle2:          "offres d'emploi",
@@ -146,9 +163,11 @@ export const fr = {
     profile:              'Profil recherché',
     benefits:             'Ce que nous offrons',
     expires:              'Expire le :',
+    closedBadge:          'Clôturé',
+    closedNotice:         'Les candidatures pour ce poste sont closes. Vous pouvez postuler à nos offres ouvertes ou nous envoyer une candidature spontanée.',
     applyTitle:           'Formulaire de candidature',
     applyLabel:           'Postuler',
-    applyBtn:             'Envoyer ma candidature →',
+    applyBtn:             'Envoyer ma candidature',
     cvLabel:              'CV (PDF, Word, max 5 Mo)',
     cvHint:               'Glissez votre CV ici ou',
     cvBrowse:             'parcourir',
@@ -172,28 +191,30 @@ export const fr = {
     whoSpan:        'référence',
     whoEnd:         "au cœur de l'Afrique",
     whoText:        "Fondée en 2019 et basée au Burkina Faso, Excellis Invest Group déploie un portefeuille de filiales sur le périmètre africain, avec +700 collaborateurs engagés dans 9 secteurs stratégiques.",
-    constituted:    'Fondée en 2019, SA de droit burkinabè',
-    rating:         '+700 Collaborateurs',
+    constituted:    'Année de création',
+    rating:              '+700 Collaborateurs',
+    collaborateursLabel: 'Collaborateurs',
+    collaborateursScope: 'sur le périmètre africain',
     purposeLabel:   "Raison d'être",
-    purposeTitle:   'Mission, Modèle & Valeurs',
+    purposeTitle:   'Mission, modèle et valeurs',
     mission:        'Mission',
     valuesTitle:    'Nos valeurs',
     modelLabel:     'Notre Modèle',
     modelTitle:     'Une philosophie de création de valeur cohérente',
-    modelDesc:      "Une holding pilotant un portefeuille de filiales opérationnel dans les secteurs clés de l'économie.",
-    btnMetiers:     'Nos métiers →',
-    btnFiliales:    'Nos filiales →',
-    btnGouvernance: 'Notre gouvernance →',
+    modelDesc:      'Une holding multisectorielle pilotant un portefeuille diversifié de filiales opérationnelles dans des secteurs clés de l\'économie.',
+    btnMetiers:     'Nos métiers',
+    btnFiliales:    'Nos filiales',
+    btnGouvernance: 'Notre gouvernance',
   },
 
   // ── PAGE NOS FILIALES ─────────────────────────────────────────────
   // Titre hero : "heroTitle1 [nombre] heroTitleSpan heroTitle2"
   filiales: {
     label:         'Nos Filiales',
-    heroTitle1:    'Un portefeuille de',
-    heroTitleSpan: 'entités',
+    heroTitle1:    'Un portefeuille diversifié',
+    heroTitleSpan: "d'entités",
     heroTitle2:    'opérationnelles',
-    heroSub:       "De Ouagadougou à Abidjan, nos filiales opèrent dans 9 secteurs stratégiques pour contribuer au développement économique de l'Afrique de l'Ouest.",
+    heroSub:       "Partout en Afrique, nos filiales opèrent dans des secteurs stratégiques pour contribuer au développement économique.",
     filterSecteur: 'Filtrer par secteur',
     allSecteurs:   'Tous les secteurs',
     filterPays:    'Filtrer par pays',
@@ -201,8 +222,8 @@ export const fr = {
     foundSingular: 'filiale trouvée',
     foundPlural:   'filiales trouvées',
     aboutLabel:    'À propos',
-    contactBtn:    'Nous contacter →',
-    allFiliales:   'Toutes les filiales →',
+    contactBtn:    'Nous contacter',
+    allFiliales:   'Toutes les filiales',
     sectorLabel:   'Secteur',
     paysLabel:     'Pays',
     metierLabel:   'Métier associé',
@@ -213,7 +234,7 @@ export const fr = {
     country:       'Pays',
     sector:        'Secteur',
     backToAll:     '← Toutes les filiales',
-    discover:      'Voir la filiale →',
+    discover:      'Voir la filiale',
     website:       'Site web',
     missionLabel:  'Notre mission',
     visionLabel:   'Notre vision',
@@ -224,6 +245,22 @@ export const fr = {
     emailLabel:    'Email',
     adresseLabel:  'Adresse',
     villeLabel:    'Ville',
+    sociaux:       'Réseaux sociaux',
+    secteurs: {
+      'Services Financiers':     'Services Financiers',
+      'Gestion de Créances':     'Gestion de Créances',
+      'Énergies et distribution':'Énergies et distribution',
+      'Hôtellerie & Restauration':'Hôtellerie & Restauration',
+      'Assurance Non-Vie':       'Assurance Non-Vie',
+      'Assurance Vie':           'Assurance Vie',
+      'Marchés Financiers':      'Marchés Financiers',
+      "Gestion d'Actifs":        "Gestion d'Actifs",
+      'Immobilier':              'Immobilier',
+      'Technologies & Fintech':  'Technologies & Fintech',
+      'Industries et Agribusiness':'Industries et Agribusiness',
+      'Commerce & Fournitures':  'Commerce & Fournitures',
+      'Transport et logistiques minières et industrielles':'Transport et logistiques minières et industrielles',
+    },
   },
 
   // ── PAGE NOS MÉTIERS ──────────────────────────────────────────────
@@ -232,10 +269,10 @@ export const fr = {
   //        sont identiques aux clés sections.sectors.* de la page d'accueil.
   metiers: {
     label:            'Nos Métiers',
-    heroTitle1:       'secteurs stratégiques,',
-    heroTitleSpan:    "une logique d'investissement",
-    heroTitleSpan2:   'cohérente',
-    heroSub:          "Du marché financier à l'énergie, de l'assurance à la fintech, Excellis Invest Group intervient dans les secteurs qui structurent les économies africaines d'aujourd'hui et demain.",
+    heroTitle1:       'Une diversité de secteurs stratégiques,',
+    heroTitleSpan:    "une logique d'investissement cohérente",
+    heroTitleSpan2:   '',
+    heroSub:          "Du marché financier à l'énergie, de l'assurance à la fintech, Excellis Invest Group intervient dans les secteurs qui structurent les économies africaines d'aujourd'hui et de demain.",
     filiales:         'filiales',
     filiale:          'filiale',
     enjeuxLabel:      'Enjeux',
@@ -243,7 +280,7 @@ export const fr = {
     enjeuxTitleSpan:  'ce secteur',
     enjeuxTitle2:     'est stratégique',
     contributionLabel:'Contribution Excellis Invest Group',
-    seeAllFiliales:   'Voir toutes les filiales →',
+    seeAllFiliales:   'Voir toutes les filiales',
     backAll:          '← Retour à tous nos métiers',
     notFound:         'Secteur introuvable',
     backBtn:          '← Retour aux métiers',
@@ -259,8 +296,8 @@ export const fr = {
     label:          'Gouvernance',
     // Titre hero : "heroTitle1 / heroTitleSpan"
     heroTitle1:     'Une gouvernance structurée',
-    heroTitleSpan:  'pour un groupe de référence',
-    heroSub:        "Constitué en société anonyme de droit burkinabè, Excellis Invest Group s'appuie sur une gouvernance rigoureuse, une notation externe et des principes clairs pour garantir la performance et la confiance de ses parties prenantes.",
+    heroTitleSpan:  'pour la performance',
+    heroSub:        "Constituée en société anonyme de droit burkinabè, Excellis Invest Group s'appuie sur une gouvernance rigoureuse pour garantir la performance et la confiance de ses parties prenantes.",
 
     // Section 1 — Président du Groupe
     presidentLabel: 'Président du Groupe',
@@ -273,11 +310,11 @@ export const fr = {
     organes: [
       {
         titre: "Assemblée Générale",
-        desc:  "Organe souverain réunissant l'ensemble des actionnaires. Elle adopte les grands axes stratégiques, approuve les comptes annuels et nomme les membres du Conseil d'Administration.",
+        desc:  "Organe souverain réunissant l'ensemble des actionnaires. Elle adopte les grands axes stratégiques, approuve les comptes annuels et nomme les membres du conseil d'administration.",
       },
       {
         titre: "Conseil d'Administration",
-        desc:  "Définit les orientations stratégiques du groupe, approuve les grandes décisions et contrôle la gestion de la Direction Générale. Il rend compte à l'Assemblée Générale.",
+        desc:  "Définit les orientations stratégiques du groupe, approuve les grandes décisions et contrôle la gestion de la direction générale. Il rend compte à l'assemblée générale.",
       },
       {
         titre: "Comités Spécialisés",
@@ -285,7 +322,7 @@ export const fr = {
       },
       {
         titre: "Direction Générale",
-        desc:  "Assure la mise en œuvre de la stratégie définie par le Conseil. Il pilote les filiales, coordonne les synergies inter-sectorielles et rend compte au Conseil d'Administration.",
+        desc:  "Assure la mise en œuvre de la stratégie définie par le Conseil. Elle pilote les filiales, coordonne les synergies intersectorielles et rend compte au conseil d'administration.",
       },
     ],
 
@@ -315,12 +352,14 @@ export const fr = {
     ratingTitle1:      'Noté par',
     ratingTitleSpan:   'Bloomfield',
     ratingTitle2:      'Investment Corporation',
-    ratingDesc:        "La solidité de la gouvernance et la qualité de la structure financière d'Excellis Invest Group sont reconnues par la notation A / A2 attribuée par Bloomfield Investment Corporation, conférant au Groupe une signature de référence.",
+    ratingDesc:        "La solidité de la gouvernance et la qualité de la structure financière d'Excellis Invest Group sont reconnues par la notation A− / A2 attribuée par Bloomfield Investment Corporation, conférant au Groupe une signature de référence.",
     ratingAgence:      'Agence',
     ratingNotes:       'Notes',
     ratingPerimetre:   'Périmètre',
     ratingPerspective: 'Perspective',
     ratingCredit:      'Notes de crédit',
+    ratingDate:        'Date',
+    ratingSource:      'Voir le rapport',
 
     // Page détail dirigeant
     bioLabel:              'Biographie',
@@ -344,7 +383,7 @@ export const fr = {
     heroSub:         "Suivez les actualités, communiqués et temps forts institutionnels d'Excellis Invest Group et de ses filiales.",
     all:             'Toutes',
     empty:           'Aucun article dans cette catégorie.',
-    readMore:        'Lire la suite →',
+    readMore:        'Lire la suite',
     featured:        'À la une',
     backToNews:      '← Actualités',
     allNews:         '← Toutes les actualités',
@@ -357,6 +396,15 @@ export const fr = {
     noNews:          'Aucune actualité publiée pour le moment.',
     published:       'Publié le',
     related:         'Autres actualités',
+    categories: {
+      Corporate:    'Corporate',
+      Filiales:     'Filiales',
+      Finance:      'Finance',
+      Énergie:      'Énergie',
+      Technologie:  'Technologie',
+      Immobilier:   'Immobilier',
+      Assurance:    'Assurance',
+    },
   },
 
   // ── PAGE DÉSINSCRIPTION NEWSLETTER ───────────────────────────────
@@ -389,7 +437,7 @@ export const fr = {
       mission:      'Notre Mission',
       vision:       'Notre Vision',
       modele:       'Notre Modèle',
-      modeleText:   'Une holding pilotant un portefeuille diversifié de filiales opérationnelles dans 9 secteurs clés.',
+      modeleText:   'Une holding multisectorielle pilotant un portefeuille diversifié de filiales opérationnelles dans des secteurs clés de l\'économie.',
       ambition:     'Notre Ambition',
       ambitionText: 'Un rayonnement panafricain ancré dans les réalités économiques locales.',
       link:         'En savoir plus sur le Groupe',
@@ -397,8 +445,8 @@ export const fr = {
     gouv: {
       label:   'Gouvernance',
       // Titre : "title1 / titleEm"
-      title1:  'Une gouvernance structurée pour un groupe',
-      titleEm: 'de référence',
+      title1:  'Une gouvernance structurée',
+      titleEm: 'pour la performance',
       quote:   "\"Notre ambition est d'être un architecte d'une Afrique qui crée sa propre valeur, avec ses propres capitaux et ses propres talents.\"",
       quoteBy: 'Direction Générale',
       link:    'Découvrir notre gouvernance',
@@ -420,15 +468,15 @@ export const fr = {
       title1:    'secteurs stratégiques,',
       titleSpan: "une logique d'investissement cohérente",
       title2:    '',
-      desc:      "Du marché financier à l'énergie, de l'assurance à la fintech, Excellis Invest Group intervient dans les secteurs qui structurent les économies africaines d'aujourd'hui et demain.",
+      desc:      "Du marché financier à l'énergie, de l'assurance à la fintech, Excellis Invest Group intervient dans les secteurs qui structurent les économies africaines d'aujourd'hui et de demain.",
       filiales:  'filiales',
       filiale:   'filiale',
     },
     // Note : title1, titleSpan, title2 sont identiques à filiales.heroTitle1 etc.
     subsidiaries: {
       label:        'Nos filiales',
-      title1:       'Un portefeuille de',
-      titleSpan:    'entités',
+      title1:       'Un portefeuille diversifié',
+      titleSpan:    "d'entités",
       title2:       'opérationnelles',
       defaultCount: '17 entités',
       seeAll:       'Voir toutes les filiales',

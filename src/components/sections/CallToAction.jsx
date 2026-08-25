@@ -4,8 +4,9 @@ import { useApi } from '../../hooks/useApi'
 
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
-export default function CallToAction() {
-  const { t } = useLang()
+export default function CallToAction({ contactHref, contactLabel }) {
+  const { t, pick } = useLang()
+  const { data: company } = useApi('/company')
   const { data: ctaImgs = [] } = useApi('/images?section=home-cta&actif=true')
   const bgImg = ctaImgs[0]
 
@@ -17,13 +18,19 @@ export default function CallToAction() {
       }
     : {}
 
+  const href = contactHref || '/contact'
+  const isExternal = /^(mailto:|tel:|https?:)/.test(href)
+
   return (
     <section className="section-cta" style={bgStyle}>
-      <h2 className="cta-title">{t('cta.title')}</h2>
-      <p className="cta-sub">{t('cta.sub')}</p>
+      <h2 className="cta-title">{pick(company, 'ctaTitre') || t('cta.title')}</h2>
+      <p className="cta-sub">{pick(company, 'ctaSousTitre') || t('cta.sub')}</p>
       <div className="cta-actions">
-        <Link to="/contact" className="btn-cta-white">{t('cta.contact')}</Link>
-        <Link to="/contact" className="btn-cta-outline">{t('cta.investors')}</Link>
+        {isExternal ? (
+          <a href={href} className="btn-cta-white">{contactLabel || t('cta.contact')}</a>
+        ) : (
+          <Link to={href} className="btn-cta-white">{contactLabel || t('cta.contact')}</Link>
+        )}
       </div>
     </section>
   )

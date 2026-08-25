@@ -31,6 +31,7 @@ export default function FilialeLogo({ id, sigle, size = 56, className = '', logo
         <img
           src={src}
           alt={sigle}
+          loading="lazy"
           style={{ width: '100%', height: '100%', objectFit: 'contain', padding: size >= 80 ? 10 : 6 }}
         />
       </div>

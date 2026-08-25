@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class Filiale extends Model {
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['id','sigle','nom','secteur','secteur_slug','pays','description','description_en','mission','mission_en','vision','valeurs','commentaires','logo','image','website','linkedin','facebook','twitter','instagram','youtube','tiktok','whatsapp','telephone','email_contact','adresse','ville','ordre','actif'];
+    protected $fillable = ['id','sigle','nom','secteur','secteur_en','secteur_slug','pays','description','description_en','mission','mission_en','vision','vision_en','valeurs','valeurs_en','commentaires','commentaires_en','logo','image','website','linkedin','facebook','twitter','instagram','youtube','tiktok','whatsapp','telephone','email_contact','adresse','ville','ordre','actif'];
     protected $casts = ['actif' => 'boolean', 'ordre' => 'integer'];
 
     public function toArray() {

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import ScrollReveal from '../ui/ScrollReveal'
 import FilialeLogo from '../ui/FilialeLogo'
+import FaIcon from '../ui/FaIcon'
 import { useLang } from '../../contexts/LangContext'
 
 export default function Subsidiaries({ filiales = [] }) {
@@ -22,7 +23,7 @@ export default function Subsidiaries({ filiales = [] }) {
           </div>
           <Link to="/nos-filiales" className="btn-primary">
             {t('sections.subsidiaries.seeAll')}
-            <span className="btn-arrow">→</span>
+            <FaIcon name="arrow-right" size={16} className="btn-arrow" />
           </Link>
         </div>
       </ScrollReveal>
@@ -34,7 +35,7 @@ export default function Subsidiaries({ filiales = [] }) {
               <FilialeLogo id={f.id} sigle={f.sigle} size={56} logo={f.logo} />
               <div className="filiale-name">{f.nom}</div>
               <div className="filiale-sector">{f.secteur}</div>
-              <div className="filiale-country">📍 {f.pays}</div>
+              <div className="filiale-country"><FaIcon name="location-dot" size={12} /> {f.pays}</div>
             </Link>
           </ScrollReveal>
         ))}

@@ -68,15 +68,18 @@ export default function FilialeForm() {
   const [image, setImage] = useState('')
   const [saving, setSaving] = useState(false)
 
-  const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm()
+  const { register, handleSubmit, reset, setValue, watch, getValues, formState: { errors } } = useForm()
   const secteur = watch('secteur')
 
   useEffect(() => {
     if (secteur && SECTEURS_SLUGS[secteur]) {
       setValue('secteurSlug', SECTEURS_SLUGS[secteur])
-      if (SECTEURS_EN[secteur]) setValue('secteur_en', SECTEURS_EN[secteur])
+      // Only auto-fill secteur_en if not already set (avoids overwriting saved custom values on load)
+      if (SECTEURS_EN[secteur] && !getValues('secteur_en')) {
+        setValue('secteur_en', SECTEURS_EN[secteur])
+      }
     }
-  }, [secteur, setValue])
+  }, [secteur, setValue, getValues])
 
   useEffect(() => {
     if (isEdit) {

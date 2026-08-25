@@ -1,26 +1,22 @@
 import { Link } from 'react-router-dom'
 import ScrollReveal from '../ui/ScrollReveal'
-import { useApi } from '../../hooks/useApi'
 import { useLang } from '../../contexts/LangContext'
-
-const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
-
-const FALLBACK_PILIERS = [
-  { num: '01', titre: 'Rigueur & Transparence', texte: 'Gouvernance SA de droit burkinabè, notation externe reconnue' },
-  { num: '02', titre: 'Adaptabilité & Innovation', texte: 'Modèle évolutif, ancré dans les réalités africaines' },
-  { num: '03', titre: 'Création de Valeur Durable', texte: 'Investissements de long terme dans les secteurs structurants' },
-  { num: '04', titre: 'Esprit de Partenariat', texte: 'Croissance en synergie avec les partenaires institutionnels' },
-  { num: '05', titre: 'Performance & Responsabilité', texte: 'Résultats mesurables, impact économique et social concret' },
-]
+import { useApi } from '../../hooks/useApi'
+import FaIcon from '../ui/FaIcon'
 
 export default function Governance({ company }) {
   const { t, pick } = useLang()
-  const piliers = company?.gouvernancePiliers ?? FALLBACK_PILIERS
-  const { data: govImgs = [] } = useApi('/images?section=home-governance&actif=true')
-  const govImg = govImgs[0]
+  const { data: dirigeants = [] } = useApi('/dirigeants')
+
+  const valeurs = company?.valeurs ?? []
+  const president = dirigeants.find(d => d.categorie === 'president')
+  const citation = pick(president, 'mot') || president?.bio || t('sections.gouv.quote')
+  const citationAuthor = president ? `${president.nom}${pick(president, 'role') ? ` — ${pick(president, 'role')}` : ''}` : `${t('sections.gouv.quoteBy')} — ${company?.nom ?? 'Excellis Invest Group'}`
 
   return (
     <section className="section-gouv">
+
+      {/* ── Gauche : titre + mot du Président ── */}
       <ScrollReveal className="gouv-content">
         <span className="section-label">{t('sections.gouv.label')}</span>
         <h2 className="section-title">
@@ -30,38 +26,41 @@ export default function Governance({ company }) {
         <div className="gold-rule" style={{ background: 'var(--gold)' }} />
 
         <div className="gouv-quote">
-          <p className="gouv-quote-text">{t('sections.gouv.quote')}</p>
-          <span className="gouv-quote-author">
-            {t('sections.gouv.quoteBy')}, {company?.nom ?? 'Excellis Invest Group'}
-          </span>
+          <p className="gouv-quote-text">{citation}</p>
+          <span className="gouv-quote-author">{citationAuthor}</span>
         </div>
 
         <Link to="/gouvernance" className="btn-secondary">
           {t('sections.gouv.link')}
-          <span className="btn-arrow">→</span>
+          <FaIcon name="arrow-right" size={16} className="btn-arrow" />
         </Link>
       </ScrollReveal>
 
+      {/* ── Droite : valeurs du groupe ── */}
       <ScrollReveal delay={0.2} className="gouv-visual">
-        {govImg && (
-          <div style={{ borderRadius: 6, overflow: 'hidden', marginBottom: 20, maxHeight: 200 }}>
-            <img
-              src={`${API_URL}${govImg.url}`}
-              alt={govImg.alt || 'Gouvernance Excellis Invest Group'}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            />
-          </div>
-        )}
-        {piliers.map(p => (
-          <div key={p.num} className="gouv-pillar">
-            <span className="gouv-pillar-num">{p.num}</span>
-            <div>
-              <div className="gouv-pillar-title">{pick(p, 'titre')}</div>
-              <div className="gouv-pillar-text">{pick(p, 'texte')}</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-end' }}>
+          {valeurs.map((v, i) => (
+            <div key={pick(v, 'titre') || i} className="gouv-pillar" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 8, width: '100%' }}>
+              {v.icone && (
+                <div style={{
+                  width: 32, height: 32, borderRadius: '50%',
+                  background: 'rgba(184,146,42,0.15)',
+                  border: '1px solid rgba(184,146,42,0.25)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: 'var(--gold-light)', flexShrink: 0,
+                }}>
+                  <FaIcon name={v.icone} size={14} />
+                </div>
+              )}
+              <div>
+                <div className="gouv-pillar-title">{pick(v, 'titre')}</div>
+                <div className="gouv-pillar-text">{pick(v, 'description')}</div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </ScrollReveal>
+
     </section>
   )
 }

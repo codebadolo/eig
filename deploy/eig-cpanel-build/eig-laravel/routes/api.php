@@ -23,20 +23,24 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/auth/password', [AuthController::class, 'password']);
 });
 
-// Public routes
-Route::get('/filiales', [FilialeController::class, 'index']);
-Route::get('/filiales/{id}', [FilialeController::class, 'show']);
-Route::get('/metiers', [MetierController::class, 'index']);
-Route::get('/metiers/{slug}', [MetierController::class, 'show']);
-Route::get('/articles', [ArticleController::class, 'index']);
-Route::get('/articles/{slug}', [ArticleController::class, 'show']);
-Route::get('/dirigeants', [DirigeantController::class, 'index']);
-Route::get('/dirigeants/{id}', [DirigeantController::class, 'show']);
-Route::get('/company', [CompanyController::class, 'show']);
-Route::get('/translations', [TranslationController::class, 'show']);
-Route::get('/carrieres', [CarriereController::class, 'index']);
-Route::get('/carrieres/{id}', [CarriereController::class, 'show']);
-Route::get('/images', [ImageController::class, 'index']);
+// Public read routes — cached briefly (public, 60s) so repeat page loads within
+// a browsing session (and any CDN/edge layer in front) are served without
+// hitting the origin, instead of every page firing a fresh request per component.
+Route::middleware(\Illuminate\Http\Middleware\SetCacheHeaders::using(['public' => true, 'max_age' => 60]))->group(function () {
+    Route::get('/filiales', [FilialeController::class, 'index']);
+    Route::get('/filiales/{id}', [FilialeController::class, 'show']);
+    Route::get('/metiers', [MetierController::class, 'index']);
+    Route::get('/metiers/{slug}', [MetierController::class, 'show']);
+    Route::get('/articles', [ArticleController::class, 'index']);
+    Route::get('/articles/{slug}', [ArticleController::class, 'show']);
+    Route::get('/dirigeants', [DirigeantController::class, 'index']);
+    Route::get('/dirigeants/{id}', [DirigeantController::class, 'show']);
+    Route::get('/company', [CompanyController::class, 'show']);
+    Route::get('/translations', [TranslationController::class, 'show']);
+    Route::get('/carrieres', [CarriereController::class, 'index']);
+    Route::get('/carrieres/{id}', [CarriereController::class, 'show']);
+    Route::get('/images', [ImageController::class, 'index']);
+});
 Route::post('/contact', [ContactController::class, 'store']);
 Route::post('/candidatures', [CandidatureController::class, 'store']);
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);

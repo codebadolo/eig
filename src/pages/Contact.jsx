@@ -1,14 +1,21 @@
 import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import ScrollReveal from '../components/ui/ScrollReveal'
+import Seo from '../components/Seo'
 import { useApi } from '../hooks/useApi'
 import PageHero from '../components/ui/PageHero'
 import { useLang } from '../contexts/LangContext'
 import FaIcon from '../components/ui/FaIcon'
+import SocialIcon, { SOCIAL_NETWORKS } from '../components/ui/SocialIcon'
+
+const VALID_OBJETS = ['information', 'investissement', 'presse', 'recrutement', 'filiale', 'autre']
 
 export default function Contact() {
-  const { t } = useLang()
+  const { t, pick } = useLang()
   const { data: company } = useApi('/company')
-  const [form, setForm] = useState({ nom: '', prenom: '', email: '', telephone: '', objet: 'information', message: '' })
+  const [searchParams] = useSearchParams()
+  const preselectedObjet = VALID_OBJETS.includes(searchParams.get('objet')) ? searchParams.get('objet') : 'information'
+  const [form, setForm] = useState({ nom: '', prenom: '', email: '', telephone: '', objet: preselectedObjet, message: '' })
   const [sent, setSent] = useState(false)
   const [sending, setSending] = useState(false)
 
@@ -39,11 +46,16 @@ export default function Contact() {
 
   return (
     <>
+      <Seo
+        title="Contact — Nous écrire"
+        description="Contactez Excellis Invest Group à Ouagadougou, Burkina Faso : coordonnées, formulaire de contact, relations presse et partenariats."
+        path="/contact"
+      />
       <PageHero
         section="contact"
         label={t('contact.label')}
         title={<>{t('contact.title')} <span>{t('contact.titleSpan')}</span></>}
-        subtitle={t('contact.sub')}
+        subtitle={pick(company, 'sousTitreContact') || t('contact.sub')}
       />
 
       <section style={{ background: 'var(--white)' }}>
@@ -60,6 +72,13 @@ export default function Contact() {
               <div>
                 <div className="contact-label">{t('contact.adresse')}</div>
                 <div className="contact-value">{company?.adresse}</div>
+                {company?.mapUrl && (
+                  <a href={company.mapUrl} target="_blank" rel="noopener noreferrer"
+                    style={{ fontSize: 13, fontWeight: 600, color: 'var(--teal)', textDecoration: 'underline', display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+                    {t('contact.viewMap')}
+                    <FaIcon name="arrow-right" size={13} />
+                  </a>
+                )}
               </div>
             </div>
             <div className="contact-info-item">
@@ -77,16 +96,24 @@ export default function Contact() {
               </div>
             </div>
 
-            <div style={{ marginTop: 32 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 16 }}>
-                {t('contact.follow')}
+            {['linkedin', 'facebook', 'twitter', 'instagram', 'youtube', 'whatsapp'].some(key => company?.[key]) && (
+              <div style={{ marginTop: 32 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 16 }}>
+                  {t('contact.follow')}
+                </div>
+                <div style={{ display: 'flex', gap: 10 }}>
+                  {['linkedin', 'facebook', 'twitter', 'instagram', 'youtube', 'whatsapp'].filter(key => company?.[key]).map(key => {
+                    const net = SOCIAL_NETWORKS[key]
+                    return (
+                      <a key={key} href={net.href(company[key])} target="_blank" rel="noopener noreferrer" title={net.label} aria-label={net.label}
+                        className="social-btn" style={{ color: net.color, borderColor: net.color }}>
+                        <SocialIcon network={key} size={15} />
+                      </a>
+                    )
+                  })}
+                </div>
               </div>
-              <div style={{ display: 'flex', gap: 10 }}>
-                <a href="#" className="social-btn" style={{ color: 'var(--teal)', borderColor: 'var(--teal-light)' }}>in</a>
-                <a href="#" className="social-btn" style={{ color: 'var(--teal)', borderColor: 'var(--teal-light)' }}>f</a>
-                <a href={`https://wa.me/${company?.whatsapp}`} target="_blank" rel="noopener noreferrer" className="social-btn" style={{ color: '#25D366', borderColor: '#25D366' }}>W</a>
-              </div>
-            </div>
+            )}
           </ScrollReveal>
 
           <ScrollReveal delay={0.15}>
@@ -143,7 +170,7 @@ export default function Contact() {
 
                 <button type="submit" disabled={sending} className="btn-primary" style={{ width: '100%', justifyContent: 'center', border: 'none' }}>
                   {sending ? t('common.sending') : t('contact.submit')}
-                  {!sending && <span className="btn-arrow">→</span>}
+                  {!sending && <FaIcon name="arrow-right" size={16} className="btn-arrow" />}
                 </button>
               </form>
             )}

@@ -1,0 +1,876 @@
+Delivered-To: bgeofroy@jofe.bf
+Received-SPF: pass (zohomail.com: domain of excellis-investgroup.com designates 40.107.159.83 as permitted sender) client-ip=40.107.159.83; envelope-from=btieno@excellis-investgroup.com; helo=OSPPR02CU001.outbound.protection.outlook.com;
+Authentication-Results: mx.zohomail.com;
+	dkim=pass;
+	spf=pass (zohomail.com: domain of excellis-investgroup.com designates 40.107.159.83 as permitted sender)  smtp.mailfrom=btieno@excellis-investgroup.com;
+	arc=pass (i=1 dmarc=pass fromdomain=excellis-investgroup.com);
+	dmarc=pass(p=quarantine dis=none)  header.from=excellis-investgroup.com
+ARC-Seal: i=2; a=rsa-sha256; t=1782464230; cv=pass; 
+	d=zohomail.com; s=zohoarc; 
+	b=g0D/0NvPBkz9/rx2v7AyrhJpJbr3RyRlge5LHp7qThqr62MUjCJ9pxyRK6RJLGVSmI4NoqA6NzcWocd/ryM44xXQBJZYiYfSWPVQ1WcvUgTx2JsJ6/p1TQ6+4kAu7yAPE5RMwCmPb01/+P3GkiYNJQLFg1yEFMy9CgrI3jyX6pI=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1782464230; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=wfOWn8iCy/i1S0M1lM7ndVaCDY6Ayz+p+kHtlE3Q3zg=; 
+	b=MO/1DkduKgIsDKC5oEvScB32KlQ+uSTK9O2be1MGNIR8fRkj2aHKPhzw02XzFFTnUNjYvW5oNNsWAhGI22zMuKrpJcSHxEeGKsWpQGlUM3FKsI1cBuLlkq6qEd7lwHyu9ZtHUqYvMSi1qvuGWledUvOHPQ6tGa6DREl9Oe3AmEo=
+ARC-Authentication-Results: i=2; mx.zohomail.com;
+	dkim=pass;
+	spf=pass (zohomail.com: domain of excellis-investgroup.com designates 40.107.159.83 as permitted sender)  smtp.mailfrom=btieno@excellis-investgroup.com;
+	arc=pass (i=1 dmarc=pass fromdomain=excellis-investgroup.com);
+	dmarc=pass header.from=<btieno@excellis-investgroup.com> (p=quarantine dis=none)
+Return-Path: <btieno@excellis-investgroup.com>
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11023083.outbound.protection.outlook.com [40.107.159.83]) by mx.zohomail.com
+	with SMTPS id 1782464230763639.2502597159186; Fri, 26 Jun 2026 01:57:10 -0700 (PDT)
+Received: from AM8PR10MB4724.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:354::11)
+ by VI0PR10MB8336.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:800:218::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.15; Fri, 26 Jun
+ 2026 08:57:03 +0000
+Received: from AM8PR10MB4724.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::fcb5:5c5c:7574:375a]) by AM8PR10MB4724.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::fcb5:5c5c:7574:375a%6]) with mapi id 15.21.0159.016; Fri, 26 Jun 2026
+ 08:56:57 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=t2XmxfvpQ1NvnqWw5RMo38ihyWxvmQVlQ8ndIliaXu1GPp419zk75wWRtAv8FZrwF7LzDTMjmntP+ht5vR8DrgukH8FByqIq+4Ff3WUlDePUgzy8jMZkXeQ+/GTbeewUOYbof2D+StrB3l2TZuOBTF4ImVIFwAlFFSMoQKbJckajFbGbcaaEj/8+h9W4wdha63w/+vPgZ34INgBO9T0Zk/4+79cJBrX06Dkhmn0ixvz0/RJPpNKdr6nrdDnEQmnONM1VJFAZvlizi1TpFc90Ql6MOgLUqVaQrmNBrj1B982BkDfz9+NO+62fd2w38NSqi9kks+ZW3n+n1WbRHy0qQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wfOWn8iCy/i1S0M1lM7ndVaCDY6Ayz+p+kHtlE3Q3zg=;
+ b=ej/y6qvLeI1bwlyftrPzzXKH5ayBfFyLy1Z2gdaVZibPXMG1sOGBpp7xVsg9QCBcEVNrJfbowae6Pspfu/XQBvTJOUUZyms8K/R6my210jm3GkoZeA7mzRKHmYYtfUYNS9fawHAZwzUU9JyISLA7QTeL+phYl9kNLq6YUcjVF8jPbrncByZFNP7S8Spf6APllcYQCDF80jPXYMTwbiJ6OhxLn2Uax9Szc5861N99pzFrkhgzGxosuOneifYmdnvUVvec50y8SnQwd1IdY97LQeiX6bLCz5/kr9BiuGxHQWmLQ3i/QIZAhn6+Bvt0MKO1d7LoXRG970hERmWwW2aOag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=excellis-investgroup.com; dmarc=pass action=none
+ header.from=excellis-investgroup.com; dkim=pass
+ header.d=excellis-investgroup.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=excellis-investgroup.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wfOWn8iCy/i1S0M1lM7ndVaCDY6Ayz+p+kHtlE3Q3zg=;
+ b=JsdrZh1mbUNOV6bKsO4xKYJ6jEFj6W4AoVOXSsxzoLpu17HJomBEvTD4xWBfdgMNGGX7q6TKKEBqWq562m8D9oH8ojIgCYN4mScEW3p0zOQNoZomR0NFiuoxZpT2xqxR6qlGTBYqpo6BMxV5EMENaBl/LtTKGeCafaUbqNmGWa1PNKJNq9+iEhU3Gf5L7GYYDNQrnLCfw1WILW5D/mJ911bY/cuHIHC0UOOQYc7VHc3S8lJLkWMH2Q69ytmW+puleWj1CrhmBqYIu3U/dCVhCyrkKOPgFFEOEvoXFB5q45j6XDoIYThDIvCfWPPg6EmqlquZd+jmxztSMOUy9TYgtg==
+From: Bili Edouard TIENO <btieno@excellis-investgroup.com>
+To: BADOLO GEOFROY <bgeofroy@jofe.bf>, "ngerard@jofe.bf" <ngerard@jofe.bf>
+CC: "ngerard@jofedigital.com" <ngerard@jofedigital.com>
+Subject: =?iso-8859-1?Q?RE:_Pr=E9sentation_coris_assurance_IARD_burkina?=
+Thread-Topic: =?iso-8859-1?Q?Pr=E9sentation_coris_assurance_IARD_burkina?=
+Thread-Index: Ad0DwrhOlXCRWIw0TuqURY8WLQaeSgAEfn6AAALACUAAMqjTAAAn1WsA
+Date: Fri, 26 Jun 2026 08:56:57 +0000
+Message-ID: <AM8PR10MB47246401814348901D06E73DEEEB2@AM8PR10MB4724.EURPRD10.PROD.OUTLOOK.COM>
+References: <AM8PR10MB4724980822609B9A5356F145EEED2@AM8PR10MB4724.EURPRD10.PROD.OUTLOOK.COM>
+ <01cf01dd03d4$b4807350$1d8159f0$@jofe.bf>
+ <AM8PR10MB472404638CC91DED83339A42EEED2@AM8PR10MB4724.EURPRD10.PROD.OUTLOOK.COM>
+ <17577F4D-0230-4E09-999C-C76906CF0A0C@jofe.bf>
+In-Reply-To: <17577F4D-0230-4E09-999C-C76906CF0A0C@jofe.bf>
+Accept-Language: fr-CA, fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=excellis-investgroup.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM8PR10MB4724:EE_|VI0PR10MB8336:EE_
+x-ms-office365-filtering-correlation-id: 39e825c1-bc1c-48ea-f6e1-08ded360e0f6
+x-ms-exchange-atpmessageproperties: SA
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|6049299003|8096899003|4013099003|38070700021|4053099003|55112099003|13003099007|18002099003|22082099003|56012099006|4143699003|11063799006;
+x-microsoft-antispam-message-info: driSgtt0UvV6T1r/2oxU/ymq4P+8NEaafeBHnQVia5AuCVJMVV+6n8C1OaF30TOgH0KRb/wRd7SIZsT5+WP1t+S7el+9VT2H/UXKjDzLdomtHMI+6ah4dmcut5rB+RxBg/5xKqFzpjDZkfvcmiezQrD3Lnz30dMt1zHFkJiLLtoMfcAk8zcqbYsfBI236VSCKVobdcmC4om4Vbl4EooUcnXBBFUsXqcW06AmFpGfdptk9km4cRLBJG7KvKsV0267kb4JH+NJ7yI6ckiByvBKFYhqo0hBa9BMGAxWFjpXkJWvd1PCd/q0FPhdXcZ6cjRSfZ/BoPyDYXT6BjUDQwNL0/xnD8/vIjCij6pUZwNpHg60hXxIt8W9knKrl4mD99kgQMTf+qYDQ8WimFWztLdCTNK6yprOykEAj39gsjE4I2wBGY4tlJEnziSOxf8dmYOmeitvsfZyJ7RogrCqTWiw3mdHLPFCX0A30AUf1VnACL21P8XgUAXc0VSBuDmj7qn1kTH4pinTyPG5NEbAAAqCbr20415XDbzEGy4zPTHj8oiEEN1WcjXo8hb/nisGqIwuHG5sUO61B8Swj0XpHr/lgzEd0nuy2hor2wi+YLy/EdOUKsT5IT/3llD+BbCimqs/IsiE/UewKF0gKMTRYfcIypZoPnk21e/+TT8rHve9ARs=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:fr;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR10MB4724.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(6049299003)(8096899003)(4013099003)(38070700021)(4053099003)(55112099003)(13003099007)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?hkYckcTbqXaIIJTIw/x5BdT2RCVscJdQPhYDxzYhBsRrjEue1ZUxDjlog+?=
+ =?iso-8859-1?Q?iV5cQCazMeVUZidOluEMi857NMUHmYJXotXLkvwtzwEBOnsWgWu1iZFoPU?=
+ =?iso-8859-1?Q?KNP6cerPAC3oLlz6U2RoHwiBAPTrKWXjpf1+3fIwZdcAPUFKDzas8W5+kY?=
+ =?iso-8859-1?Q?caU5wD/dtPSj73DPwdVRKqWLXH3Z1Cg9EytqhC3Kd4/rqM+0aOvwdAf814?=
+ =?iso-8859-1?Q?MzvFTEYqGy84E71KpiRoZJ66LTJqHYsFU8enqnpPDe0CfCqhuanjq+E+xV?=
+ =?iso-8859-1?Q?zsOjzeKuwLijdOP6LBa2eQvkVSHTuHypI6nGFyF7Vh0zgulHh9VxVkgKet?=
+ =?iso-8859-1?Q?mzAkwYIv3tFYwJloPaiphb29Ji2Yb4M47tUiwsGnUWnsSQpNcz+/Ph3SJB?=
+ =?iso-8859-1?Q?UyXFkBh/IqJfaGQ7OCfD2hyOVZjUxUKzD39qJLXfahR2xM6J4NQ0MxHXJU?=
+ =?iso-8859-1?Q?lxrjETGW1awKWDzLT12Z/4cPaj6KYYmIoAhfKrW/8vOz1nTsvAVvqx+1u7?=
+ =?iso-8859-1?Q?AG78SLPhKNybTtmJZMJOYmussRlJ28jtwiS4tYOmxgvN7zIP8QA7Fb+0qn?=
+ =?iso-8859-1?Q?NfG+sGhN5gq8dedWmu05wuh+houS++BjsxyPM08v5e5QAz+alIW1DDyL+a?=
+ =?iso-8859-1?Q?wCRlfn7TETp/9JmMr1eeDOq5ikK0Hmm3y6TvrFTDPZtGi4kZoY9b2KAPPp?=
+ =?iso-8859-1?Q?90ucuOcqoy1nj3Hm8KhnhrrCSkzgsbwmbVLGElfQajmfHhjbQnFKapapHR?=
+ =?iso-8859-1?Q?VZ+9dfkoVnwmS4oClJo2VfkbgrOjCiMOnGzoPjrxJ9BFVslB8N3Q6bJONU?=
+ =?iso-8859-1?Q?JnEGPqIAthDrqdL443MpHqgBs11lBffwwAIHuEFZ9rUbQh2I6dtikKrPW7?=
+ =?iso-8859-1?Q?UATaeFcYt4zpbQQtiuiYXYcVqUUEoJG7MWdYF3ueQxFg1V27UCvkGZ2yro?=
+ =?iso-8859-1?Q?R368H3KfrPxlmMuCohHxZYUhFKcw4bpzFRh6d2DOnEixAl2RBD7YniQr1L?=
+ =?iso-8859-1?Q?yJwisiNPJSDsTd0OL2jbdB2WPJ9LsK6VAyJ87xtDt4k4ALQThJp8ChkHT4?=
+ =?iso-8859-1?Q?c52X12JiE6OPfUJyRo0hdW/fAGOM8U9Lxwi8OthjBq5+Hb5OjBGT8EuAhg?=
+ =?iso-8859-1?Q?cLj1pb5eX1TByUt4mjxWqzcScmqZSbgDt+wS5YYBAw8/CTXyOB7x1q2ZTH?=
+ =?iso-8859-1?Q?5zf+BHlJBfyjMECWPogg7oXs8RqKXiw0SJnVSrcnufeXnZ6nH8HO9pIyr/?=
+ =?iso-8859-1?Q?wyPz/pD+AaiOOixrZ0emKgIoC3cuo0CWKm9ud3+IQvpDqXGAqC1FFYysBS?=
+ =?iso-8859-1?Q?56utDkGepuO50LvdkL1nUo+b7RQFMuEmtN2CToQJWGGt30IAgylj0mlx+4?=
+ =?iso-8859-1?Q?vRsoYHmL710CbyKXAH7F7DV8T/WGaxoTpGSce1rgGf0PFFs4tBkM9UbxZI?=
+ =?iso-8859-1?Q?heoFpxU/jlm+MD1TPS5v0T1AaRDCEYHjTiD3QltHbtXLrOMMwqgtdyMk+y?=
+ =?iso-8859-1?Q?4cqdUtHBTsp+RV9ZXHn6Kp7ILPcyKvxEtVBGsmOJ+L1SCqZzKUKrGcewLo?=
+ =?iso-8859-1?Q?76YY3A8EuWaZaFs1e1DQCm4Jq8UBRV7D822xyTzy6hWv8ZCvSJxp3BPOTV?=
+ =?iso-8859-1?Q?65aa+qMFa5M9SpPW3HMzpKQVwVEP6s1dVGeMGJLj/2QnMJGq2zHA4qjhqy?=
+ =?iso-8859-1?Q?56UnYOK9O37bWR6Amhjhpem8HGMWEPoil4Xo4HFJ0CuXDAc0F2Z0khmlwj?=
+ =?iso-8859-1?Q?LShud36ljXCrdSNgbfGTFPcpIWXK4bLt6Z8FchGi7W/DsITD7rGX6NuCbe?=
+ =?iso-8859-1?Q?AFUhbP2vFv8Etk5CCvV19v11p3TNOjE=3D?=
+Content-Type: multipart/related;
+	boundary="_004_AM8PR10MB47246401814348901D06E73DEEEB2AM8PR10MB4724EURP_";
+	type="multipart/alternative"
+MIME-Version: 1.0
+X-OriginatorOrg: excellis-investgroup.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR10MB4724.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39e825c1-bc1c-48ea-f6e1-08ded360e0f6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jun 2026 08:56:57.6831
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 0e66ab74-e63e-4ae6-bc5a-7d68d0c6e838
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 5Dja2C6cyldtvqZwcosTdkEeCdB00yEjFjmbukOnG8tgUPwz7o52etihcx5id13CHCW4djJZe1k1HMfB31CArV/IbvLuxOvvqUxM/3rY1l8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR10MB8336
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.10.1.5.2/282.458.77
+X-ZohoMail-DKIM: pass (identity @excellis-investgroup.com)
+X-ZM-MESSAGEID: 1782464232152142000
+
+--_004_AM8PR10MB47246401814348901D06E73DEEEB2AM8PR10MB4724EURP_
+Content-Type: multipart/alternative;
+	boundary="_000_AM8PR10MB47246401814348901D06E73DEEEB2AM8PR10MB4724EURP_"
+
+--_000_AM8PR10MB47246401814348901D06E73DEEEB2AM8PR10MB4724EURP_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Bonjour Cher ami,
+
+Bien re=E7u.
+
+Merci.
+
+Cordialement
+
+
+De : BADOLO GEOFROY <bgeofroy@jofe.bf>
+Envoy=E9 : jeudi 25 juin 2026 13:56
+=C0 : Bili Edouard TIENO <btieno@excellis-investgroup.com>; ngerard@jofe.bf
+Cc : ngerard@jofedigital.com
+Objet : RE: Pr=E9sentation coris assurance IARD burkina
+
+Vous n'obtenez pas souvent d'e-mail =E0 partir de bgeofroy@jofe.bf<mailto:b=
+geofroy@jofe.bf>. Pourquoi c'est important<https://aka.ms/LearnAboutSenderI=
+dentification>
+Bonsoir M. TIENO
+Nous vous revenons par rapport =E0 vos diff=E9rents amendements sur les don=
+n=E9es des diff=E9rents filiales, par ailleurs nous restons toujours =E0 l'=
+attente s'il y a d'autres filiales qui aimeraient apporter des modification=
+s sur les donn=E9es.
+
+merci d'utiliser le lien : https://excellis-invest-group.jofedigital.com/
+
+cordialement,
+BADOLO
+
+On June 24, 2026 1:49:10 PM GMT, Bili Edouard TIENO <btieno@excellis-invest=
+group.com<mailto:btieno@excellis-investgroup.com>> wrote:
+Merci pour ton retour.
+
+J'ai proc=E9d=E9 =E0 l'actualisation du projet. Toutefois, je constate que =
+les pr=E9sentations des filiales que j'avais pr=E9c=E9demment transmises n'=
+ont pas encore =E9t=E9 int=E9gr=E9es.
+
+Merci de me pr=E9ciser l'=E9tat d'avancement de ce point ? Il serait souhai=
+table que ces int=E9grations se fassent au fur et =E0 mesure afin de mainte=
+nir le site =E0 jour et de faciliter les validations successives.
+
+Par ailleurs, dans le menu Gouvernance, merci de ne conserver que le profil=
+ du Pr=E9sident NASSA.
+
+Je reste disponible pour tout =E9change compl=E9mentaire.
+
+Cordialement,
+
+Bili Edouard TIENO
+
+
+
+
+Responsable Marketing et Communication | EXCELLIS INVEST GROUP SA
+Investissement et Conseil
+Burkina Faso | 01 BP 2061 Ouagadougou 01 | Ouagadougou |
+T=E9l : +226 25 33 35 40 | +226 76 67 60 22
+btieno@excellis-investgroup.com<mailto:btieno@excellis-investgroup.com> | w=
+ww.excellis-investgroup.com<http://www.excellis-investgroup.com/>
+
+
+[cid:image002.png@01DD0549.BBD03980]
+
+
+Ce message peut contenir des informations confidentielles dont la divulgati=
+on est =E0 ce titre rigoureusement interdite en l'absence d'autorisation ex=
+plicite de l'=E9metteur. Dans l'hypoth=E8se o=F9 vous l'auriez re=E7u par e=
+rreur, merci de le renvoyer =E0 l'=E9metteur et de d=E9truire toute copie.
+Notre environnement est fragile, merci de n'imprimer cet email qu'en cas de=
+ n=E9cessit=E9.
+
+
+
+
+
+De : ngerard@jofe.bf<mailto:ngerard@jofe.bf> <ngerard@jofe.bf<mailto:ngerar=
+d@jofe.bf>>
+Envoy=E9 : mercredi 24 juin 2026 12:27
+=C0 : Bili Edouard TIENO <btieno@excellis-investgroup.com<mailto:btieno@exc=
+ellis-investgroup.com>>; bgeofroy@jofe.bf<mailto:bgeofroy@jofe.bf>; gbadolo=
+@jofe.bf<mailto:gbadolo@jofe.bf>
+Cc : ngerard@jofedigital.com<mailto:ngerard@jofedigital.com>
+Objet : RE: Pr=E9sentation coris assurance IARD burkina
+
+Bonjour tr=E8s cher,
+Bien re=E7u !
+
+
+[cid:image004.jpg@01DD03E0.371DA430]
+
+De : Bili Edouard TIENO <btieno@excellis-investgroup.com<mailto:btieno@exce=
+llis-investgroup.com>>
+Envoy=E9 : mercredi 24 juin 2026 10:19
+=C0 : ngerard@jofe.bf<mailto:ngerard@jofe.bf>
+Cc : ngerard@jofedigital.com<mailto:ngerard@jofedigital.com>
+Objet : Pr=E9sentation coris assurance IARD burkina
+
+Bonjour DG,
+
+Ci-joint la pr=E9sentation de coris assurance IARD bf.
+
+Cordialement
+
+Bili Edouard TIENO
+
+
+
+
+Responsable Marketing et Communication | EXCELLIS INVEST GROUP SA
+Investissement et Conseil
+Burkina Faso | 01 BP 2061 Ouagadougou 01 | Ouagadougou |
+T=E9l : +226 25 33 35 40 | +226 76 67 60 22
+btieno@excellis-investgroup.com<mailto:btieno@excellis-investgroup.com> | w=
+ww.excellis-investgroup.com<http://www.excellis-investgroup.com/>
+
+
+[cid:image002.png@01DD0549.BBD03980]
+
+
+Ce message peut contenir des informations confidentielles dont la divulgati=
+on est =E0 ce titre rigoureusement interdite en l'absence d'autorisation ex=
+plicite de l'=E9metteur. Dans l'hypoth=E8se o=F9 vous l'auriez re=E7u par e=
+rreur, merci de le renvoyer =E0 l'=E9metteur et de d=E9truire toute copie.
+Notre environnement est fragile, merci de n'imprimer cet email qu'en cas de=
+ n=E9cessit=E9.
+
+
+
+
+--_000_AM8PR10MB47246401814348901D06E73DEEEB2AM8PR10MB4724EURP_
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<!--[if !mso]><style>v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style><![endif]--><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:Helvetica;
+	panose-1:2 11 6 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Aptos;}
+@font-face
+	{font-family:"Book Antiqua";
+	panose-1:2 4 6 2 5 3 5 3 3 4;}
+@font-face
+	{font-family:"Segoe UI";
+	panose-1:2 11 5 2 4 2 4 2 2 3;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	mso-ligatures:standardcontextual;
+	mso-fareast-language:EN-US;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:#0563C1;
+	text-decoration:underline;}
+span.EmailStyle20
+	{mso-style-type:personal-reply;
+	font-family:"Book Antiqua",serif;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-size:10.0pt;
+	mso-ligatures:none;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 70.85pt 70.85pt 70.85pt;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1028" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"FR" link=3D"#0563C1" vlink=3D"#954F72" style=3D"word-wrap:bre=
+ak-word">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif">Bonjour Cher ami,<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif">Bien re=E7u.<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif">Merci.<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif">Cordialement<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0cm =
+0cm 0cm">
+<p class=3D"MsoNormal"><b><span style=3D"mso-ligatures:none;mso-fareast-lan=
+guage:FR">De&nbsp;:</span></b><span style=3D"mso-ligatures:none;mso-fareast=
+-language:FR"> BADOLO GEOFROY &lt;bgeofroy@jofe.bf&gt;
+<br>
+<b>Envoy=E9&nbsp;:</b> jeudi 25 juin 2026 13:56<br>
+<b>=C0&nbsp;:</b> Bili Edouard TIENO &lt;btieno@excellis-investgroup.com&gt=
+;; ngerard@jofe.bf<br>
+<b>Cc&nbsp;:</b> ngerard@jofedigital.com<br>
+<b>Objet&nbsp;:</b> RE: Pr=E9sentation coris assurance IARD burkina<o:p></o=
+:p></span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<table class=3D"MsoNormalTable" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left" width=3D"100%" style=3D"width:100.0%">
+<tbody>
+<tr>
+<td width=3D"0" style=3D"width:.3pt;background:#A6A6A6;padding:5.25pt 1.5pt=
+ 5.25pt 1.5pt">
+</td>
+<td width=3D"100%" style=3D"width:100.0%;background:#EAEAEA;padding:5.25pt =
+3.75pt 5.25pt 11.25pt;aspect-ratio: revert !important;background:revert !im=
+portant;block-size: revert !important;border:revert !important;bottom: reve=
+rt !important;color:revert !important;color-scheme: revert !important;conte=
+nt-visibility: revert !important;cursor:revert !important;direction:revert =
+!important;display:revert !important;font-size:revert !important;height:rev=
+ert !important;hyphens: revert !important;letter-spacing:revert !important;=
+line-height:revert !important;margin:revert !important;opacity: revert !imp=
+ortant;order: revert !important;outline: revert !important;overflow:revert =
+!important;padding:revert !important;position:revert !important;resize: rev=
+ert !important;rotate: revert !important;scale: revert !important;tab-size:=
+ revert !important;table-layout:revert !important;text-align:revert !import=
+ant;text-indent:revert !important;text-orientation: revert !important;text-=
+overflow: revert !important;text-shadow:revert !important;text-transform:re=
+vert !important;text-wrap: revert !important;top:revert !important;transiti=
+on: revert !important;user-select: revert !important;vertical-align:revert =
+!important;visibility:revert !important;white-space:revert !important;width=
+:revert !important;word-break:revert !important;word-spacing:revert !import=
+ant;writing-mode:revert !important;zoom: revert !important">
+<div>
+<p class=3D"MsoNormal" style=3D"mso-element:frame;mso-element-frame-hspace:=
+2.25pt;mso-element-wrap:around;mso-element-anchor-vertical:paragraph;mso-el=
+ement-anchor-horizontal:column;mso-height-rule:exactly">
+<span style=3D"font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;=
+color:#212121;mso-ligatures:none;mso-fareast-language:FR">Vous n&#8217;obte=
+nez pas souvent d&#8217;e-mail =E0 partir de
+<a href=3D"mailto:bgeofroy@jofe.bf">bgeofroy@jofe.bf</a>. <a href=3D"https:=
+//aka.ms/LearnAboutSenderIdentification">
+Pourquoi c&#8217;est important</a> <o:p></o:p></span></p>
+</div>
+</td>
+<td width=3D"75" style=3D"width:56.25pt;background:#EAEAEA;padding:5.25pt 3=
+.75pt 5.25pt 3.75pt;aspect-ratio: revert !important;background:revert !impo=
+rtant;block-size: revert !important;border:revert !important;bottom: revert=
+ !important;color:revert !important;color-scheme: revert !important;content=
+-visibility: revert !important;cursor:revert !important;direction:revert !i=
+mportant;display:revert !important;font-size:revert !important;height:rever=
+t !important;hyphens: revert !important;letter-spacing:revert !important;li=
+ne-height:revert !important;margin:revert !important;opacity: revert !impor=
+tant;order: revert !important;outline: revert !important;overflow:revert !i=
+mportant;padding:revert !important;position:revert !important;resize: rever=
+t !important;rotate: revert !important;scale: revert !important;tab-size: r=
+evert !important;table-layout:revert !important;text-align:revert !importan=
+t;text-indent:revert !important;text-orientation: revert !important;text-ov=
+erflow: revert !important;text-shadow:revert !important;text-transform:reve=
+rt !important;text-wrap: revert !important;top:revert !important;transition=
+: revert !important;user-select: revert !important;vertical-align:revert !i=
+mportant;visibility:revert !important;white-space:revert !important;width:r=
+evert !important;word-break:revert !important;word-spacing:revert !importan=
+t;writing-mode:revert !important;zoom: revert !important;align: left !impor=
+tant">
+</td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Ap=
+tos&quot;,sans-serif;mso-ligatures:none;mso-fareast-language:FR">Bonsoir M.=
+ TIENO<br>
+Nous vous revenons par rapport =E0 vos diff=E9rents amendements sur les don=
+n=E9es des diff=E9rents filiales, par ailleurs nous restons toujours =E0 l'=
+attente s'il y a d'autres filiales qui aimeraient apporter des modification=
+s sur les donn=E9es.<br>
+<br>
+merci d'utiliser le lien : <a href=3D"https://excellis-invest-group.jofedig=
+ital.com/">
+https://excellis-invest-group.jofedigital.com/</a><br>
+<br>
+cordialement,<br>
+BADOLO<o:p></o:p></span></p>
+</div>
+<p class=3D"MsoNormal" style=3D"margin-bottom:12.0pt"><span style=3D"font-s=
+ize:12.0pt;font-family:&quot;Aptos&quot;,sans-serif;mso-ligatures:none;mso-=
+fareast-language:FR"><o:p>&nbsp;</o:p></span></p>
+<div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Ap=
+tos&quot;,sans-serif;mso-ligatures:none;mso-fareast-language:FR">On June 24=
+, 2026 1:49:10 PM GMT, Bili Edouard TIENO &lt;<a href=3D"mailto:btieno@exce=
+llis-investgroup.com">btieno@excellis-investgroup.com</a>&gt;
+ wrote:<o:p></o:p></span></p>
+</div>
+<blockquote style=3D"border:none;border-left:solid #CCCCCC 1.0pt;padding:0c=
+m 0cm 0cm 6.0pt;margin-left:4.8pt;margin-right:0cm">
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif">Merci pour ton retour.<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif">J&#8217;ai proc=E9d=E9 =E0 l&#8217;actualisation du=
+ projet. Toutefois, je constate que les pr=E9sentations des filiales que j&=
+#8217;avais pr=E9c=E9demment transmises n&#8217;ont pas encore =E9t=E9 int=
+=E9gr=E9es.<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif">Merci de me pr=E9ciser l&#8217;=E9tat d&#8217;avanc=
+ement de ce point ? Il serait souhaitable que ces int=E9grations se fassent=
+ au fur et =E0 mesure afin de maintenir le site =E0 jour et de faciliter
+ les validations successives.<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif">Par ailleurs, dans le menu Gouvernance, merci de ne=
+ conserver que le profil du Pr=E9sident NASSA.<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif">Je reste disponible pour tout =E9change compl=E9men=
+taire.<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif">Cordialement,<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<table class=3D"MsoNormalTable" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" style=3D"border-collapse:collapse">
+<tbody>
+<tr>
+<td width=3D"406" valign=3D"top" style=3D"width:304.55pt;border:none;border=
+-bottom:solid #C00000 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:12.0pt;font-family:&quot=
+;Book Antiqua&quot;,serif;color:#011993;mso-ligatures:none">Bili Edouard TI=
+ENO<o:p></o:p></span></b></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:8.0pt"><o:p>&nbsp;</o:p></s=
+pan></p>
+</td>
+<td width=3D"57" valign=3D"top" style=3D"width:42.75pt;padding:0cm 5.4pt 0c=
+m 5.4pt">
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</td>
+<td width=3D"226" valign=3D"top" style=3D"width:169.85pt;padding:0cm 5.4pt =
+0cm 5.4pt">
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</td>
+</tr>
+<tr>
+<td width=3D"406" valign=3D"top" style=3D"width:304.55pt;border:none;border=
+-bottom:solid #C00000 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:9.0pt;font-family:&quot;=
+Book Antiqua&quot;,serif;color:#5E5E5E;mso-ligatures:none"><o:p>&nbsp;</o:p=
+></span></b></p>
+<p class=3D"MsoNormal"><b><span style=3D"font-size:9.0pt;font-family:&quot;=
+Book Antiqua&quot;,serif;color:#5E5E5E;mso-ligatures:none">Responsable Mark=
+eting et Communication</span></b><b><span style=3D"font-size:12.0pt;font-fa=
+mily:&quot;Book Antiqua&quot;,serif;color:#011993;mso-ligatures:none">
+</span></b><b><span style=3D"font-size:9.0pt;font-family:&quot;Book Antiqua=
+&quot;,serif;color:#941100;mso-ligatures:none">|</span></b><b><span style=
+=3D"font-size:12.0pt;font-family:&quot;Book Antiqua&quot;,serif;color:#0119=
+93;mso-ligatures:none">
+</span></b><b><span style=3D"font-size:9.0pt;font-family:&quot;Book Antiqua=
+&quot;,serif;color:#011993;mso-ligatures:none">EXCELLIS INVEST GROUP SA</sp=
+an></b><b><span style=3D"font-size:12.0pt;font-family:&quot;Book Antiqua&qu=
+ot;,serif;color:#011993;mso-ligatures:none"><o:p></o:p></span></b></p>
+<p class=3D"MsoNormal"><b><span style=3D"font-size:9.0pt;font-family:&quot;=
+Book Antiqua&quot;,serif;color:#929000;mso-ligatures:none">Investissement e=
+t Conseil<o:p></o:p></span></b></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Boo=
+k Antiqua&quot;,serif;color:#5E5E5E;mso-ligatures:none">Burkina Faso
+</span><b><span style=3D"font-size:9.0pt;font-family:&quot;Book Antiqua&quo=
+t;,serif;color:#941100;mso-ligatures:none">|</span></b><span style=3D"font-=
+size:9.0pt;font-family:&quot;Book Antiqua&quot;,serif;color:#5E5E5E;mso-lig=
+atures:none"> 01 BP 2061 Ouagadougou 01
+</span><b><span style=3D"font-size:9.0pt;font-family:&quot;Book Antiqua&quo=
+t;,serif;color:#941100;mso-ligatures:none">|</span></b><span style=3D"font-=
+size:9.0pt;font-family:&quot;Book Antiqua&quot;,serif;color:#5E5E5E;mso-lig=
+atures:none"> Ouagadougou
+</span><b><span style=3D"font-size:9.0pt;font-family:&quot;Book Antiqua&quo=
+t;,serif;color:#941100;mso-ligatures:none">|</span></b><span style=3D"font-=
+size:9.0pt;font-family:&quot;Book Antiqua&quot;,serif;color:#5E5E5E;mso-lig=
+atures:none"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Boo=
+k Antiqua&quot;,serif;color:#5E5E5E;mso-ligatures:none">T=E9l : +226 25 33 =
+35 40
+</span><b><span style=3D"font-size:9.0pt;font-family:&quot;Book Antiqua&quo=
+t;,serif;color:#941100;mso-ligatures:none">|</span></b><span style=3D"font-=
+size:9.0pt;font-family:&quot;Book Antiqua&quot;,serif;color:#5E5E5E;mso-lig=
+atures:none"> +226 76 67 60 22<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><u><span style=3D"font-size:9.0pt;color:blue"><a hre=
+f=3D"mailto:btieno@excellis-investgroup.com">btieno@excellis-investgroup.co=
+m</a>
+</span></u><b><span style=3D"font-family:&quot;Book Antiqua&quot;,serif;col=
+or:#941100;mso-ligatures:none">|</span></b><u><span style=3D"font-size:9.0p=
+t;color:blue">
+</span></u><a href=3D"http://www.excellis-investgroup.com/"><span style=3D"=
+font-size:9.0pt;font-family:&quot;Book Antiqua&quot;,serif;color:blue;mso-l=
+igatures:none;mso-fareast-language:FR">www.excellis-investgroup.com</span><=
+/a><o:p></o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Boo=
+k Antiqua&quot;,serif;color:black;mso-ligatures:none">&nbsp;</span><b><span=
+ style=3D"font-size:9.0pt;font-family:&quot;Helvetica&quot;,sans-serif;colo=
+r:#941100;mso-ligatures:none">
+</span></b><o:p></o:p></p>
+</td>
+<td width=3D"57" valign=3D"top" style=3D"width:42.75pt;border:none;border-r=
+ight:solid #C00000 2.25pt;padding:0cm 5.4pt 0cm 5.4pt">
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</td>
+<td width=3D"226" valign=3D"top" style=3D"width:169.85pt;padding:0cm 5.4pt =
+0cm 5.4pt">
+<p class=3D"MsoNormal"><!--[if gte vml 1]><v:shapetype id=3D"_x0000_t75" co=
+ordsize=3D"21600,21600" o:spt=3D"75" o:preferrelative=3D"t" path=3D"m@4@5l@=
+4@11@9@11@9@5xe" filled=3D"f" stroked=3D"f">
+<v:stroke joinstyle=3D"miter" />
+<v:formulas>
+<v:f eqn=3D"if lineDrawn pixelLineWidth 0" />
+<v:f eqn=3D"sum @0 1 0" />
+<v:f eqn=3D"sum 0 0 @1" />
+<v:f eqn=3D"prod @2 1 2" />
+<v:f eqn=3D"prod @3 21600 pixelWidth" />
+<v:f eqn=3D"prod @3 21600 pixelHeight" />
+<v:f eqn=3D"sum @0 0 1" />
+<v:f eqn=3D"prod @6 1 2" />
+<v:f eqn=3D"prod @7 21600 pixelWidth" />
+<v:f eqn=3D"sum @8 21600 0" />
+<v:f eqn=3D"prod @7 21600 pixelHeight" />
+<v:f eqn=3D"sum @10 21600 0" />
+</v:formulas>
+<v:path o:extrusionok=3D"f" gradientshapeok=3D"t" o:connecttype=3D"rect" />
+<o:lock v:ext=3D"edit" aspectratio=3D"t" />
+</v:shapetype><v:shape id=3D"Image_x0020_1" o:spid=3D"_x0000_s1027" type=3D=
+"#_x0000_t75" style=3D'position:absolute;margin-left:27.75pt;margin-top:11.=
+4pt;width:108pt;height:58.8pt;z-index:-251656704;visibility:visible;mso-wra=
+p-style:square;mso-width-percent:0;mso-height-percent:0;mso-wrap-distance-l=
+eft:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;mso-wrap-distan=
+ce-bottom:0;mso-position-horizontal:absolute;mso-position-horizontal-relati=
+ve:text;mso-position-vertical:absolute;mso-position-vertical-relative:text;=
+mso-width-percent:0;mso-height-percent:0;mso-width-relative:margin;mso-heig=
+ht-relative:margin'>
+<v:imagedata cropbottom=3D"-2070f" />
+<o:lock v:ext=3D"edit" aspectratio=3D"f" />
+<w:wrap type=3D"tight"/>
+</v:shape><![endif]--><![if !vml]><img width=3D"144" height=3D"78" style=3D=
+"width:1.5in;height:.8166in" src=3D"cid:image002.png@01DD0549.BBD03980" ali=
+gn=3D"left" hspace=3D"12" v:shapes=3D"Image_x0020_1"><![endif]><o:p></o:p><=
+/p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class=3D"MsoNormal" style=3D"text-align:justify"><span style=3D"font-siz=
+e:12.0pt;font-family:&quot;Times New Roman&quot;,serif;color:black;mso-liga=
+tures:none;mso-fareast-language:FR"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal" style=3D"text-align:justify"><span style=3D"font-siz=
+e:12.0pt;font-family:&quot;Times New Roman&quot;,serif;color:black;mso-liga=
+tures:none;mso-fareast-language:FR"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal" style=3D"text-align:justify"><span style=3D"font-siz=
+e:12.0pt;font-family:&quot;Times New Roman&quot;,serif;color:black;mso-liga=
+tures:none;mso-fareast-language:FR">Ce message peut contenir des informatio=
+ns&nbsp;confidentielles dont&nbsp;la divulgation est =E0 ce
+ titre&nbsp;rigoureusement interdite en l'absence&nbsp;d'autorisation&nbsp;=
+explicite de l'=E9metteur. Dans l&#8217;hypoth=E8se o=F9 vous&nbsp;l'auriez=
+ re=E7u par erreur, merci de le renvoyer =E0&nbsp;l'=E9metteur et de&nbsp;d=
+=E9truire toute copie.</span><span style=3D"font-size:12.0pt;font-family:&q=
+uot;Times New Roman&quot;,serif;mso-ligatures:none;mso-fareast-language:FR"=
+><o:p></o:p></span></p>
+<p class=3D"MsoNormal" style=3D"background:white"><span style=3D"font-size:=
+9.0pt;font-family:&quot;Times New Roman&quot;,serif;color:#4F8F00;border:no=
+ne windowtext 1.0pt;padding:0cm;mso-ligatures:none;mso-fareast-language:FR"=
+>Notre environnement est fragile, merci de n&#8217;imprimer
+ cet email qu&#8217;en cas de n=E9cessit=E9.</span><span style=3D"font-size=
+:12.0pt;color:#201F1E;mso-ligatures:none;mso-fareast-language:FR"><o:p></o:=
+p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;mso-fareast-language=
+:FR"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;mso-fareast-language=
+:FR"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0cm =
+0cm 0cm">
+<p class=3D"MsoNormal"><b><span style=3D"mso-ligatures:none;mso-fareast-lan=
+guage:FR">De&nbsp;:</span></b><span style=3D"mso-ligatures:none;mso-fareast=
+-language:FR">
+<a href=3D"mailto:ngerard@jofe.bf">ngerard@jofe.bf</a> &lt;<a href=3D"mailt=
+o:ngerard@jofe.bf">ngerard@jofe.bf</a>&gt;
+<br>
+<b>Envoy=E9&nbsp;:</b> mercredi 24 juin 2026 12:27<br>
+<b>=C0&nbsp;:</b> Bili Edouard TIENO &lt;<a href=3D"mailto:btieno@excellis-=
+investgroup.com">btieno@excellis-investgroup.com</a>&gt;;
+<a href=3D"mailto:bgeofroy@jofe.bf">bgeofroy@jofe.bf</a>; <a href=3D"mailto=
+:gbadolo@jofe.bf">
+gbadolo@jofe.bf</a><br>
+<b>Cc&nbsp;:</b> <a href=3D"mailto:ngerard@jofedigital.com">ngerard@jofedig=
+ital.com</a><br>
+<b>Objet&nbsp;:</b> RE: Pr=E9sentation coris assurance IARD burkina<o:p></o=
+:p></span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><span style=3D"color:#002060">Bonjour tr=E8s cher,<o=
+:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"color:#002060">Bien re=E7u&nbsp;!<o:p=
+></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"color:#002060"><o:p>&nbsp;</o:p></spa=
+n></p>
+<p class=3D"MsoNormal"><span style=3D"color:#002060"><o:p>&nbsp;</o:p></spa=
+n></p>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:#002060;mso-ligatures:none;mso-=
+fareast-language:FR"><img border=3D"0" width=3D"800" height=3D"200" style=
+=3D"width:8.3333in;height:2.0833in" id=3D"_x0000_i1025" src=3D"cid:image004=
+.jpg@01DD03E0.371DA430"></span><span style=3D"color:#002060;mso-ligatures:n=
+one;mso-fareast-language:FR"><o:p></o:p></span></p>
+</div>
+<p class=3D"MsoNormal"><span style=3D"color:#002060"><o:p>&nbsp;</o:p></spa=
+n></p>
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0cm =
+0cm 0cm">
+<p class=3D"MsoNormal"><b><span style=3D"mso-ligatures:none;mso-fareast-lan=
+guage:FR">De&nbsp;:</span></b><span style=3D"mso-ligatures:none;mso-fareast=
+-language:FR"> Bili Edouard TIENO &lt;<a href=3D"mailto:btieno@excellis-inv=
+estgroup.com">btieno@excellis-investgroup.com</a>&gt;
+<br>
+<b>Envoy=E9&nbsp;:</b> mercredi 24 juin 2026 10:19<br>
+<b>=C0&nbsp;:</b> <a href=3D"mailto:ngerard@jofe.bf">ngerard@jofe.bf</a><br=
+>
+<b>Cc&nbsp;:</b> <a href=3D"mailto:ngerard@jofedigital.com">ngerard@jofedig=
+ital.com</a><br>
+<b>Objet&nbsp;:</b> Pr=E9sentation coris assurance IARD burkina<o:p></o:p><=
+/span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif">Bonjour DG,<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif">Ci-joint la pr=E9sentation de coris assurance IARD =
+bf.<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif">Cordialement<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;font-family:&quot;Bo=
+ok Antiqua&quot;,serif"><o:p>&nbsp;</o:p></span></p>
+<table class=3D"MsoNormalTable" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" style=3D"border-collapse:collapse">
+<tbody>
+<tr>
+<td width=3D"406" valign=3D"top" style=3D"width:304.55pt;border:none;border=
+-bottom:solid #C00000 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:12.0pt;font-family:&quot=
+;Book Antiqua&quot;,serif;color:#011993;mso-ligatures:none">Bili Edouard TI=
+ENO<o:p></o:p></span></b></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:8.0pt"><o:p>&nbsp;</o:p></s=
+pan></p>
+</td>
+<td width=3D"57" valign=3D"top" style=3D"width:42.75pt;padding:0cm 5.4pt 0c=
+m 5.4pt">
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</td>
+<td width=3D"226" valign=3D"top" style=3D"width:169.85pt;padding:0cm 5.4pt =
+0cm 5.4pt">
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</td>
+</tr>
+<tr>
+<td width=3D"406" valign=3D"top" style=3D"width:304.55pt;border:none;border=
+-bottom:solid #C00000 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:9.0pt;font-family:&quot;=
+Book Antiqua&quot;,serif;color:#5E5E5E;mso-ligatures:none"><o:p>&nbsp;</o:p=
+></span></b></p>
+<p class=3D"MsoNormal"><b><span style=3D"font-size:9.0pt;font-family:&quot;=
+Book Antiqua&quot;,serif;color:#5E5E5E;mso-ligatures:none">Responsable Mark=
+eting et Communication</span></b><b><span style=3D"font-size:12.0pt;font-fa=
+mily:&quot;Book Antiqua&quot;,serif;color:#011993;mso-ligatures:none">
+</span></b><b><span style=3D"font-size:9.0pt;font-family:&quot;Book Antiqua=
+&quot;,serif;color:#941100;mso-ligatures:none">|</span></b><b><span style=
+=3D"font-size:12.0pt;font-family:&quot;Book Antiqua&quot;,serif;color:#0119=
+93;mso-ligatures:none">
+</span></b><b><span style=3D"font-size:9.0pt;font-family:&quot;Book Antiqua=
+&quot;,serif;color:#011993;mso-ligatures:none">EXCELLIS INVEST GROUP SA</sp=
+an></b><b><span style=3D"font-size:12.0pt;font-family:&quot;Book Antiqua&qu=
+ot;,serif;color:#011993;mso-ligatures:none"><o:p></o:p></span></b></p>
+<p class=3D"MsoNormal"><b><span style=3D"font-size:9.0pt;font-family:&quot;=
+Book Antiqua&quot;,serif;color:#929000;mso-ligatures:none">Investissement e=
+t Conseil<o:p></o:p></span></b></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Boo=
+k Antiqua&quot;,serif;color:#5E5E5E;mso-ligatures:none">Burkina Faso
+</span><b><span style=3D"font-size:9.0pt;font-family:&quot;Book Antiqua&quo=
+t;,serif;color:#941100;mso-ligatures:none">|</span></b><span style=3D"font-=
+size:9.0pt;font-family:&quot;Book Antiqua&quot;,serif;color:#5E5E5E;mso-lig=
+atures:none"> 01 BP 2061 Ouagadougou 01
+</span><b><span style=3D"font-size:9.0pt;font-family:&quot;Book Antiqua&quo=
+t;,serif;color:#941100;mso-ligatures:none">|</span></b><span style=3D"font-=
+size:9.0pt;font-family:&quot;Book Antiqua&quot;,serif;color:#5E5E5E;mso-lig=
+atures:none"> Ouagadougou
+</span><b><span style=3D"font-size:9.0pt;font-family:&quot;Book Antiqua&quo=
+t;,serif;color:#941100;mso-ligatures:none">|</span></b><span style=3D"font-=
+size:9.0pt;font-family:&quot;Book Antiqua&quot;,serif;color:#5E5E5E;mso-lig=
+atures:none"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Boo=
+k Antiqua&quot;,serif;color:#5E5E5E;mso-ligatures:none">T=E9l : +226 25 33 =
+35 40
+</span><b><span style=3D"font-size:9.0pt;font-family:&quot;Book Antiqua&quo=
+t;,serif;color:#941100;mso-ligatures:none">|</span></b><span style=3D"font-=
+size:9.0pt;font-family:&quot;Book Antiqua&quot;,serif;color:#5E5E5E;mso-lig=
+atures:none"> +226 76 67 60 22<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><a href=3D"mailto:btieno@excellis-investgroup.com"><=
+span style=3D"font-size:9.0pt">btieno@excellis-investgroup.com</span></a><u=
+><span style=3D"font-size:9.0pt;color:blue">
+</span></u><b><span style=3D"font-family:&quot;Book Antiqua&quot;,serif;col=
+or:#941100;mso-ligatures:none">|</span></b><u><span style=3D"font-size:9.0p=
+t;color:blue">
+</span></u><a href=3D"http://www.excellis-investgroup.com/"><span style=3D"=
+font-size:9.0pt;font-family:&quot;Book Antiqua&quot;,serif;color:blue;mso-l=
+igatures:none;mso-fareast-language:FR">www.excellis-investgroup.com</span><=
+/a><o:p></o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Boo=
+k Antiqua&quot;,serif;color:black;mso-ligatures:none">&nbsp;</span><b><span=
+ style=3D"font-size:9.0pt;font-family:&quot;Helvetica&quot;,sans-serif;colo=
+r:#941100;mso-ligatures:none">
+</span></b><o:p></o:p></p>
+</td>
+<td width=3D"57" valign=3D"top" style=3D"width:42.75pt;border:none;border-r=
+ight:solid #C00000 2.25pt;padding:0cm 5.4pt 0cm 5.4pt">
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</td>
+<td width=3D"226" valign=3D"top" style=3D"width:169.85pt;padding:0cm 5.4pt =
+0cm 5.4pt">
+<p class=3D"MsoNormal"><!--[if gte vml 1]><v:shape id=3D"Groupe_x0020_1" o:=
+spid=3D"_x0000_s1026" type=3D"#_x0000_t75" style=3D'position:absolute;margi=
+n-left:27.75pt;margin-top:11.4pt;width:108pt;height:58.8pt;z-index:-2516587=
+52;visibility:visible;mso-wrap-style:square;mso-width-percent:0;mso-height-=
+percent:0;mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-dista=
+nce-right:9pt;mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;m=
+so-position-horizontal-relative:text;mso-position-vertical:absolute;mso-pos=
+ition-vertical-relative:text;mso-width-percent:0;mso-height-percent:0;mso-w=
+idth-relative:margin;mso-height-relative:margin'>
+<v:imagedata cropbottom=3D"-2070f" />
+<o:lock v:ext=3D"edit" aspectratio=3D"f" />
+<w:wrap type=3D"tight"/>
+</v:shape><![endif]--><![if !vml]><img width=3D"144" height=3D"78" style=3D=
+"width:1.5in;height:.8166in" src=3D"cid:image002.png@01DD0549.BBD03980" ali=
+gn=3D"left" hspace=3D"12" v:shapes=3D"Groupe_x0020_1"><![endif]><o:p></o:p>=
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class=3D"MsoNormal" style=3D"text-align:justify"><span style=3D"font-siz=
+e:12.0pt;font-family:&quot;Times New Roman&quot;,serif;color:black;mso-liga=
+tures:none;mso-fareast-language:FR"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal" style=3D"text-align:justify"><span style=3D"font-siz=
+e:12.0pt;font-family:&quot;Times New Roman&quot;,serif;color:black;mso-liga=
+tures:none;mso-fareast-language:FR"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal" style=3D"text-align:justify"><span style=3D"font-siz=
+e:12.0pt;font-family:&quot;Times New Roman&quot;,serif;color:black;mso-liga=
+tures:none;mso-fareast-language:FR">Ce message peut contenir des informatio=
+ns&nbsp;confidentielles dont&nbsp;la divulgation est =E0 ce
+ titre&nbsp;rigoureusement interdite en l'absence&nbsp;d'autorisation&nbsp;=
+explicite de l'=E9metteur. Dans l&#8217;hypoth=E8se o=F9 vous&nbsp;l'auriez=
+ re=E7u par erreur, merci de le renvoyer =E0&nbsp;l'=E9metteur et de&nbsp;d=
+=E9truire toute copie.</span><span style=3D"font-size:12.0pt;font-family:&q=
+uot;Times New Roman&quot;,serif;mso-ligatures:none;mso-fareast-language:FR"=
+><o:p></o:p></span></p>
+<p class=3D"MsoNormal" style=3D"background:white"><span style=3D"font-size:=
+9.0pt;font-family:&quot;Times New Roman&quot;,serif;color:#4F8F00;border:no=
+ne windowtext 1.0pt;padding:0cm;mso-ligatures:none;mso-fareast-language:FR"=
+>Notre environnement est fragile, merci de n&#8217;imprimer
+ cet email qu&#8217;en cas de n=E9cessit=E9.</span><span style=3D"font-size=
+:12.0pt;color:#201F1E;mso-ligatures:none;mso-fareast-language:FR"><o:p></o:=
+p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;mso-fareast-language=
+:FR"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;mso-fareast-language=
+:FR"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</blockquote>
+</div>
+</div>
+</div>
+</body>
+</html>
+
+--_000_AM8PR10MB47246401814348901D06E73DEEEB2AM8PR10MB4724EURP_--
+
+--_004_AM8PR10MB47246401814348901D06E73DEEEB2AM8PR10MB4724EURP_
+Content-Type: image/png; name="image002.png"
+Content-Description: image002.png
+Content-Disposition: inline; filename="image002.png"; size=196;
+	creation-date="Fri, 26 Jun 2026 08:56:56 GMT";
+	modification-date="Fri, 26 Jun 2026 08:56:56 GMT"
+Content-ID: <image002.png@01DD0549.BBD03980>
+Content-Transfer-Encoding: base64
+
+iVBORw0KGgoAAAANSUhEUgAAALQAAABiCAMAAADOdAkyAAAAAXNSR0ICQMB9xQAAAANQTFRFAAAA
+p3o92gAAAAF0Uk5TAEDm2GYAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAAZdEVYdFNvZnR3YXJlAE1p
+Y3Jvc29mdCBPZmZpY2V/7TVxAAAAKElEQVR42u3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAAAAAAAAA
+AAAA3g1FSgABLIT+TAAAAABJRU5ErkJggg==
+
+--_004_AM8PR10MB47246401814348901D06E73DEEEB2AM8PR10MB4724EURP_--

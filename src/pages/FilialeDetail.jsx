@@ -3,23 +3,33 @@ import ScrollReveal from '../components/ui/ScrollReveal'
 import FilialeLogo from '../components/ui/FilialeLogo'
 import { logos } from '../assets/logos'
 import CallToAction from '../components/sections/CallToAction'
+import Seo from '../components/Seo'
+import PageSkeleton from '../components/ui/PageSkeleton'
 import { useApi } from '../hooks/useApi'
 import PageHero from '../components/ui/PageHero'
 import { useLang } from '../contexts/LangContext'
 import FaIcon from '../components/ui/FaIcon'
+import SocialIcon, { SOCIAL_NETWORKS } from '../components/ui/SocialIcon'
 import { useResponsive } from '../hooks/useResponsive'
 
 const API = import.meta.env.VITE_API_URL?.replace('/api', '') || ''
 
 export default function FilialeDetail() {
   const { id } = useParams()
-  const { t, pick } = useLang()
+  const { t, pick, lang } = useLang()
   const { isMobile } = useResponsive()
   const { data: filiale, loading } = useApi(`/filiales/${id}`)
   const { data: allFiliales = [] } = useApi('/filiales?actif=true')
   const { data: metiers = [] } = useApi('/metiers')
+  const metierMap = Object.fromEntries(metiers.map(m => [m.slug, m]))
+  const tSecteur = (obj) => {
+    const slug = obj?.secteur_slug || obj?.secteurSlug || ''
+    if (slug && metierMap[slug]) return pick(metierMap[slug], 'titre')
+    if (lang === 'en' && obj?.secteur_en) return obj.secteur_en
+    return obj?.secteur || ''
+  }
 
-  if (loading) return <div style={{ padding: '200px 5%', textAlign: 'center', color: 'var(--gray-mid)' }}>{t('common.loading')}</div>
+  if (loading) return <PageSkeleton />
 
   if (!filiale) {
     return (
@@ -44,6 +54,11 @@ export default function FilialeDetail() {
 
   return (
     <>
+      <Seo
+        title={filiale.nom}
+        description={pick(filiale, 'description') || `${filiale.nom}, filiale d'Excellis Invest Group.`}
+        path={`/nos-filiales/${id}`}
+      />
       <PageHero
         section={`filiale-${id}`}
         bgImage={filiale.image || null}
@@ -56,7 +71,7 @@ export default function FilialeDetail() {
               flexShrink: 0, boxShadow: '0 4px 24px rgba(0,0,0,0.2)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <img src={resolvedLogo} alt={filiale.nom} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: 10 }} />
+              <img src={resolvedLogo} alt={filiale.nom} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: 10 }} />
             </div>
           ) : (
             <div style={{
@@ -71,7 +86,7 @@ export default function FilialeDetail() {
           <div>
             <h1 className="page-hero-title" style={{ marginBottom: 8 }}>{filiale.nom}</h1>
             <div style={{ fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--gold-light)' }}>
-              {pick(filiale, 'secteur')} · {filiale.pays}{filiale.ville ? ` · ${filiale.ville}` : ''}
+              {tSecteur(filiale)} · {filiale.pays}{filiale.ville ? ` · ${filiale.ville}` : ''}
             </div>
           </div>
         </div>
@@ -86,7 +101,7 @@ export default function FilialeDetail() {
             <h2 className="section-title" style={{ fontSize: 'clamp(24px,3vw,38px)' }}>{filiale.nom}</h2>
             <div className="gold-rule" />
 
-            <p style={{ fontSize: 17, color: 'var(--gray-mid)', lineHeight: 1.8 }}>
+            <p style={{ fontSize: 17, color: 'var(--gray-mid)', lineHeight: 1.8, textAlign: 'justify' }}>
               {pick(filiale, 'description')}
             </p>
 
@@ -101,13 +116,13 @@ export default function FilialeDetail() {
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 8 }}>
                   {t('filiales.missionLabel')}
                 </div>
-                <p style={{ fontSize: 15, color: 'var(--gray)', lineHeight: 1.7, margin: 0 }}>
+                <p style={{ fontSize: 15, color: 'var(--gray)', lineHeight: 1.7, margin: 0, textAlign: 'justify' }}>
                   {pick(filiale, 'mission')}
                 </p>
               </div>
             )}
 
-            {filiale.vision && (
+            {pick(filiale, 'vision') && (
               <div style={{
                 marginTop: 16,
                 borderLeft: '3px solid var(--teal)',
@@ -118,19 +133,19 @@ export default function FilialeDetail() {
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--teal)', marginBottom: 8 }}>
                   {t('filiales.visionLabel')}
                 </div>
-                <p style={{ fontSize: 15, color: 'var(--gray)', lineHeight: 1.7, margin: 0 }}>
-                  {filiale.vision}
+                <p style={{ fontSize: 15, color: 'var(--gray)', lineHeight: 1.7, margin: 0, textAlign: 'justify' }}>
+                  {pick(filiale, 'vision')}
                 </p>
               </div>
             )}
 
-            {filiale.valeurs && (
+            {pick(filiale, 'valeurs') && (
               <div style={{ marginTop: 28 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 14 }}>
                   {t('filiales.valeursLabel')}
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                  {filiale.valeurs.split(/[·,\n]/).map(v => v.trim()).filter(Boolean).map((v, i) => (
+                  {pick(filiale, 'valeurs').split(/[·,\n]/).map(v => v.trim()).filter(Boolean).map((v, i) => (
                     <span key={i} style={{
                       background: 'var(--ivory)',
                       border: '1px solid var(--gray-light)',
@@ -147,7 +162,7 @@ export default function FilialeDetail() {
               </div>
             )}
 
-            {filiale.commentaires && (
+            {pick(filiale, 'commentaires') && (
               <div style={{
                 marginTop: 28,
                 background: 'var(--ivory)',
@@ -155,18 +170,16 @@ export default function FilialeDetail() {
                 borderRadius: 6,
                 padding: '20px 24px',
               }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 10 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginBottom: 14 }}>
                   {t('filiales.infoCompl')}
                 </div>
-                <p style={{ fontSize: 14, color: 'var(--gray)', lineHeight: 1.75, margin: 0, whiteSpace: 'pre-line' }}>
-                  {filiale.commentaires}
-                </p>
+                <RichComment text={pick(filiale, 'commentaires')} />
               </div>
             )}
 
             <div style={{ marginTop: 40, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
               <ContactFilialeBtn filiale={filiale} />
-              <Link to="/nos-filiales" className="btn-teal">{t('filiales.allFiliales')}</Link>
+              <Link to="/nos-filiales" className="btn-teal">{t('filiales.allFiliales')} <FaIcon name="arrow-right" size={16} /></Link>
             </div>
           </ScrollReveal>
 
@@ -181,7 +194,7 @@ export default function FilialeDetail() {
                   boxShadow: '0 4px 16px rgba(0,0,0,0.07)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <img src={resolvedLogo} alt={filiale.nom} style={{ maxWidth: '100%', maxHeight: 160, objectFit: 'contain' }} />
+                  <img src={resolvedLogo} alt={filiale.nom} loading="lazy" style={{ maxWidth: '100%', maxHeight: 160, objectFit: 'contain' }} />
                 </div>
               )}
 
@@ -189,7 +202,7 @@ export default function FilialeDetail() {
 
               <div style={{ background: 'var(--ivory)', padding: 24, borderRadius: 6, border: '1px solid var(--gray-light)' }}>
                 <div style={labelStyle}>{t('filiales.sectorLabel')}</div>
-                <div style={{ fontWeight: 600, color: 'var(--teal)' }}>{pick(filiale, 'secteur')}</div>
+                <div style={{ fontWeight: 600, color: 'var(--teal)' }}>{tSecteur(filiale)}</div>
               </div>
 
               <div style={{ background: 'var(--ivory)', padding: 24, borderRadius: 6, border: '1px solid var(--gray-light)' }}>
@@ -219,7 +232,11 @@ export default function FilialeDetail() {
                       <div style={{ ...contactRowStyle, cursor: 'default' }}>
                         <FaIcon name="location-dot" size={14} style={contactIconStyle} />
                         <span style={{ color: 'var(--gray-mid)' }}>
-                          {[filiale.adresse, filiale.ville, filiale.pays].filter(Boolean).join(', ')}
+                          {[
+                            filiale.adresse,
+                            filiale.ville && !filiale.adresse?.includes(filiale.ville) ? filiale.ville : null,
+                            filiale.pays && !filiale.adresse?.includes(filiale.pays) ? filiale.pays : null,
+                          ].filter(Boolean).join(', ')}
                         </span>
                       </div>
                     )}
@@ -230,29 +247,6 @@ export default function FilialeDetail() {
                 </div>
               )}
 
-              <div style={{ background: 'var(--white)', padding: 24, borderRadius: 6, border: '1px solid var(--gray-light)' }}>
-                <div style={labelStyle}>{t('filiales.groupLabel')}</div>
-                <div style={{ fontWeight: 600, color: 'var(--black)' }}>Excellis Invest Group</div>
-              </div>
-
-              {filiale.website && (
-                <a
-                  href={filiale.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: 10,
-                    background: 'var(--teal-dark)', color: 'white',
-                    padding: '14px 20px', borderRadius: 6, textDecoration: 'none',
-                    fontSize: 13, fontWeight: 600, transition: 'opacity 0.2s',
-                  }}
-                  onMouseOver={e => e.currentTarget.style.opacity = '0.85'}
-                  onMouseOut={e => e.currentTarget.style.opacity = '1'}
-                >
-                  <FaIcon name="globe" size={16} />
-                  {t('filiales.website') || 'Visiter le site web'} →
-                </a>
-              )}
             </div>
           </ScrollReveal>
         </div>
@@ -266,7 +260,7 @@ export default function FilialeDetail() {
                   <Link key={f.id} to={`/nos-filiales/${f.id}`} className="filiale-card" style={{ flex: '1 1 200px', maxWidth: 280 }}>
                     <FilialeLogo id={f.id} sigle={f.sigle} size={56} logo={f.logo} />
                     <div className="filiale-name">{f.nom}</div>
-                    <div className="filiale-sector">{pick(f, 'secteur')}</div>
+                    <div className="filiale-sector">{tSecteur(f)}</div>
                     <div className="filiale-country"><FaIcon name="location-dot" size={12} /> {f.pays}{f.ville ? `, ${f.ville}` : ''}</div>
                   </Link>
                 ))}
@@ -276,12 +270,77 @@ export default function FilialeDetail() {
         )}
       </section>
 
-      <CallToAction />
+      <CallToAction
+        contactHref={filiale.email_contact ? `mailto:${filiale.email_contact}` : filiale.telephone ? `tel:${filiale.telephone}` : undefined}
+      />
     </>
   )
 }
 
+// Découpe le texte "commentaires" (rédigé en blocs séparés par une ligne vide,
+// avec puces "— ..." ou lignes "Libellé : contenu") en titres + listes + paragraphes
+// plutôt qu'un unique bloc de texte brut difficile à lire.
+function RichComment({ text }) {
+  const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean)
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      {blocks.map((block, i) => {
+        const lines = block.split('\n').map(l => l.trim()).filter(Boolean)
+        const bulletLines = lines.filter(l => /^[—-]\s/.test(l))
+        const isHeadingWithBullets = bulletLines.length > 0 && bulletLines.length >= lines.length - 1
+
+        if (isHeadingWithBullets) {
+          const heading = lines.length > bulletLines.length ? lines[0].replace(/\s*:\s*$/, '') : null
+          return (
+            <div key={i}>
+              {heading && (
+                <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--teal-dark)', marginBottom: 8 }}>
+                  {heading}
+                </div>
+              )}
+              <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {bulletLines.map((l, j) => {
+                  const content = l.replace(/^[—-]\s*/, '')
+                  const [label, ...rest] = content.split(/\s*:\s*/)
+                  const detail = rest.join(' : ')
+                  return (
+                    <li key={j} style={{ display: 'flex', gap: 8, fontSize: 14, color: 'var(--gray)', lineHeight: 1.6 }}>
+                      <span style={{ color: 'var(--gold)', flexShrink: 0 }}>—</span>
+                      <span>
+                        {detail ? <><strong style={{ color: 'var(--gray)' }}>{label}</strong> : {detail}</> : content}
+                      </span>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          )
+        }
+
+        if (lines.length === 1) {
+          const m = lines[0].match(/^([^:]{3,40}?)\s*:\s*(.+)$/)
+          if (m) {
+            return (
+              <p key={i} style={{ fontSize: 14, color: 'var(--gray)', lineHeight: 1.7, margin: 0, textAlign: 'justify' }}>
+                <strong style={{ color: 'var(--teal-dark)' }}>{m[1]}</strong> : {m[2]}
+              </p>
+            )
+          }
+        }
+
+        return (
+          <p key={i} style={{ fontSize: 14, color: 'var(--gray)', lineHeight: 1.7, margin: 0, whiteSpace: 'pre-line', textAlign: 'justify' }}>
+            {lines.join('\n')}
+          </p>
+        )
+      })}
+    </div>
+  )
+}
+
 function ContactFilialeBtn({ filiale, fullWidth }) {
+  const { t } = useLang()
   const style = {
     display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
     background: 'var(--gold)', color: 'var(--teal-dark)',
@@ -291,7 +350,7 @@ function ContactFilialeBtn({ filiale, fullWidth }) {
     transition: 'opacity 0.2s',
     ...(fullWidth ? { width: '100%' } : {}),
   }
-  const label = 'Contacter la filiale'
+  const label = t('filiales.contactBtn')
 
   if (filiale.email_contact) {
     return (
@@ -323,121 +382,45 @@ function ContactFilialeBtn({ filiale, fullWidth }) {
   )
 }
 
-const SOCIALS = [
-  {
-    key: 'linkedin',
-    label: 'LinkedIn',
-    color: '#0a66c2',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
-        <circle cx="4" cy="4" r="2"/>
-      </svg>
-    ),
-    href: v => v,
-  },
-  {
-    key: 'facebook',
-    label: 'Facebook',
-    color: '#1877f2',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
-      </svg>
-    ),
-    href: v => v,
-  },
-  {
-    key: 'twitter',
-    label: 'X / Twitter',
-    color: '#000000',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-      </svg>
-    ),
-    href: v => v,
-  },
-  {
-    key: 'instagram',
-    label: 'Instagram',
-    color: '#e1306c',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-        <circle cx="12" cy="12" r="4"/>
-        <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
-      </svg>
-    ),
-    href: v => v,
-  },
-  {
-    key: 'youtube',
-    label: 'YouTube',
-    color: '#ff0000',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.54C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/>
-        <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/>
-      </svg>
-    ),
-    href: v => v,
-  },
-  {
-    key: 'tiktok',
-    label: 'TikTok',
-    color: '#000000',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/>
-      </svg>
-    ),
-    href: v => v,
-  },
-  {
-    key: 'whatsapp',
-    label: 'WhatsApp',
-    color: '#25d366',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-      </svg>
-    ),
-    href: v => `https://wa.me/${v.replace(/\D/g, '')}`,
-  },
-]
+const SOCIAL_KEYS = ['linkedin', 'facebook', 'twitter', 'instagram', 'youtube', 'tiktok', 'whatsapp']
 
 function SocialBar({ filiale }) {
-  const links = SOCIALS.filter(s => filiale[s.key])
-  if (!links.length) return null
+  const { t } = useLang()
+  const links = SOCIAL_KEYS.filter(key => filiale[key])
+  const hasWebsite = !!filiale.website
+  if (!links.length && !hasWebsite) return null
+
+  const btnStyle = {
+    width: 40, height: 40, borderRadius: 8, color: 'white',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    textDecoration: 'none', transition: 'transform 0.15s, opacity 0.15s', flexShrink: 0,
+  }
 
   return (
     <div style={{ background: 'var(--white)', padding: '20px 24px', borderRadius: 6, border: '1px solid var(--gray-light)' }}>
-      <div style={labelStyle}>Réseaux sociaux</div>
+      <div style={labelStyle}>{t('filiales.sociaux')}</div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 4 }}>
-        {links.map(s => (
-          <a
-            key={s.key}
-            href={s.href(filiale[s.key])}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={s.label}
-            style={{
-              width: 40, height: 40,
-              borderRadius: 8,
-              background: s.color,
-              color: 'white',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              textDecoration: 'none',
-              transition: 'transform 0.15s, opacity 0.15s',
-              flexShrink: 0,
-            }}
+        {links.map(key => {
+          const net = SOCIAL_NETWORKS[key]
+          return (
+            <a key={key} href={net.href(filiale[key])} target="_blank" rel="noopener noreferrer" title={net.label} aria-label={net.label}
+              style={{ ...btnStyle, background: net.color }}
+              onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.opacity = '0.85' }}
+              onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.opacity = '1' }}
+            >
+              <SocialIcon network={key} size={18} />
+            </a>
+          )
+        })}
+        {hasWebsite && (
+          <a href={filiale.website} target="_blank" rel="noopener noreferrer" title={t('filiales.website') || 'Site web'}
+            style={{ ...btnStyle, background: 'var(--teal-dark)' }}
             onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.opacity = '0.85' }}
             onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.opacity = '1' }}
           >
-            {s.icon}
+            <FaIcon name="globe" size={18} />
           </a>
-        ))}
+        )}
       </div>
     </div>
   )

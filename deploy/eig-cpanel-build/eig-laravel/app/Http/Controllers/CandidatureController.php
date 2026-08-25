@@ -8,9 +8,25 @@ use Illuminate\Support\Facades\Mail;
 
 class CandidatureController extends Controller {
 
+    private function uploadBase(): string {
+        // Priorité 1 : UPLOAD_DIR explicite dans .env
+        if ($dir = env('UPLOAD_DIR')) {
+            return $dir;
+        }
+
+        // Priorité 2 : calculé depuis l'emplacement du script d'entrée
+        // (api/index.php est toujours au même niveau que le dossier uploads/)
+        $script = $_SERVER['SCRIPT_FILENAME'] ?? '';
+        if ($script && is_file($script)) {
+            return dirname(realpath(dirname($script))) . '/uploads';
+        }
+
+        // Priorité 3 : fallback Laravel standard
+        return public_path('uploads');
+    }
+
     private function cvDir(): string {
-        $base = env('UPLOAD_DIR', public_path('uploads'));
-        $dir = $base . '/cvs';
+        $dir = $this->uploadBase() . '/cvs';
         if (!is_dir($dir)) mkdir($dir, 0755, true);
         return $dir;
     }
@@ -100,8 +116,7 @@ class CandidatureController extends Controller {
     public function destroy($id) {
         $c = Candidature::findOrFail($id);
         if ($c->cv_path) {
-            $base = env('UPLOAD_DIR', public_path('uploads'));
-            $full = $base . '/cvs/' . basename($c->cv_path);
+            $full = $this->uploadBase() . '/cvs/' . basename($c->cv_path);
             if (file_exists($full)) unlink($full);
         }
         $c->delete();
