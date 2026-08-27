@@ -60,7 +60,7 @@ export default function LeGroupe() {
               <div style={{ background: 'var(--gold-pale)', borderRadius: 6, padding: '28px 36px', border: '1px solid rgba(184,146,42,0.2)' }}>
                 <div style={{ fontFamily: 'var(--font-num)', fontSize: 44, color: 'var(--gold)', lineHeight: 1 }}>+700</div>
                 <div style={{ fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--gray-mid)', marginTop: 8 }}>
-                  {t('groupe.rating')}
+                  {t('groupe.collaborateursLabel')}
                 </div>
               </div>
             </div>

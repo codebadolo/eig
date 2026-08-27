@@ -2,7 +2,7 @@ export const company = {
   nom: 'Excellis Invest Group',
   tagline: 'Investir autrement',
   descriptionCourte: 'Excellis Invest Group est une holding multisectorielle capitalisée à 20 milliards FCFA, développant ses activités dans plusieurs secteurs stratégiques en Afrique.',
-  description: 'Excellis Invest Group est une holding multisectorielle capitalisée à 20 milliards FCFA, développant ses activités dans plusieurs secteurs stratégiques en Afrique. Fondée en 2019 et basée au Burkina Faso, elle assure le pilotage stratégique et la gouvernance d\'un portefeuille de filiales couvrant les services financiers, l\'assurance, les énergies, l\'immobilier, les technologies, l\'industrie, le transport-logistique, l\'hôtellerie et le commerce.',
+  description: 'Excellis Invest Group est une holding multisectorielle capitalisée à 20 milliards FCFA, développant ses activités dans plusieurs secteurs stratégiques en Afrique. Fondée en 2019 et basée au Burkina Faso, elle assure le pilotage stratégique et la gouvernance d\'un portefeuille de filiales couvrant les services financiers, l\'assurance, les énergies, l\'immobilier, les technologies, l\'industrie, le transport et la logistique, l\'hôtellerie et le commerce.',
   mission: 'Mobiliser des expertises, des capitaux et des mécanismes d\'intervention à forte valeur ajoutée pour accompagner les institutions et entreprises africaines dans leur financement, leur structuration et leur développement durable.',
   vision: 'Être un investisseur panafricain de référence.',
   valeurs: [

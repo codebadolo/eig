@@ -58,9 +58,12 @@ export default function Footer() {
 
   const cols = (company?.footerCols?.length === 3) ? company.footerCols : DEFAULT_COLS
 
-  const mentionsHref = company?.footerMentions        || '/contact'
-  const privacyHref  = company?.footerConfidentialite || '/contact'
-  const cookiesHref  = company?.footerCookies         || '/contact'
+  // Liens permanents vers les pages juridiques (prescription d'intégration).
+  // Ils pointaient par défaut vers /contact, ce qui rendait ces pages inaccessibles.
+  const mentionsHref = company?.footerMentions        || '/mentions-legales'
+  const cguHref      = company?.footerCgu             || '/conditions-utilisation'
+  const privacyHref  = company?.footerConfidentialite || '/confidentialite'
+  const cookiesHref  = company?.footerCookies         || '/cookies'
   const companyName  = pick(company, 'footerCopyright') || `${company?.nom || 'Excellis Invest Group'}. ${t('footer.rights')}`
   const tagline      = pick(company, 'footerTagline') || pick(company, 'tagline') || t('footer.tagline')
   const desc         = pick(company, 'footerDesc')    || t('footer.desc')
@@ -109,6 +112,7 @@ export default function Footer() {
         <span>© {new Date().getFullYear()} {companyName}</span>
         <div className="footer-legal">
           <ColLink href={mentionsHref} label={t('footer.legal')} />
+          <ColLink href={cguHref}      label={t('footer.terms')} />
           <ColLink href={privacyHref}  label={t('footer.privacy')} />
           <ColLink href={cookiesHref}  label={t('footer.cookies')} />
         </div>

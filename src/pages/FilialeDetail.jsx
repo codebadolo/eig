@@ -414,7 +414,7 @@ function SocialBar({ filiale }) {
         })}
         {hasWebsite && (
           <a href={filiale.website} target="_blank" rel="noopener noreferrer" title={t('filiales.website') || 'Site web'}
-            style={{ ...btnStyle, background: 'var(--teal-dark)' }}
+            style={{ ...btnStyle, background: 'var(--gold)' }}
             onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.opacity = '0.85' }}
             onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.opacity = '1' }}
           >

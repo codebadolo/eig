@@ -86,7 +86,7 @@ export default function DirigeantDetail() {
             <h1 className="page-hero-title" style={{ marginBottom: 6 }}>{dirigeant.nom}</h1>
             <span style={{ fontSize: 13, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold-light)' }}>{dirigeant.role}</span>
             {dirigeant.linkedin && (
-              <a href={dirigeant.linkedin} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10, color: 'rgba(255,255,255,0.55)', fontSize: 13, textDecoration: 'none' }}>
+              <a href={dirigeant.linkedin} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10, color: 'var(--gold)', fontSize: 13, textDecoration: 'none' }}>
                 <SocialIcon network="linkedin" size={14} />
                 LinkedIn
               </a>

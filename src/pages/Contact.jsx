@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, Link } from 'react-router-dom'
 import ScrollReveal from '../components/ui/ScrollReveal'
 import Seo from '../components/Seo'
 import { useApi } from '../hooks/useApi'
@@ -167,6 +167,13 @@ export default function Contact() {
                   <label className="form-label">{t('contact.message')} *</label>
                   <textarea className="form-textarea" name="message" required value={form.message} onChange={handleChange} placeholder={t('contact.messagePlaceholder')} rows={5} />
                 </div>
+
+                <p style={{ fontSize: 12.5, color: 'var(--gray-mid)', lineHeight: 1.6 }}>
+                  {t('contact.privacyNotice')}{' '}
+                  <Link to="/confidentialite" style={{ color: 'var(--teal)', fontWeight: 600, textDecoration: 'underline' }}>
+                    {t('contact.privacyLink')}
+                  </Link>.
+                </p>
 
                 <button type="submit" disabled={sending} className="btn-primary" style={{ width: '100%', justifyContent: 'center', border: 'none' }}>
                   {sending ? t('common.sending') : t('contact.submit')}

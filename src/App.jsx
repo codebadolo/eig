@@ -17,6 +17,7 @@ import Carrieres from './pages/Carrieres'
 import CarriereDetail from './pages/CarriereDetail'
 import Contact from './pages/Contact'
 import MentionsLegales from './pages/MentionsLegales'
+import ConditionsUtilisation from './pages/ConditionsUtilisation'
 import Confidentialite from './pages/Confidentialite'
 import Cookies from './pages/Cookies'
 import NotFound from './pages/NotFound'
@@ -68,6 +69,7 @@ function App() {
         <Route path="carrieres/:id" element={<CarriereDetail />} />
         <Route path="contact" element={<Contact />} />
         <Route path="mentions-legales" element={<MentionsLegales />} />
+        <Route path="conditions-utilisation" element={<ConditionsUtilisation />} />
         <Route path="confidentialite" element={<Confidentialite />} />
         <Route path="cookies" element={<Cookies />} />
         <Route path="*" element={<NotFound />} />

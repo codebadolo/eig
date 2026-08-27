@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\FilialeController;
 use App\Http\Controllers\MetierController;
 use App\Http\Controllers\ArticleController;
@@ -48,6 +49,11 @@ Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'uns
 
 // Protected routes (admin)
 Route::middleware('auth:api')->group(function () {
+    Route::get('/admin-users', [AdminUserController::class, 'index']);
+    Route::post('/admin-users', [AdminUserController::class, 'store']);
+    Route::put('/admin-users/{id}', [AdminUserController::class, 'update']);
+    Route::delete('/admin-users/{id}', [AdminUserController::class, 'destroy']);
+
     Route::post('/filiales', [FilialeController::class, 'store']);
     Route::put('/filiales/{id}', [FilialeController::class, 'update']);
     Route::delete('/filiales/{id}', [FilialeController::class, 'destroy']);
